@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -19,6 +17,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
+            export(projects.core.model)
             export(libs.androidx.lifecycle.viewmodel)
             freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
             xcf.add(this)
@@ -27,6 +26,7 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
+            api(projects.core.model)
             implementation(projects.core.database)
 
             api(project.dependencies.platform(libs.koin.bom))

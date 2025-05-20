@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.touchlab.skie) apply false
     alias(libs.plugins.kmp.nativecoroutines) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
 }

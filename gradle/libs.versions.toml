@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.3"
+agp = "8.10.0"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
@@ -21,6 +21,9 @@ ksp = "2.1.10-1.0.29"
 kmp-nativecoroutines = "1.0.0-ALPHA-40"
 sqldelight = "2.0.2"
 sekie = "0.10.1"
+kotlinStdlib = "2.1.10"
+runner = "1.6.2"
+core = "1.6.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -53,6 +56,9 @@ sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", vers
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analys" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -66,3 +72,4 @@ touchlab-skie = { id = "co.touchlab.skie", version.ref = "sekie" }
 kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }

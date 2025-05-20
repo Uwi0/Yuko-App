@@ -21,7 +21,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             export(libs.androidx.lifecycle.viewmodel)
-//            isStatic = false
             freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
             xcf.add(this)
         }

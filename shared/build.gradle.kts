@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kakapo.kotlinMultiplatform)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.appCash.sqlDelight)
     alias(libs.plugins.touchlab.skie)
@@ -11,13 +11,8 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
-    
+    val xcf = XCFramework()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -25,7 +20,10 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = false
+            export(libs.androidx.lifecycle.viewmodel)
+//            isStatic = false
+            freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
+            xcf.add(this)
         }
     }
     
@@ -54,17 +52,6 @@ kotlin {
     }
 }
 
-android {
-    namespace = "org.kakapo.project.shared"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-}
 
 sqldelight {
     databases {

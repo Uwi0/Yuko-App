@@ -18,3 +18,18 @@ tasks.withType<JavaCompile>().configureEach {
     sourceCompatibility = "17"
     targetCompatibility = "17"
 }
+
+dependencies {
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.dependency.analysis.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("kotlinMultiplatform") {
+            id = "com.kakapo.app.kotlinMultiplatform"
+            implementationClass = "KotlinMultiPlatformPlugin"
+        }
+    }
+}

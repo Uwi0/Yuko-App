@@ -11,9 +11,12 @@ androidx-espresso = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.0"
+dependency-analys = "2.17.0"
 junit = "4.13.2"
-kotlin = "2.1.10"
 koin-bom = "4.0.4"
+kotlin = "2.1.10"
+kotlinx-datetime = "0.6.2"
+kotlinx-serialization = "1.8.0"
 ksp = "2.1.10-1.0.29"
 kmp-nativecoroutines = "1.0.0-ALPHA-40"
 sqldelight = "2.0.2"
@@ -40,9 +43,16 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-com
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+
+#Dependencies of the included build logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+dependency-analysis-gradlePlugin = { module = "com.autonomousapps:dependency-analysis-gradle-plugin", version.ref = "dependency-analys" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -54,3 +64,5 @@ appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 touchlab-skie = { id = "co.touchlab.skie", version.ref = "sekie" }
 kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kakapo-kotlinMultiplatform = { id = "com.kakapo.app.kotlinMultiplatform", version = "unspecified" }

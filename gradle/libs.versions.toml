@@ -12,10 +12,12 @@ androidx-lifecycle = "2.8.4"
 androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.0"
 junit = "4.13.2"
-kotlin = "2.1.21"
+kotlin = "2.1.10"
 koin-bom = "4.0.4"
-ksp = "2.1.21-2.0.1"
+ksp = "2.1.10-1.0.29"
+kmp-nativecoroutines = "1.0.0-ALPHA-40"
 sqldelight = "2.0.2"
+sekie = "0.10.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -50,3 +52,5 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 appCash-sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+touchlab-skie = { id = "co.touchlab.skie", version.ref = "sekie" }
+kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmp-nativecoroutines"}

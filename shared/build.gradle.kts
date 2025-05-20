@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.appCash.sqlDelight)
+    alias(libs.plugins.touchlab.skie)
+    alias(libs.plugins.kmp.nativecoroutines)
 }
 
 kotlin {

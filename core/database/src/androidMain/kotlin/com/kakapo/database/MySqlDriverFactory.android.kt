@@ -1,4 +1,4 @@
-package org.kakapo.project.database
+package com.kakapo.database
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver

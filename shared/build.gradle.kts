@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     alias(libs.plugins.kakapo.kotlinMultiplatform)
     alias(libs.plugins.devtools.ksp)
-    alias(libs.plugins.appCash.sqlDelight)
     alias(libs.plugins.touchlab.skie)
     alias(libs.plugins.kmp.nativecoroutines)
 }
@@ -28,6 +27,8 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.core.database)
+
             api(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
@@ -52,12 +53,3 @@ kotlin {
 }
 
 
-sqldelight {
-    databases {
-        create("Database") {
-            packageName.set("com.kakapo")
-            srcDirs("src/commonMain/sqldelight")
-            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
-        }
-    }
-}

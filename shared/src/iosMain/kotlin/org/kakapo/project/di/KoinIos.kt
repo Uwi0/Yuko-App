@@ -1,8 +1,8 @@
 package org.kakapo.project.di
 
+import com.kakapo.database.MySqlDriverFactory
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
-import org.kakapo.project.database.MySqlDriverFactory
 import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.core.module.Module

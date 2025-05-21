@@ -17,8 +17,12 @@ class PomodoroViewModel : ViewModel(){
 
     fun handleEvent(event: PomodoroEvent) {
         when(event) {
-            is PomodoroEvent.ChangeTime -> _uiState.update { it.copy(currentTime = event.time) }
+            is PomodoroEvent.ChangePomodoroTime -> _uiState.update { it.copy(pomodoroTime = event.time) }
+            is PomodoroEvent.ChangeFocusTime -> _uiState.update { it.copy(focusDuration = event.time) }
             is PomodoroEvent.ChangeStatus -> _uiState.update { it.copy(status = event.status) }
+            is PomodoroEvent.ShowSheet -> _uiState.update { it.copy(showSheet = event.show) }
+            is PomodoroEvent.ChangeShortRestTime -> _uiState.update { it.copy(shortRestDuration = event.time) }
+            is PomodoroEvent.SetNumberOfCycles -> _uiState.update { it.copy(numberOfCycles = event.number) }
         }
     }
 }

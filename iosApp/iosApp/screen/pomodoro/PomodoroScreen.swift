@@ -55,7 +55,7 @@ struct PomodoroScreen: View {
         timerService.remainingTime = time
         timerService.startTimer(
             onTick: { time in
-                viewModel.handle(event: .ChangePomodoroTime(time: String(time)))
+                viewModel.handle(event: .ChangePomodoroTime(time: time.toFormatMinutesAndSeconds()))
             },
             onFinish: {}
         )
@@ -65,7 +65,9 @@ struct PomodoroScreen: View {
         timerService.stopTimer()
         timerService.remainingTime = 0
     }
-}             
+    
+    
+}
 
 #Preview {
     PomodoroScreen()

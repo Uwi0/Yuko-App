@@ -27,7 +27,7 @@ class PomodoroViewModel : ViewModel(){
     fun handleEvent(event: PomodoroEvent) {
         when(event) {
             is PomodoroEvent.ChangePomodoroTime -> _uiState.update { it.copy(pomodoroTime = event.time) }
-            is PomodoroEvent.ChangeFocusTime -> _uiState.update { it.updatePomodoroTime(event.time) }
+            is PomodoroEvent.ChangeFocusTime -> _uiState.update { it.copy(focusDuration = event.time) }
             is PomodoroEvent.ChangeStatus -> _uiState.update { it.copy(status = event.status) }
             is PomodoroEvent.ShowSheet -> _uiState.update { it.copy(showSheet = event.show) }
             is PomodoroEvent.ChangeShortRestTime -> _uiState.update { it.copy(shortRestDuration = event.time) }
@@ -37,9 +37,8 @@ class PomodoroViewModel : ViewModel(){
     }
 
     private fun startPomodoro() {
-        val duration = _uiState.value.focusDuration.toInt()
-
-        _uiState.update { it.copy(showSheet = false) }
+        val duration = _uiState.value.focusDuration.toInt() * 60
+        _uiState.update { it.startPomodoro() }
         emit(PomodoroEffect.StartPomodoro(duration))
     }
 

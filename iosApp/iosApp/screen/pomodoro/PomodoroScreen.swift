@@ -8,13 +8,9 @@ struct PomodoroScreen: View {
     
     var body: some View {
         VStack {
-            Text("Hello world \(viewModel.uiState.pomodoroTime)")
-            Button(action: { viewModel.handle(event: .ShowSheet(show: true))}){
-                Text("Start")
-            }
-            Button(action: stopTimer){
-                Text("Stop")
-            }
+            TimeCountDownComponent()
+            Spacer().frame(height: 48)
+            StartButton()
         }
         .onAppear {
             viewModel.initData()
@@ -41,6 +37,32 @@ struct PomodoroScreen: View {
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
         }
+    }
+    
+    @ViewBuilder
+    private func TimeCountDownComponent() -> some View {
+        HStack(alignment: .center, spacing: 8) {
+            Image(systemName: "tag")
+                .resizable()
+                .frame(width: 16, height: 16)
+            Text("Study: ")
+                .font(Typography.titleSmall)
+            Text(viewModel.uiState.pomodoroTime)
+                .font(Typography.titleMedium)
+            Image(systemName: "chevron.forward")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 16, height: 16)
+        }
+    }
+    
+    @ViewBuilder
+    private func StartButton() -> some View {
+        FilledButtonView(
+            onClick: { viewModel.handle(event: .ShowSheet(show: true))},
+            content: { Text("Start")}
+        )
+        .frame(width: 120)
     }
     
     private func observe(effect: PomodoroEffect?) {

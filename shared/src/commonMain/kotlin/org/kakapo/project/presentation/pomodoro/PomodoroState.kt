@@ -10,9 +10,20 @@ data class PomodoroState(
     val status: PomodoroStatus = PomodoroStatus.BreakTime,
     val showSheet: Boolean = false
 ) {
+
+    fun updatePomodoroTime(duration: Double): PomodoroState {
+        val durationInMinutes = duration
+        val time = duration.toInt().toString()
+        return this.copy(pomodoroTime = time, focusDuration = durationInMinutes)
+    }
+
     companion object {
         fun default() = PomodoroState()
     }
+}
+
+sealed class PomodoroEffect {
+    data class StartPomodoro(val time: Int): PomodoroEffect()
 }
 
 sealed class PomodoroEvent {
@@ -22,4 +33,5 @@ sealed class PomodoroEvent {
     data class SetNumberOfCycles(val number: Double) : PomodoroEvent()
     data class ChangeStatus(val status: PomodoroStatus) : PomodoroEvent()
     data class ShowSheet(val show: Boolean) : PomodoroEvent()
+    data object StartPomodoro : PomodoroEvent()
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Shared
 
 struct PomodoroScreen: View {
     
@@ -7,7 +8,7 @@ struct PomodoroScreen: View {
     
     var body: some View {
         VStack {
-            Text("Hello world \(viewModel.uiState.focusDuration)")
+            Text("Hello world \(viewModel.uiState.pomodoroTime)")
             Button(action: { viewModel.handle(event: .ShowSheet(show: true))}){
                 Text("Start")
             }
@@ -32,15 +33,26 @@ struct PomodoroScreen: View {
                 numberOfCyles: Binding(
                     get: { viewModel.uiState.numberOfCycles},
                     set: { cycle in viewModel.handle(event: .SetNumberOfCycles(number: cycle)) }),
-                onDismiss: { viewModel.handle(event: .ShowSheet(show: false)) }
+                onDismiss: { viewModel.handle(event: .ShowSheet(show: false)) },
+                onStart: { viewModel.handle(event: .StartPomodoro()) }
             )
-            .presentationDetents([.medium])
+            .presentationDetents([.height(480)])
         }
-        
+        .onChange(of: viewModel.uiEffect) {
+            observe(effect: viewModel.uiEffect)
+        }
     }
     
-    private func startTimer() {
-        timerService.remainingTime = 100
+    private func observe(effect: PomodoroEffect?) {
+        guard let effect = effect else { return }
+        switch onEnum(of: effect) {
+        case .startPomodoro(let value): startTimer(time: Int(value.time))
+        }
+        viewModel.uiEffect = nil
+    }
+    
+    private func startTimer(time: Int) {
+        timerService.remainingTime = time
         timerService.startTimer(
             onTick: { time in
                 viewModel.handle(event: .ChangePomodoroTime(time: String(time)))

@@ -5,13 +5,16 @@ import KMPNativeCoroutinesCombine
 
 final class PomodoroViewModel: ObservableObject {
     
-    @Published var uiState: PomodoroState = PomodoroState.companion.default()
+    @Published private(set) var uiState: PomodoroState = PomodoroState.companion.default()
+    @Published var uiEffect: PomodoroEffect? = nil
     
     private let viewModel: PomodoroViewModelKT = Koin.shared.get()
     private var stateCancellable: AnyCancellable?
+    private var effectCancellable: AnyCancellable?
     
     func initData() {
         observeUiState()
+        observeEffects()
     }
     
     func handle(event: PomodoroEvent) {
@@ -33,8 +36,24 @@ final class PomodoroViewModel: ObservableObject {
         }
     }
     
+    private func observeEffects() {
+        let publihser = createPublisher(for: viewModel.uiEffect)
+        effectCancellable = publihser.sink { completion in
+            print("completion \(completion)")
+        } receiveValue: { [weak self] effect in
+            self?.update(effect: effect)
+        }
+    }
+    
+    private func update(effect: PomodoroEffect) {
+        DispatchQueue.main.async {
+            self.uiEffect = effect
+        }
+    }
+    
     deinit {
         stateCancellable?.cancel()
+        effectCancellable?.cancel()
     }
     
 }

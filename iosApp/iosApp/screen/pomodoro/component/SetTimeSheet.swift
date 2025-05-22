@@ -6,6 +6,7 @@ struct SetTimeSheet: View {
     @Binding var shortRestDuration: Double
     @Binding var numberOfCyles: Double
     var onDismiss: () -> Void
+    var onStart: () -> Void
     
     private let step = 5.0
     
@@ -14,6 +15,8 @@ struct SetTimeSheet: View {
             HeaderComponent()
             Spacer().frame(height: 20)
             TimeComponent()
+            Spacer().frame(height: 48)
+            FilledButtonView(onClick: onStart, content: { Text("Start")})
             Spacer()
         }
         .padding(.horizontal, 16)
@@ -93,6 +96,7 @@ struct SetTimeSheet: View {
         focusDuration: .constant(10),
         shortRestDuration: .constant(5),
         numberOfCyles: .constant(3),
-        onDismiss: {}
+        onDismiss: {},
+        onStart: {}
     )
 }

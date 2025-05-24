@@ -1,0 +1,28 @@
+CREATE TABLE PomodoroSessionTable (
+  id INTEGER NOT NULL PRIMARY KEY,
+  startTime INTEGER NOT NULL,
+  endTime INTEGER NOT NULL,
+  duration INTEGER NOT NULL,
+  pointEarned INTEGER NOT NULL,
+  isCompleted INTEGER NOT NULL,
+  reasonFailed TEXT,
+  note TEXT
+);
+
+INSERT OR ABORT INTO PomodoroSessionTable(
+  startTime,
+  endTime,
+  duration,
+  pointEarned,
+  isCompleted,
+  reasonFailed,
+  note
+) VALUES (
+?,
+?,
+?,
+?,
+?,
+?,
+?
+);

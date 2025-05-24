@@ -1,5 +1,7 @@
 package org.kakapo.project.di
 
+import com.kakapo.database.datasource.base.PomodoroSessionLocalDatasource
+import com.kakapo.database.datasource.implementation.PomodoroSessionLocalDatasourceImpl
 import org.kakapo.project.presentation.pomodoro.PomodoroViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -14,11 +16,16 @@ object CommonModule {
     val viewModel: Module = module {
         viewModel { PomodoroViewModel() }
     }
+
+    val localDatasourceModule: Module = module {
+        factory<PomodoroSessionLocalDatasource> { PomodoroSessionLocalDatasourceImpl(get()) }
+    }
 }
 
 fun initKoin(
     appModule: Module = module { },
-    viewModel: Module = CommonModule.viewModel
+    viewModel: Module = CommonModule.viewModel,
+    localDatasource: Module = CommonModule.localDatasourceModule,
 ): KoinApplication = startKoin {
-    modules(appModule, viewModel, platformModule)
+    modules(appModule, viewModel, localDatasource, platformModule)
 }

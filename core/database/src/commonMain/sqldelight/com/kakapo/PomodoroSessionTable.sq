@@ -9,6 +9,7 @@ CREATE TABLE PomodoroSessionTable (
   note TEXT
 );
 
+insertSession:
 INSERT OR ABORT INTO PomodoroSessionTable(
   startTime,
   endTime,

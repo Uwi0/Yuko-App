@@ -30,8 +30,6 @@ sqldelight {
             packageName.set("com.kakapo")
             srcDirs("src/commonMain/sqldelight")
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
-            verifyMigrations.set(true)
-            version = 1
         }
     }
 }

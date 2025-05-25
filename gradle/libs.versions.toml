@@ -1,8 +1,8 @@
 [versions]
 agp = "8.10.0"
-android-compileSdk = "35"
+android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "35"
+android-targetSdk = "36"
 androidx-activity = "1.10.1"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.1"
@@ -12,16 +12,17 @@ androidx-lifecycle = "2.8.4"
 androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.0"
 dependency-analys = "2.17.0"
+datastore = "1.1.7"
 junit = "4.13.2"
 koin-bom = "4.0.4"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 kotlinx-datetime = "0.6.2"
 kotlinx-serialization = "1.8.0"
-ksp = "2.1.10-1.0.29"
-kmp-nativecoroutines = "1.0.0-ALPHA-40"
+ksp = "2.1.20-2.0.1"
+kmp-nativecoroutines = "1.0.0-ALPHA-42"
 sqldelight = "2.0.2"
-sekie = "0.10.1"
-kotlinStdlib = "2.1.10"
+sekie = "0.10.2"
+kotlinStdlib = "2.1.20"
 runner = "1.6.2"
 core = "1.6.1"
 
@@ -37,6 +38,8 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
 koin-android = { module = "io.insert-koin:koin-android" }

@@ -1,6 +1,7 @@
 package org.kakapo.project.di
 
 import com.kakapo.database.MySqlDriverFactory
+import com.kakapo.preference.YukoPreferenceDataStoreFactory
 import kotlinx.cinterop.ObjCClass
 import kotlinx.cinterop.getOriginalKotlinClass
 import org.koin.core.Koin
@@ -28,4 +29,5 @@ fun Koin.get(objCClass: ObjCClass, qualifier: Qualifier?, parameter: Any): Any {
 
 actual val platformModule: Module = module {
     single { MySqlDriverFactory().createDriver() }
+    single { YukoPreferenceDataStoreFactory().dataStore() }
 }

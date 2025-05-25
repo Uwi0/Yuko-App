@@ -29,23 +29,16 @@ kotlin {
             api(projects.core.model)
             implementation(projects.core.database)
             implementation(projects.core.data)
+            implementation(projects.core.preference)
 
             api(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
-            implementation(libs.sqldelight.coroutines)
-        }
-        sourceSets.androidMain {
-            dependencies {
-                implementation(libs.sqldelight.android.driver)
-            }
-        }
-        sourceSets.iosMain {
-            dependencies {
-                implementation(libs.sqldelight.navtive.driver)
-            }
+            implementation(libs.datastore)
+            implementation(libs.datastore.preferences)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

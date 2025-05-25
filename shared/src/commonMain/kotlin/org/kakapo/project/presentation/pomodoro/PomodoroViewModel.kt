@@ -2,6 +2,7 @@ package org.kakapo.project.presentation.pomodoro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.data.repository.base.PomodoroSessionRepository
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @ObjCName("PomodoroViewModelKT")
-class PomodoroViewModel : ViewModel(){
+class PomodoroViewModel(
+    private val sessionRepository: PomodoroSessionRepository,
+) : ViewModel(){
 
     @NativeCoroutinesState
     val uiState: StateFlow<PomodoroState> get() = _uiState.asStateFlow()

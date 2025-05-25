@@ -28,6 +28,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.model)
             implementation(projects.core.database)
+            implementation(projects.core.data)
 
             api(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)

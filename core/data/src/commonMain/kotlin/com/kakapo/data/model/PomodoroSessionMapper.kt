@@ -1,6 +1,8 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.PomodoroSessionEntity
+import com.kakapo.model.SessionSettingsModel
+import com.kakapo.preference.model.SessionSettingsPref
 
 data class PomodoroSessionParam(
     val startTime: Long,
@@ -23,3 +25,15 @@ data class PomodoroSessionParam(
     )
 
 }
+
+fun SessionSettingsModel.toSessionSettingsPref() = SessionSettingsPref(
+    focusDuration = focusDuration,
+    restDuration = restDuration,
+    cycleCount = cycleCount
+)
+
+fun SessionSettingsPref.toSessionSettingsModel() = SessionSettingsModel(
+    focusDuration = focusDuration,
+    restDuration = restDuration,
+    cycleCount = cycleCount
+)

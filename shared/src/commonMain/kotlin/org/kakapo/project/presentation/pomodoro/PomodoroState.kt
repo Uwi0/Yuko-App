@@ -1,6 +1,7 @@
 package org.kakapo.project.presentation.pomodoro
 
 import com.kakapo.model.PomodoroStatus
+import com.kakapo.model.SessionSettingsModel
 import org.kakapo.project.presentation.pomodoro.ext.toFormatMinutesAndSeconds
 
 data class PomodoroState(
@@ -18,12 +19,29 @@ data class PomodoroState(
         return this.copy(pomodoroTime = time, showSheet = false)
     }
 
+    fun getSettings(): SessionSettingsModel = SessionSettingsModel(
+            focusDuration = focusDuration,
+            restDuration = shortRestDuration,
+            cycleCount = numberOfCycles
+        )
+
+    fun updateFromSettings(settings: SessionSettingsModel): PomodoroState {
+        val pomodoroTime = settings.focusDuration * 60
+        return this.copy(
+            pomodoroTime = pomodoroTime.toInt().toFormatMinutesAndSeconds(),
+            focusDuration = settings.focusDuration,
+            shortRestDuration = settings.restDuration,
+            numberOfCycles = settings.cycleCount
+        )
+    }
+
     companion object {
         fun default() = PomodoroState()
     }
 }
 
 sealed class PomodoroEffect {
+    data class ShowError(val message: String): PomodoroEffect()
     data class StartPomodoro(val time: Int): PomodoroEffect()
 }
 
@@ -34,5 +52,6 @@ sealed class PomodoroEvent {
     data class SetNumberOfCycles(val number: Double) : PomodoroEvent()
     data class ChangeStatus(val status: PomodoroStatus) : PomodoroEvent()
     data class ShowSheet(val show: Boolean) : PomodoroEvent()
+    data object SaveSettings: PomodoroEvent()
     data object StartPomodoro : PomodoroEvent()
 }

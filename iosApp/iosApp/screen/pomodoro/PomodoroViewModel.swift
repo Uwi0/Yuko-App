@@ -13,6 +13,7 @@ final class PomodoroViewModel: ObservableObject {
     private var effectCancellable: AnyCancellable?
     
     func initData() {
+        viewModel.doInitData()
         observeUiState()
         observeEffects()
     }

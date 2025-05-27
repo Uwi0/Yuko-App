@@ -11,7 +11,7 @@ fun createDatabaseStore(producePath: () -> String): DataStore<Preferences> {
     )
 }
 
-internal const val PREFERENCE_NAME = "yuko_preferences"
+internal const val PREFERENCE_NAME = "yuko.preferences_pb"
 
 expect class YukoPreferenceDataStoreFactory {
     fun dataStore(): DataStore<Preferences>

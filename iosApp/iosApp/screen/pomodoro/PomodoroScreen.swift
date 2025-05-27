@@ -30,7 +30,7 @@ struct PomodoroScreen: View {
                     get: { viewModel.uiState.numberOfCycles},
                     set: { cycle in viewModel.handle(event: .SetNumberOfCycles(number: cycle)) }),
                 onDismiss: { viewModel.handle(event: .ShowSheet(show: false)) },
-                onStart: { viewModel.handle(event: .StartPomodoro()) }
+                onStart: { viewModel.handle(event: .SaveSettings() ) }
             )
             .presentationDetents([.height(480)])
         }
@@ -54,12 +54,15 @@ struct PomodoroScreen: View {
                 .scaledToFit()
                 .frame(width: 16, height: 16)
         }
+        .onTapGesture {
+            viewModel.handle(event: .ShowSheet(show: true))
+        }
     }
     
     @ViewBuilder
     private func StartButton() -> some View {
         FilledButtonView(
-            onClick: { viewModel.handle(event: .ShowSheet(show: true))},
+            onClick: { viewModel.handle(event: .StartPomodoro()) },
             content: { Text("Start")}
         )
         .frame(width: 120)
@@ -69,6 +72,7 @@ struct PomodoroScreen: View {
         guard let effect = effect else { return }
         switch onEnum(of: effect) {
         case .startPomodoro(let value): startTimer(time: Int(value.time))
+        case .showError(let effect): print("error \(effect.message)")
         }
         viewModel.uiEffect = nil
     }

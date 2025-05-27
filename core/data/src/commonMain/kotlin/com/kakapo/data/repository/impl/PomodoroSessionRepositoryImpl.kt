@@ -27,4 +27,8 @@ class PomodoroSessionRepositoryImpl (
         return localDatasource.insertSession(session.toEntity())
     }
 
+    override suspend fun loadTotalPoints(): Result<Long> {
+        return localDatasource.getTotalPoints()
+    }
+
 }

@@ -4,4 +4,5 @@ import com.kakapo.database.model.PomodoroSessionEntity
 
 interface PomodoroSessionLocalDatasource {
     suspend fun insertSession(pomodoro: PomodoroSessionEntity): Result<Unit>
+    suspend fun getTotalPoints(): Result<Long>
 }

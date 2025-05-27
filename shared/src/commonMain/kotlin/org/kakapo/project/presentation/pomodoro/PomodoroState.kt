@@ -7,6 +7,7 @@ import kotlinx.datetime.Clock
 import org.kakapo.project.presentation.pomodoro.ext.toFormatMinutesAndSeconds
 
 data class PomodoroState(
+    val pointEarned: Long = 0,
     val pomodoroTime: String = "00:00",
     val focusDuration: Double = 30.0,
     val shortRestDuration: Double = 5.0,
@@ -16,7 +17,7 @@ data class PomodoroState(
 ) {
 
     fun setPomodoro(): PomodoroState {
-        val durationInMinutes = focusDuration
+        val durationInMinutes = focusDuration * 60
         val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
         return this.copy(pomodoroTime = time, showSheet = false)
     }

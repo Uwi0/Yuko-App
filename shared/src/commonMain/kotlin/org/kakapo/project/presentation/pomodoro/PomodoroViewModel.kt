@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.PomodoroSessionRepository
+import com.kakapo.model.PomodoroStatus
 import com.kakapo.model.SessionSettingsModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +35,7 @@ class PomodoroViewModel(
 
     fun initData() {
         loadSessionSettings()
+        loadTotalPointEarned()
     }
 
     fun handleEvent(event: PomodoroEvent) {
@@ -61,6 +63,17 @@ class PomodoroViewModel(
         )
     }
 
+    private fun loadTotalPointEarned() = viewModelScope.launch {
+        val onSuccess: (Long) -> Unit = { point ->
+            _uiState.update { it.copy(pointEarned = point) }
+        }
+
+        sessionRepository.loadTotalPoints().fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun saveSessionSettings() = viewModelScope.launch {
         val settings = _uiState.value.getSettings()
         val onSuccess: (Unit) -> Unit = {
@@ -81,8 +94,13 @@ class PomodoroViewModel(
 
     private fun saveSessionProgress(isSuccess: Boolean) = viewModelScope.launch {
         val param = _uiState.value.getPomodoroSessionParam(startTime, isSuccess)
+        val onSuccess: (Unit) -> Unit = {
+            _uiState.update { it.copy(status = PomodoroStatus.BreakTime) }
+            loadTotalPointEarned()
+        }
+
         sessionRepository.saveSessionProgress(param).fold(
-            onSuccess = { Logger.d { "Pomodoro session saved" }},
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }

@@ -21,4 +21,8 @@ class PomodoroSessionLocalDatasourceImpl(sqlDriver: SqlDriver): PomodoroSessionL
             note = pomodoro.note
         )
     }
+
+    override suspend fun getTotalPoints(): Result<Long> = runCatching {
+        pomodoroSessionQuery.getTotalPoints().executeAsOne().TotalPointEarned ?: 0
+    }
 }

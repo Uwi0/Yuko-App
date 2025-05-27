@@ -7,4 +7,5 @@ interface PomodoroSessionRepository {
     suspend fun saveSessionSettings(sessionSettings: SessionSettingsModel): Result<Unit>
     suspend fun loadSessionSettings(): Result<SessionSettingsModel>
     suspend fun saveSessionProgress(session: PomodoroSessionParam): Result<Unit>
+    suspend fun loadTotalPoints(): Result<Long>
 }

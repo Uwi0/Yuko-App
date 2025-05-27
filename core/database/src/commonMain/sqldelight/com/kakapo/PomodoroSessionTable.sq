@@ -27,3 +27,6 @@ INSERT OR ABORT INTO PomodoroSessionTable(
 ?,
 ?
 );
+
+getTotalPoints:
+SELECT SUM(pointEarned) AS TotalPointEarned FROM PomodoroSessionTable;

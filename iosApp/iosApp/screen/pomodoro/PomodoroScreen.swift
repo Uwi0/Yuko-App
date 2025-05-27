@@ -8,10 +8,15 @@ struct PomodoroScreen: View {
     
     var body: some View {
         VStack {
+            TopContentView()
+            Spacer()
             TimeCountDownComponent()
             Spacer().frame(height: 48)
             StartButton()
+            Spacer()
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
         .onAppear {
             viewModel.initData()
         }
@@ -36,6 +41,22 @@ struct PomodoroScreen: View {
         }
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
+        }
+    }
+    
+    @ViewBuilder
+    private func TopContentView() -> some View {
+        HStack {
+            PointItem()
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder
+    private func PointItem() -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "heart.fill")
+            Text("\(viewModel.uiState.pointEarned)")
         }
     }
     

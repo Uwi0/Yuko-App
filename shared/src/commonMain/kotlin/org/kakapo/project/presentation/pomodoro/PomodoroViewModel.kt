@@ -2,6 +2,7 @@ package org.kakapo.project.presentation.pomodoro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.PomodoroSessionRepository
 import com.kakapo.model.SessionSettingsModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 @ObjCName("PomodoroViewModelKT")
 class PomodoroViewModel(
@@ -28,6 +30,8 @@ class PomodoroViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<PomodoroEffect>()
 
+    private var startTime = 0L
+
     fun initData() {
         loadSessionSettings()
     }
@@ -40,6 +44,7 @@ class PomodoroViewModel(
             is PomodoroEvent.ShowSheet -> _uiState.update { it.copy(showSheet = event.show) }
             is PomodoroEvent.ChangeShortRestTime -> _uiState.update { it.copy(shortRestDuration = event.time) }
             is PomodoroEvent.SetNumberOfCycles -> _uiState.update { it.copy(numberOfCycles = event.number) }
+            is PomodoroEvent.SaveProgress -> saveSessionProgress(event.isSuccess)
             PomodoroEvent.StartPomodoro -> startPomodoro()
             PomodoroEvent.SaveSettings -> saveSessionSettings()
         }
@@ -59,7 +64,7 @@ class PomodoroViewModel(
     private fun saveSessionSettings() = viewModelScope.launch {
         val settings = _uiState.value.getSettings()
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(showSheet = false) }
+            _uiState.update { it.setPomodoro() }
         }
         sessionRepository.saveSessionSettings(settings).fold(
             onSuccess = onSuccess,
@@ -69,8 +74,17 @@ class PomodoroViewModel(
 
     private fun startPomodoro() {
         val duration = _uiState.value.focusDuration.toInt() * 60
-        _uiState.update { it.startPomodoro() }
+        startTime = Clock.System.now().epochSeconds
+        _uiState.update { it.setPomodoro() }
         emit(PomodoroEffect.StartPomodoro(duration))
+    }
+
+    private fun saveSessionProgress(isSuccess: Boolean) = viewModelScope.launch {
+        val param = _uiState.value.getPomodoroSessionParam(startTime, isSuccess)
+        sessionRepository.saveSessionProgress(param).fold(
+            onSuccess = { Logger.d { "Pomodoro session saved" }},
+            onFailure = ::handleError
+        )
     }
 
     private fun handleError(throwable: Throwable?) {

@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.datastore)
             implementation(libs.datastore.preferences)
 
+            implementation(libs.kermit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

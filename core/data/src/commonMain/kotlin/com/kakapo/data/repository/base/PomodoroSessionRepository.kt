@@ -6,5 +6,5 @@ import com.kakapo.model.SessionSettingsModel
 interface PomodoroSessionRepository {
     suspend fun saveSessionSettings(sessionSettings: SessionSettingsModel): Result<Unit>
     suspend fun loadSessionSettings(): Result<SessionSettingsModel>
-    suspend fun saveResultSession(session: PomodoroSessionParam): Result<Unit>
+    suspend fun saveSessionProgress(session: PomodoroSessionParam): Result<Unit>
 }

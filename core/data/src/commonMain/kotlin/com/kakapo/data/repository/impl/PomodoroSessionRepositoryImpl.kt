@@ -23,7 +23,7 @@ class PomodoroSessionRepositoryImpl (
         return preference.getSessionSettings().mapCatching { it.toSessionSettingsModel() }
     }
 
-    override suspend fun saveResultSession(session: PomodoroSessionParam): Result<Unit> {
+    override suspend fun saveSessionProgress(session: PomodoroSessionParam): Result<Unit> {
         return localDatasource.insertSession(session.toEntity())
     }
 

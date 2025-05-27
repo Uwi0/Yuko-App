@@ -1,7 +1,9 @@
 package org.kakapo.project.presentation.pomodoro
 
+import com.kakapo.data.model.PomodoroSessionParam
 import com.kakapo.model.PomodoroStatus
 import com.kakapo.model.SessionSettingsModel
+import kotlinx.datetime.Clock
 import org.kakapo.project.presentation.pomodoro.ext.toFormatMinutesAndSeconds
 
 data class PomodoroState(
@@ -13,8 +15,8 @@ data class PomodoroState(
     val showSheet: Boolean = false
 ) {
 
-    fun startPomodoro(): PomodoroState {
-        val durationInMinutes = focusDuration * 60
+    fun setPomodoro(): PomodoroState {
+        val durationInMinutes = focusDuration
         val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
         return this.copy(pomodoroTime = time, showSheet = false)
     }
@@ -25,6 +27,7 @@ data class PomodoroState(
             cycleCount = numberOfCycles
         )
 
+
     fun updateFromSettings(settings: SessionSettingsModel): PomodoroState {
         val pomodoroTime = settings.focusDuration * 60
         return this.copy(
@@ -32,6 +35,17 @@ data class PomodoroState(
             focusDuration = settings.focusDuration,
             shortRestDuration = settings.restDuration,
             numberOfCycles = settings.cycleCount
+        )
+    }
+
+    fun getPomodoroSessionParam(startTime: Long, isComplete: Boolean) : PomodoroSessionParam {
+        val pointEarned = if (isComplete) (focusDuration / 5).toLong() else -5
+        return PomodoroSessionParam(
+            startTime = startTime,
+            endTime = Clock.System.now().epochSeconds,
+            duration = focusDuration.toLong(),
+            pointEarned = pointEarned,
+            isCompleted = isComplete
         )
     }
 
@@ -54,4 +68,5 @@ sealed class PomodoroEvent {
     data class ShowSheet(val show: Boolean) : PomodoroEvent()
     data object SaveSettings: PomodoroEvent()
     data object StartPomodoro : PomodoroEvent()
+    data class SaveProgress(val isSuccess: Boolean): PomodoroEvent()
 }

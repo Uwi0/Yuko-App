@@ -83,7 +83,9 @@ struct PomodoroScreen: View {
             onTick: { time in
                 viewModel.handle(event: .ChangePomodoroTime(time: time.toFormatMinutesAndSeconds()))
             },
-            onFinish: {}
+            onFinish: {
+                viewModel.handle(event: .SaveProgress(isSuccess: true))
+            }
         )
     }
     

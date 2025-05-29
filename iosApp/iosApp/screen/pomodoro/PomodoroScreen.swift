@@ -4,7 +4,8 @@ import Shared
 struct PomodoroScreen: View {
     
     @StateObject private var viewModel = PomodoroViewModel()
-    @ObservedObject private var timerService = TimerService()
+    @ObservedObject private var pomodoroTimerService = TimerService()
+    @ObservedObject private var countdownTimerService = TimerService()
     
     var body: some View {
         VStack {
@@ -82,9 +83,18 @@ struct PomodoroScreen: View {
     
     @ViewBuilder
     private func StartButton() -> some View {
+        let onCklick: () -> Void = {
+            if viewModel.uiState.status == .breakTime {
+                viewModel.handle(event: .StartPomodoro())
+            } else {
+                viewModel.handle(event: .CancelTimer())
+            }
+        }
+        
+        let title = viewModel.uiState.status == .breakTime ? "Start " : "Cancel"
         FilledButtonView(
-            onClick: { viewModel.handle(event: .StartPomodoro()) },
-            content: { Text("Start")}
+            onClick: onCklick,
+            content: { Text(title)}
         )
         .frame(width: 120)
     }
@@ -92,15 +102,33 @@ struct PomodoroScreen: View {
     private func observe(effect: PomodoroEffect?) {
         guard let effect = effect else { return }
         switch onEnum(of: effect) {
-        case .startPomodoro(let value): startTimer(time: Int(value.time))
+        case .startPomodoro(let value): startCountDownTimer(time: Int(value.time))
         case .showError(let effect): print("error \(effect.message)")
+        case .cancelTimer: stopCountDownTimer()
         }
         viewModel.uiEffect = nil
     }
     
-    private func startTimer(time: Int) {
-        timerService.remainingTime = time
-        timerService.startTimer(
+    private func startCountDownTimer(time: Int) {
+        countdownTimerService.remainingTime = 5
+        countdownTimerService.startTimer(
+            onTick: { time in
+                viewModel.handle(event: .ChangeCountDownTime(time: String(time)))
+            },
+            onFinish: {
+                startPomodoroTimer(time: time)
+            }
+        )
+    }
+    
+    private func stopCountDownTimer() {
+        countdownTimerService.stopTimer()
+        countdownTimerService.remainingTime = 0
+    }
+    
+    private func startPomodoroTimer(time: Int) {
+        pomodoroTimerService.remainingTime = time
+        pomodoroTimerService.startTimer(
             onTick: { time in
                 viewModel.handle(event: .ChangePomodoroTime(time: time.toFormatMinutesAndSeconds()))
             },
@@ -110,9 +138,10 @@ struct PomodoroScreen: View {
         )
     }
     
-    private func stopTimer() {
-        timerService.stopTimer()
-        timerService.remainingTime = 0
+    
+    private func stopPomodoroTimer() {
+        pomodoroTimerService.stopTimer()
+        pomodoroTimerService.remainingTime = 0
     }
     
     

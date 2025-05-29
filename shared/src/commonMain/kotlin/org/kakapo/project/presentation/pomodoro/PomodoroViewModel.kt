@@ -2,9 +2,8 @@ package org.kakapo.project.presentation.pomodoro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.PomodoroSessionRepository
-import com.kakapo.model.PomodoroStatus
+import com.kakapo.model.WorkState
 import com.kakapo.model.SessionSettingsModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,8 +46,10 @@ class PomodoroViewModel(
             is PomodoroEvent.ChangeShortRestTime -> _uiState.update { it.copy(shortRestDuration = event.time) }
             is PomodoroEvent.SetNumberOfCycles -> _uiState.update { it.copy(numberOfCycles = event.number) }
             is PomodoroEvent.SaveProgress -> saveSessionProgress(event.isSuccess)
+            is PomodoroEvent.ChangeCountDownTime -> _uiState.update { it.copy(countDownTime = event.time) }
             PomodoroEvent.StartPomodoro -> startPomodoro()
             PomodoroEvent.SaveSettings -> saveSessionSettings()
+            PomodoroEvent.CancelTimer -> cancelPomodoro()
         }
     }
 
@@ -88,14 +89,14 @@ class PomodoroViewModel(
     private fun startPomodoro() {
         val duration = _uiState.value.focusDuration.toInt() * 60
         startTime = Clock.System.now().epochSeconds
-        _uiState.update { it.setPomodoro() }
+        _uiState.update { it.copy(status = WorkState.CountDown) }
         emit(PomodoroEffect.StartPomodoro(duration))
     }
 
     private fun saveSessionProgress(isSuccess: Boolean) = viewModelScope.launch {
         val param = _uiState.value.getPomodoroSessionParam(startTime, isSuccess)
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(status = PomodoroStatus.BreakTime) }
+            _uiState.update { it.copy(status = WorkState.BreakTime) }
             loadTotalPointEarned()
         }
 
@@ -103,6 +104,11 @@ class PomodoroViewModel(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )
+    }
+
+    private fun cancelPomodoro() = viewModelScope.launch {
+        emit(PomodoroEffect.CancelTimer)
+        _uiState.update { it.copy(status = WorkState.BreakTime) }
     }
 
     private fun handleError(throwable: Throwable?) {

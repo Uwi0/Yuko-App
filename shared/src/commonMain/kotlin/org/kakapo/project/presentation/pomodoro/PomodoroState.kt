@@ -14,6 +14,7 @@ data class PomodoroState(
     val shortRestDuration: Double = 5.0,
     val numberOfCycles: Double = 3.0,
     val status: WorkState = WorkState.BreakTime,
+    val showAlert: Boolean = false,
     val showSheet: Boolean = false
 ) {
 
@@ -41,7 +42,7 @@ data class PomodoroState(
     }
 
     fun getPomodoroSessionParam(startTime: Long, isComplete: Boolean) : PomodoroSessionParam {
-        val pointEarned = if (isComplete) (focusDuration / 5).toLong() else -5
+        val pointEarned = if (isComplete) (focusDuration / 5).toLong() else - 5
         return PomodoroSessionParam(
             startTime = startTime,
             endTime = Clock.System.now().epochSeconds,
@@ -74,4 +75,5 @@ sealed class PomodoroEvent {
     data class SaveProgress(val isSuccess: Boolean): PomodoroEvent()
     data class ChangeCountDownTime(val time: String): PomodoroEvent()
     data object CancelTimer: PomodoroEvent()
+    data class ShowAlert(val shown: Boolean) : PomodoroEvent()
 }

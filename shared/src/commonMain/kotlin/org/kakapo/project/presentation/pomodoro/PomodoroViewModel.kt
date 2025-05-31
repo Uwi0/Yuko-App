@@ -47,6 +47,7 @@ class PomodoroViewModel(
             is PomodoroEvent.SetNumberOfCycles -> _uiState.update { it.copy(numberOfCycles = event.number) }
             is PomodoroEvent.SaveProgress -> saveSessionProgress(event.isSuccess)
             is PomodoroEvent.ChangeCountDownTime -> _uiState.update { it.copy(countDownTime = event.time) }
+            is PomodoroEvent.ShowAlert -> _uiState.update { it.copy(showAlert = event.shown) }
             PomodoroEvent.StartPomodoro -> startPomodoro()
             PomodoroEvent.SaveSettings -> saveSessionSettings()
             PomodoroEvent.CancelTimer -> cancelPomodoro()
@@ -107,8 +108,12 @@ class PomodoroViewModel(
     }
 
     private fun cancelPomodoro() = viewModelScope.launch {
-        emit(PomodoroEffect.CancelTimer)
-        _uiState.update { it.copy(status = WorkState.BreakTime) }
+        if(uiState.value.status == WorkState.CountDown){
+            emit(PomodoroEffect.CancelTimer)
+            _uiState.update { it.copy(status = WorkState.BreakTime) }
+        } else {
+            _uiState.update { it.copy(showAlert = true) }
+        }
     }
 
     private fun handleError(throwable: Throwable?) {

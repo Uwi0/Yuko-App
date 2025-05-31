@@ -4,7 +4,7 @@ import Shared
 struct PomodoroScreen: View {
     
     @StateObject private var viewModel = PomodoroViewModel()
-    @ObservedObject private var pomodoroTimerService = TimerService()
+    @ObservedObject private var pomodoroTimerService = BackgroundTimerService()
     @ObservedObject private var countdownTimerService = TimerService()
     
     var body: some View {
@@ -39,6 +39,18 @@ struct PomodoroScreen: View {
                 onStart: { viewModel.handle(event: .SaveSettings() ) }
             )
             .presentationDetents([.height(480)])
+        }
+        .alert(
+            isPresented: Binding(
+                get: { viewModel.uiState.showAlert },
+                set: { shown in viewModel.handle(event: .ShowAlert(shown: shown))}),
+        
+        ) {
+            Alert(
+                title: Text("Error"),
+                primaryButton: .default(Text("OK")),
+                secondaryButton: .cancel()
+            )
         }
         .onChange(of: viewModel.uiEffect) {
             observe(effect: viewModel.uiEffect)
@@ -91,7 +103,12 @@ struct PomodoroScreen: View {
             }
         }
         
-        let title = viewModel.uiState.status == .breakTime ? "Start " : "Cancel"
+        let title = switch viewModel.uiState.status {
+            case .start: "Cancel"
+            case .breakTime: "Start"
+            case .countDown: "Cancel \(viewModel.uiState.countDownTime)"
+        }
+        
         FilledButtonView(
             onClick: onCklick,
             content: { Text(title)}
@@ -129,6 +146,7 @@ struct PomodoroScreen: View {
     private func startPomodoroTimer(time: Int) {
         pomodoroTimerService.remainingTime = time
         pomodoroTimerService.startTimer(
+            initialTime: time,
             onTick: { time in
                 viewModel.handle(event: .ChangePomodoroTime(time: time.toFormatMinutesAndSeconds()))
             },

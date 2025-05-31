@@ -41,6 +41,11 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		FB39718A2DEB0BB800B7E961 /* sound */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = sound;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +66,7 @@
 		B9DA97A82DC1472C00A4DA20 = {
 			isa = PBXGroup;
 			children = (
+				FB39718A2DEB0BB800B7E961 /* sound */,
 				B9DA98002DC14AA900A4DA20 /* Configuration */,
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
 				B9DA97B22DC1472C00A4DA20 /* Products */,
@@ -93,6 +99,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
+				FB39718A2DEB0BB800B7E961 /* sound */,
 			);
 			name = yuko;
 			packageProductDependencies = (

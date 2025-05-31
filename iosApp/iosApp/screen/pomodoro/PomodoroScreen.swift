@@ -47,8 +47,14 @@ struct PomodoroScreen: View {
         
         ) {
             Alert(
-                title: Text("Error"),
-                primaryButton: .default(Text("OK")),
+                title: Text("Are you sure want to give up?"),
+                message: Text("Yuko will sad if you do that"),
+                primaryButton: .destructive(
+                    Text("Confirm"),
+                    action: {
+                        viewModel.handle(event: .SaveProgress(isSuccess: false))
+                    }
+                ),
                 secondaryButton: .cancel()
             )
         }
@@ -121,7 +127,8 @@ struct PomodoroScreen: View {
         switch onEnum(of: effect) {
         case .startPomodoro(let value): startCountDownTimer(time: Int(value.time))
         case .showError(let effect): print("error \(effect.message)")
-        case .cancelTimer: stopCountDownTimer()
+        case .cancelCountdown: stopCountDownTimer()
+        case .cancelPomodoro: stopPomodoroTimer()
         }
         viewModel.uiEffect = nil
     }
@@ -144,6 +151,7 @@ struct PomodoroScreen: View {
     }
     
     private func startPomodoroTimer(time: Int) {
+        viewModel.handle(event: .ChangeStatus(status: .start))
         pomodoroTimerService.remainingTime = time
         pomodoroTimerService.startTimer(
             initialTime: time,

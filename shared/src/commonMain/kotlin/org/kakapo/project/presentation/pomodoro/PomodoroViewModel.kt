@@ -97,7 +97,10 @@ class PomodoroViewModel(
     private fun saveSessionProgress(isSuccess: Boolean) = viewModelScope.launch {
         val param = _uiState.value.getPomodoroSessionParam(startTime, isSuccess)
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.copy(status = WorkState.BreakTime) }
+            _uiState.update { it.copy(status = WorkState.BreakTime, showAlert = false) }
+            if (!isSuccess) {
+                emit(PomodoroEffect.CancelPomodoro)
+            }
             loadTotalPointEarned()
         }
 
@@ -109,7 +112,7 @@ class PomodoroViewModel(
 
     private fun cancelPomodoro() = viewModelScope.launch {
         if(uiState.value.status == WorkState.CountDown){
-            emit(PomodoroEffect.CancelTimer)
+            emit(PomodoroEffect.CancelCountdown)
             _uiState.update { it.copy(status = WorkState.BreakTime) }
         } else {
             _uiState.update { it.copy(showAlert = true) }

@@ -30,6 +30,14 @@ data class PomodoroState(
             cycleCount = numberOfCycles
         )
 
+    fun initialState(): PomodoroState {
+        val durationInMinutes = focusDuration * 60
+        return this.copy(
+            pomodoroTime = durationInMinutes.toInt().toFormatMinutesAndSeconds(),
+            status = WorkState.BreakTime,
+            showSheet = false
+        )
+    }
 
     fun updateFromSettings(settings: SessionSettingsModel): PomodoroState {
         val pomodoroTime = settings.focusDuration * 60

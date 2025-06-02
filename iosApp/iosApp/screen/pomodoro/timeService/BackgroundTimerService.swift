@@ -31,7 +31,6 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
     override init() {
         super.init()
         setupNotification()
-        requestNotificationPermissions()
     }
     
     deinit {
@@ -53,19 +52,6 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
-    }
-    
-    private func requestNotificationPermissions() {
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            DispatchQueue.main.async {
-                if granted {
-                    print("Notification permissions granted")
-                } else {
-                    print("Notification permissions denied: \(error?.localizedDescription ?? "Unknown error")")
-                }
-            }
-        }
     }
     
     @objc private func appDidEnterBackground() {
@@ -181,7 +167,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
         )
         
         Task {
-            await activity.end(finalContent)
+            await activity.end(finalContent, dismissalPolicy: .immediate)
         }
         
         currentActivity = nil
@@ -193,9 +179,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
         content.title = "🍅 \(sessionType) Complete!"
         
         let focusTime = formatTime(initialTimerDuration)
-        let message = sessionType == "Focus"
-        ? "Great job! You focused for \(focusTime). Time for a break!"
-        : "Break time is over! Ready for another focus session?"
+        let message = "Great job! You focused for \(focusTime). Time for a break!"
         
         content.body = message
         content.sound = .default
@@ -229,9 +213,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
         content.title = "🎉 \(sessionType) Session Complete!"
         
         let focusTime = formatTime(initialTimerDuration)
-        let message = sessionType == "Focus"
-        ? "Excellent! You stayed focused for \(focusTime). Well done!"
-        : "Break completed! Ready to get back to work?"
+        let message = "Excellent! You stayed focused for \(focusTime). Well done!"
         
         content.body = message
         content.sound = .default

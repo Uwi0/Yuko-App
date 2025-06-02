@@ -22,8 +22,11 @@ struct YukoPomodoroLiveActivityLiveActivity: Widget {
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     HStack {
-                        Image(systemName: context.state.sessionType == "Focus" ? "brain.head.profile" : "cup.and.saucer")
-                            .foregroundColor(context.state.sessionType == "Focus" ? .red : .green)
+                        Image("icon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 32, height: 32)
+                            .clipShape(Circle())
                         Text(context.state.sessionType)
                             .font(.caption)
                             .fontWeight(.semibold)
@@ -67,21 +70,22 @@ struct YukoPomodoroLiveActivityLiveActivity: Widget {
                 }
                 
             } compactLeading: {
-                Image(
-                    systemName: context.state.sessionType == "Focus"
-                    ? "brain.head.profile" : "cup.and.saucer"
-                )
-                .foregroundColor(context.state.sessionType == "Focus" ? .red : .green)
+                Image("icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 32, height: 32)
+                    .clipShape(Circle())
             } compactTrailing: {
                 Text(formatTime(context.state.remainingTime))
                     .font(.caption2)
                     .fontWeight(.bold)
                     .monospacedDigit()
             } minimal: {
-                Image(systemName: context.state.sessionType == "Focus"
-                      ? "brain.head.profile" : "cup.and.saucer"
-                )
-                .foregroundColor(context.state.sessionType == "Focus" ? .red : .green)
+                Image("icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 32, height: 32)
+                    .clipShape(Circle())
             }
             .widgetURL(URL(string: "http://www.apple.com"))
             .keylineTint(Color.red)
@@ -188,7 +192,25 @@ extension FocusTimerAttributes.ContentState {
     }
 }
 
-#Preview("Notification", as: .content, using: FocusTimerAttributes.preview) {
+#Preview("Lock Screen",as: .content, using: FocusTimerAttributes.preview) {
+    YukoPomodoroLiveActivityLiveActivity()
+} contentStates: {
+    FocusTimerAttributes.ContentState.content
+}
+
+#Preview("minimal",as: .dynamicIsland(.minimal), using: FocusTimerAttributes.preview) {
+    YukoPomodoroLiveActivityLiveActivity()
+} contentStates: {
+    FocusTimerAttributes.ContentState.content
+}
+
+#Preview("Compat",as: .dynamicIsland(.compact), using: FocusTimerAttributes.preview) {
+    YukoPomodoroLiveActivityLiveActivity()
+} contentStates: {
+    FocusTimerAttributes.ContentState.content
+}
+
+#Preview("expanded",as: .dynamicIsland(.expanded), using: FocusTimerAttributes.preview) {
     YukoPomodoroLiveActivityLiveActivity()
 } contentStates: {
     FocusTimerAttributes.ContentState.content

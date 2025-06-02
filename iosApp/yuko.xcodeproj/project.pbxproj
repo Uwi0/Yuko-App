@@ -7,14 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB276E832DEC823A00CA97EA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB276E822DEC823A00CA97EA /* WidgetKit.framework */; };
+		FB276E852DEC823A00CA97EA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB276E842DEC823A00CA97EA /* SwiftUI.framework */; };
+		FB276E962DEC823B00CA97EA /* YukoPomodoroLiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB2801452DEDC1020068DAC1 /* ActivityKit.framework */; };
+		FB2801472DEDC10A0068DAC1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB276E822DEC823A00CA97EA /* WidgetKit.framework */; };
 		FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */; };
 		FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */; };
 		FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */; };
 		FB99C5492DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5482DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FB276E942DEC823B00CA97EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B9DA97A92DC1472C00A4DA20 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB276E7F2DEC823A00CA97EA;
+			remoteInfo = YukoPomodoroLiveActivityExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FB276E972DEC823B00CA97EA /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FB276E962DEC823B00CA97EA /* YukoPomodoroLiveActivityExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		B9DA97B12DC1472C00A4DA20 /* Yuko.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yuko.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YukoPomodoroLiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB276E822DEC823A00CA97EA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FB276E842DEC823A00CA97EA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FB2801432DEDC0AD0068DAC1 /* yuko.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = yuko.entitlements; sourceTree = "<group>"; };
+		FB2801442DEDC0C00068DAC1 /* YukoPomodoroLiveActivityExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YukoPomodoroLiveActivityExtension.entitlements; sourceTree = "<group>"; };
+		FB2801452DEDC1020068DAC1 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -22,6 +57,20 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+			);
+			target = B9DA97B02DC1472C00A4DA20 /* yuko */;
+		};
+		FB276E9B2DEC823B00CA97EA /* Exceptions for "YukoPomodoroLiveActivity" folder in "YukoPomodoroLiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FB276E7F2DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension */;
+		};
+		FB28014F2DEDC5310068DAC1 /* Exceptions for "YukoPomodoroLiveActivity" folder in "yuko" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				YukoPomodoroLiveActivityLiveActivity.swift,
 			);
 			target = B9DA97B02DC1472C00A4DA20 /* yuko */;
 		};
@@ -41,6 +90,15 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		FB276E862DEC823A00CA97EA /* YukoPomodoroLiveActivity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FB28014F2DEDC5310068DAC1 /* Exceptions for "YukoPomodoroLiveActivity" folder in "yuko" target */,
+				FB276E9B2DEC823B00CA97EA /* Exceptions for "YukoPomodoroLiveActivity" folder in "YukoPomodoroLiveActivityExtension" target */,
+			);
+			path = YukoPomodoroLiveActivity;
+			sourceTree = "<group>";
+		};
 		FB39718A2DEB0BB800B7E961 /* sound */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = sound;
@@ -53,10 +111,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */,
 				FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */,
 				FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */,
 				FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */,
 				FB99C5492DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift in Frameworks */,
+				FB2801472DEDC10A0068DAC1 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB276E7D2DEC823A00CA97EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB276E852DEC823A00CA97EA /* SwiftUI.framework in Frameworks */,
+				FB276E832DEC823A00CA97EA /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,9 +135,13 @@
 		B9DA97A82DC1472C00A4DA20 = {
 			isa = PBXGroup;
 			children = (
+				FB2801442DEDC0C00068DAC1 /* YukoPomodoroLiveActivityExtension.entitlements */,
+				FB2801432DEDC0AD0068DAC1 /* yuko.entitlements */,
 				FB39718A2DEB0BB800B7E961 /* sound */,
 				B9DA98002DC14AA900A4DA20 /* Configuration */,
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
+				FB276E862DEC823A00CA97EA /* YukoPomodoroLiveActivity */,
+				FB276E812DEC823A00CA97EA /* Frameworks */,
 				B9DA97B22DC1472C00A4DA20 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -77,8 +150,19 @@
 			isa = PBXGroup;
 			children = (
 				B9DA97B12DC1472C00A4DA20 /* Yuko.app */,
+				FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FB276E812DEC823A00CA97EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FB2801452DEDC1020068DAC1 /* ActivityKit.framework */,
+				FB276E822DEC823A00CA97EA /* WidgetKit.framework */,
+				FB276E842DEC823A00CA97EA /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,10 +176,12 @@
 				B9DA97AD2DC1472C00A4DA20 /* Sources */,
 				B9DA97AE2DC1472C00A4DA20 /* Frameworks */,
 				B9DA97AF2DC1472C00A4DA20 /* Resources */,
+				FB276E972DEC823B00CA97EA /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FB276E952DEC823B00CA97EA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
@@ -112,6 +198,28 @@
 			productReference = B9DA97B12DC1472C00A4DA20 /* Yuko.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FB276E7F2DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB276E9A2DEC823B00CA97EA /* Build configuration list for PBXNativeTarget "YukoPomodoroLiveActivityExtension" */;
+			buildPhases = (
+				FB276E7C2DEC823A00CA97EA /* Sources */,
+				FB276E7D2DEC823A00CA97EA /* Frameworks */,
+				FB276E7E2DEC823A00CA97EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FB276E862DEC823A00CA97EA /* YukoPomodoroLiveActivity */,
+			);
+			name = YukoPomodoroLiveActivityExtension;
+			packageProductDependencies = (
+			);
+			productName = YukoPomodoroLiveActivityExtension;
+			productReference = FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -119,11 +227,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					B9DA97B02DC1472C00A4DA20 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					FB276E7F2DEC823A00CA97EA = {
+						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
@@ -145,12 +256,20 @@
 			projectRoot = "";
 			targets = (
 				B9DA97B02DC1472C00A4DA20 /* yuko */,
+				FB276E7F2DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B9DA97AF2DC1472C00A4DA20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB276E7E2DEC823A00CA97EA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,7 +308,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FB276E7C2DEC823A00CA97EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FB276E952DEC823B00CA97EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB276E7F2DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension */;
+			targetProxy = FB276E942DEC823B00CA97EA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B9DA97BD2DC1472D00A4DA20 /* Debug */ = {
@@ -318,6 +452,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = yuko.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
@@ -329,6 +464,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -351,6 +487,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = yuko.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
@@ -362,6 +499,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -371,6 +509,68 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FB276E982DEC823B00CA97EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YukoPomodoroLiveActivityExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RF2V894835;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YukoPomodoroLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YukoPomodoroLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kakapo.project.Yuko.YukoPomodoroLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FB276E992DEC823B00CA97EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YukoPomodoroLiveActivityExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RF2V894835;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YukoPomodoroLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YukoPomodoroLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kakapo.project.Yuko.YukoPomodoroLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -394,6 +594,15 @@
 			buildConfigurations = (
 				B9DA97C02DC1472D00A4DA20 /* Debug */,
 				B9DA97C12DC1472D00A4DA20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB276E9A2DEC823B00CA97EA /* Build configuration list for PBXNativeTarget "YukoPomodoroLiveActivityExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB276E982DEC823B00CA97EA /* Debug */,
+				FB276E992DEC823B00CA97EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

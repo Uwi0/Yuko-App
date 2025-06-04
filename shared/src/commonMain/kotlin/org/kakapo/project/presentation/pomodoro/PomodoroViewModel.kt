@@ -3,7 +3,7 @@ package org.kakapo.project.presentation.pomodoro
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.PomodoroSessionRepository
-import com.kakapo.model.WorkState
+import com.kakapo.model.FocusState
 import com.kakapo.model.SessionSettingsModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,7 +91,7 @@ class PomodoroViewModel(
     private fun startPomodoro() {
         val duration = _uiState.value.focusDuration.toInt() * 60
         startTime = Clock.System.now().epochSeconds
-        _uiState.update { it.copy(status = WorkState.CountDown) }
+        _uiState.update { it.copy(status = FocusState.CountDown) }
         emit(PomodoroEffect.StartPomodoro(duration))
     }
 
@@ -109,9 +109,9 @@ class PomodoroViewModel(
     }
 
     private fun cancelPomodoro() = viewModelScope.launch {
-        if(uiState.value.status == WorkState.CountDown){
+        if(uiState.value.status == FocusState.CountDown){
             emit(PomodoroEffect.CancelCountdown)
-            _uiState.update { it.copy(status = WorkState.BreakTime) }
+            _uiState.update { it.copy(status = FocusState.BreakTime) }
         } else {
             _uiState.update { it.copy(showAlert = true) }
         }

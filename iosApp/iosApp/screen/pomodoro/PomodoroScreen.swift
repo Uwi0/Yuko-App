@@ -44,7 +44,7 @@ struct PomodoroScreen: View {
             isPresented: Binding(
                 get: { viewModel.uiState.showAlert },
                 set: { shown in viewModel.handle(event: .ShowAlert(shown: shown))}),
-        
+            
         ) {
             Alert(
                 title: Text("Are you sure want to give up?"),
@@ -110,9 +110,10 @@ struct PomodoroScreen: View {
         }
         
         let title = switch viewModel.uiState.status {
-            case .start: "Cancel"
-            case .breakTime: "Start"
-            case .countDown: "Cancel \(viewModel.uiState.countDownTime)"
+        case .start: "Cancel"
+        case .breakTime: "Start"
+        case .countDown: "Cancel \(viewModel.uiState.countDownTime)"
+        case .focus: "Break"
         }
         
         FilledButtonView(

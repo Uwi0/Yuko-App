@@ -95,9 +95,14 @@ struct YukoPomodoroLiveActivityLiveActivity: Widget {
 
 struct FocusTimerLockScreenView: View {
     let context: ActivityViewContext<FocusTimerAttributes>
+    @State private var now = Date()
     
     var body: some View {
         VStack(spacing: 8) {
+            let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+            let elapsed = now.timeIntervalSince(context.attributes.startTime)
+            let remaining = max(context.state.totalTime - Int(elapsed), 0)
+            
             HStack {
                 
                 HStack(spacing: 4) {
@@ -120,7 +125,8 @@ struct FocusTimerLockScreenView: View {
             }
             
             HStack {
-                Text(formatTime(context.state.remainingTime))
+                
+                Text(formatTime(remaining))
                     .font(.title)
                     .fontWeight(.bold)
                     .monospacedDigit()
@@ -139,7 +145,7 @@ struct FocusTimerLockScreenView: View {
             }
             
             ProgressView(
-                value: Double(context.state.totalTime - context.state.remainingTime),
+                value: Double(context.state.totalTime - remaining),
                 total: Double(context.state.totalTime)
             )
             .progressViewStyle(.linear)

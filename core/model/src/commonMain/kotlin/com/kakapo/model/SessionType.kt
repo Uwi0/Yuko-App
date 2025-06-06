@@ -1,5 +1,5 @@
 package com.kakapo.model
 
-enum class FocusState {
+enum class SessionType {
     Start, Focus, BreakTime, CountDown
 }

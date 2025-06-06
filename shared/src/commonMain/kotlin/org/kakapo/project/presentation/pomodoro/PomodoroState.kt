@@ -1,7 +1,7 @@
 package org.kakapo.project.presentation.pomodoro
 
 import com.kakapo.data.model.PomodoroSessionParam
-import com.kakapo.model.FocusState
+import com.kakapo.model.SessionType
 import com.kakapo.model.SessionSettingsModel
 import kotlinx.datetime.Clock
 import org.kakapo.project.presentation.pomodoro.ext.toFormatMinutesAndSeconds
@@ -13,7 +13,7 @@ data class PomodoroState(
     val focusDuration: Double = 30.0,
     val shortRestDuration: Double = 5.0,
     val numberOfCycles: Double = 3.0,
-    val status: FocusState = FocusState.BreakTime,
+    val status: SessionType = SessionType.BreakTime,
     val showAlert: Boolean = false,
     val showSheet: Boolean = false
 ) {
@@ -34,7 +34,7 @@ data class PomodoroState(
         val durationInMinutes = focusDuration * 60
         return this.copy(
             pomodoroTime = durationInMinutes.toInt().toFormatMinutesAndSeconds(),
-            status = FocusState.BreakTime,
+            status = SessionType.BreakTime,
             showSheet = false
         )
     }
@@ -77,7 +77,7 @@ sealed class PomodoroEvent {
     data class ChangeFocusTime(val time: Double) : PomodoroEvent()
     data class ChangeShortRestTime(val time: Double) : PomodoroEvent()
     data class SetNumberOfCycles(val number: Double) : PomodoroEvent()
-    data class ChangeStatus(val status: FocusState) : PomodoroEvent()
+    data class ChangeStatus(val status: SessionType) : PomodoroEvent()
     data class ShowSheet(val show: Boolean) : PomodoroEvent()
     data object SaveSettings: PomodoroEvent()
     data object StartPomodoro : PomodoroEvent()

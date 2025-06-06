@@ -102,8 +102,10 @@ struct PomodoroScreen: View {
     @ViewBuilder
     private func StartButton() -> some View {
         let onCklick: () -> Void = {
-            if viewModel.uiState.status == .breakTime {
+            if viewModel.uiState.status == .focus {
                 viewModel.handle(event: .StartPomodoro())
+            } else if viewModel.uiState.status == .breakTime {
+                
             } else {
                 viewModel.handle(event: .CancelTimer())
             }

@@ -6,7 +6,7 @@ protocol TimerServiceProtocol: AnyObject {
     var remainingTime: Int { get set }
     var isActive: Bool { get set }
     
-    func startTimer(initialTime: Int ,interval: TimeInterval, onTick: @escaping (Int) -> Void, onFinish: @escaping () -> Void)
+    func startTimer(initialTime: Int,sessionType: String, interval: TimeInterval, onTick: @escaping (Int) -> Void, onFinish: @escaping () -> Void)
     func stopTimer()
 }
 

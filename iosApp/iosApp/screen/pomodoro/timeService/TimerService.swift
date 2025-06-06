@@ -15,7 +15,13 @@ final class TimerService: TimerServiceProtocol, ObservableObject {
     private var onTickCallBack: ((Int)-> Void)?
     private var onFinishCallBack: (() -> Void)?
     
-    func startTimer(initialTime: Int = 0, interval: TimeInterval = 1, onTick: @escaping (Int) -> Void, onFinish: @escaping () -> Void) {
+    func startTimer(
+        initialTime: Int = 0,
+        sessionType: String = "",
+        interval: TimeInterval = 1,
+        onTick: @escaping (Int) -> Void,
+        onFinish: @escaping () -> Void
+    ) {
         isActive = true
         self.onTickCallBack = onTick
         self.onFinishCallBack = onFinish

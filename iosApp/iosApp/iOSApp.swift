@@ -1,4 +1,5 @@
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct iOSApp: App {
@@ -9,7 +10,9 @@ struct iOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainMenuScreen(store: Store(initialState: MainMenuFeature.State()){
+                MainMenuFeature()
+            })
         }
     }
 }

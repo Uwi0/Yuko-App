@@ -12,6 +12,7 @@
 		FB276E962DEC823B00CA97EA /* YukoPomodoroLiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB2801452DEDC1020068DAC1 /* ActivityKit.framework */; };
 		FB2801472DEDC10A0068DAC1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB276E822DEC823A00CA97EA /* WidgetKit.framework */; };
+		FB6A3C182DF2DE01003C5DFC /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */; };
 		FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */; };
 		FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */; };
 		FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */; };
@@ -113,6 +114,7 @@
 			files = (
 				FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */,
 				FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */,
+				FB6A3C182DF2DE01003C5DFC /* ComposableArchitecture in Frameworks */,
 				FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */,
 				FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */,
 				FB99C5492DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift in Frameworks */,
@@ -193,6 +195,7 @@
 				FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */,
 				FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */,
 				FB99C5482DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift */,
+				FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */,
 			);
 			productName = iosApp;
 			productReference = B9DA97B12DC1472C00A4DA20 /* Yuko.app */;
@@ -249,6 +252,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
+				FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B9DA97B22DC1472C00A4DA20 /* Products */;
@@ -610,6 +614,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.20.2;
+			};
+		};
 		FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines";
@@ -621,6 +633,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
 		FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;

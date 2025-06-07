@@ -3,6 +3,10 @@ import ComposableArchitecture
 
 struct MainMenuScreen: View {
     let store: StoreOf<MainMenuFeature>
+    private let pomodoroStore = Store(initialState: PomodoroFeature.State()) {
+        PomodoroFeature()
+    }
+    
     var body: some View {
         NavigationStack {
             WithViewStore(store, observe: { $0 }) { viewStore in
@@ -38,11 +42,11 @@ struct MainMenuScreen: View {
                     ),
                     destination: {
                         switch viewStore.route {
-                        case .pomodoro: PomodoroScreen()
+                        case .pomodoro: PomodoroMenu(store: pomodoroStore)
                         case .note: NotesScreen()
                         case .todo: TodosScreen()
                         case .habit: HabitsScreen()
-                        case .settings: SettingsScreen()         
+                        case .settings: SettingsScreen()
                         case .none: EmptyView()
                         }
                     }

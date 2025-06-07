@@ -89,7 +89,7 @@ class PomodoroViewModel(
     }
 
     private fun startPomodoro() {
-        val duration = _uiState.value.focusDuration.toInt() * 60
+        val duration = _uiState.value.focusDuration.toInt() * PomodoroState.MINUTES
         startTime = Clock.System.now().epochSeconds
         _uiState.update { it.copy(status = SessionType.CountDown) }
         emit(PomodoroEffect.StartPomodoro(duration))
@@ -101,6 +101,9 @@ class PomodoroViewModel(
             _uiState.update { it.initialState() }
             loadTotalPointEarned()
         }
+
+        if(isSuccess) emit(PomodoroEffect.ShowSuccess)
+        else emit(PomodoroEffect.ShowFail)
 
         sessionRepository.saveSessionProgress(param).fold(
             onSuccess = onSuccess,

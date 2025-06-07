@@ -19,7 +19,7 @@ data class PomodoroState(
 ) {
 
     fun setPomodoro(): PomodoroState {
-        val durationInMinutes = focusDuration * 60
+        val durationInMinutes = focusDuration * MINUTES
         val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
         return this.copy(pomodoroTime = time, showSheet = false)
     }
@@ -31,7 +31,7 @@ data class PomodoroState(
         )
 
     fun initialState(): PomodoroState {
-        val durationInMinutes = focusDuration * 60
+        val durationInMinutes = focusDuration * MINUTES
         return this.copy(
             pomodoroTime = durationInMinutes.toInt().toFormatMinutesAndSeconds(),
             status = SessionType.BreakTime,
@@ -40,7 +40,7 @@ data class PomodoroState(
     }
 
     fun updateFromSettings(settings: SessionSettingsModel): PomodoroState {
-        val pomodoroTime = settings.focusDuration * 60
+        val pomodoroTime = settings.focusDuration * MINUTES
         return this.copy(
             pomodoroTime = pomodoroTime.toInt().toFormatMinutesAndSeconds(),
             focusDuration = settings.focusDuration,
@@ -62,6 +62,7 @@ data class PomodoroState(
 
     companion object {
         fun default() = PomodoroState()
+        const val MINUTES = 1
     }
 }
 
@@ -70,6 +71,8 @@ sealed class PomodoroEffect {
     data class StartPomodoro(val time: Int): PomodoroEffect()
     data object CancelCountdown: PomodoroEffect()
     data object CancelPomodoro: PomodoroEffect()
+    data object ShowSuccess: PomodoroEffect()
+    data object ShowFail: PomodoroEffect()
 }
 
 sealed class PomodoroEvent {

@@ -1,15 +1,20 @@
 import Foundation
 import ComposableArchitecture
 
-enum PomodoroRoute: Equatable {
+enum SessionStatus {
+    case idle
+    case breakTime
+}
+
+enum PomodoroMenuRoute: Equatable {
     case success
     case fail
 }
 
 struct PomodoroFeature: Reducer {
     struct State: Equatable {
-        var route: PomodoroRoute? = nil
-        
+        var route: PomodoroMenuRoute? = nil
+        var status: SessionStatus = .idle
         var isPresented: Bool {
             route == .success || route == .fail
         }
@@ -27,15 +32,18 @@ struct PomodoroFeature: Reducer {
         switch action {
         case .timerCompleted:
             state.route = .success
+            state.status = .idle
             return .none
         case .timerFailed:
             state.route = .fail
+            state.status = .idle
             return .none
         case .routeDismissed:
             state.route = nil
             return .none
         case .tapBreak:
             state.route = nil
+            state.status = .breakTime
             return .none
         case .tabBackToMainMenu:
             return .none

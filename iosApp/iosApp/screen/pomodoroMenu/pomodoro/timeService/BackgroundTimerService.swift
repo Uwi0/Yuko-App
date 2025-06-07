@@ -269,7 +269,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
     
     func startTimer(
         initialTime: Int,
-        sessionType: String = "",
+        sessionType: String = SessionType.focus.name,
         interval: TimeInterval = 1,
         onTick: @escaping (Int) -> Void,
         onFinish: @escaping () -> Void
@@ -280,7 +280,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
         
         remainingTime = initialTime
         initialTimerDuration = initialTime
-        self.sessionType = "Focus"
+        self.sessionType = sessionType
         isActive = true
         self.onTickCallback = onTick
         self.onFinishCallback = onFinish

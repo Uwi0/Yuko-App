@@ -10,7 +10,15 @@ struct PomodoroMenu: View {
                 store,
                 observe: { $0 },
                 content: { viewStore in
-                    PomodoroScreen()
+                    PomodoroRoute(
+                        onSuccess: {
+                            viewStore.send(.timerCompleted)
+                        },
+                        onFail: {
+                            viewStore.send(.timerFailed)
+                        },
+                        viewStore: viewStore
+                    )
                         .navigationDestination(
                             isPresented: Binding(
                                 get: { viewStore.isPresented },
@@ -22,8 +30,8 @@ struct PomodoroMenu: View {
                             ),
                             destination: {
                                 switch viewStore.route {
-                                case .success: Text("Succss")
-                                case .fail: Text("Fail")
+                                case .success: SuccessFocusScreen()
+                                case .fail: FailFocusScreen()
                                 case .none: EmptyView()
                                 }
                             }

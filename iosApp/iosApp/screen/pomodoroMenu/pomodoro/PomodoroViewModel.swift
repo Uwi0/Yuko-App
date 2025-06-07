@@ -5,7 +5,7 @@ import KMPNativeCoroutinesCombine
 
 final class PomodoroViewModel: ObservableObject {
     
-    @Published private(set) var uiState: PomodoroState = PomodoroState.companion.default()
+    @Published var uiState: PomodoroState = PomodoroState.companion.default()
     @Published var uiEffect: PomodoroEffect? = nil
     
     private let viewModel: PomodoroViewModelKT = Koin.shared.get()

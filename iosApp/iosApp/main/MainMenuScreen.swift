@@ -42,11 +42,16 @@ struct MainMenuScreen: View {
                     ),
                     destination: {
                         switch viewStore.route {
-                        case .pomodoro: PomodoroMenu(store: pomodoroStore)
+                        case .pomodoro: PomodoroRoute(viewStore: viewStore)
                         case .note: NotesScreen()
                         case .todo: TodosScreen()
                         case .habit: HabitsScreen()
                         case .settings: SettingsScreen()
+                        case .pomodoroSuccess: SuccessFocusScreen(
+                            onFinish: {},
+                            onBreak: {}
+                        )
+                        case .pomodoroFail: FailFocusScreen()
                         case .none: EmptyView()
                         }
                     }

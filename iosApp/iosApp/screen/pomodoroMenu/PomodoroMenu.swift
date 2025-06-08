@@ -10,32 +10,27 @@ struct PomodoroMenu: View {
                 store,
                 observe: { $0 },
                 content: { viewStore in
-                    PomodoroRoute(
-                        onSuccess: {
-                            viewStore.send(.timerCompleted)
-                        },
-                        onFail: {
-                            viewStore.send(.timerFailed)
-                        },
-                        viewStore: viewStore
-                    )
+                    PomodoroRoute(viewStore: viewStore)
                         .navigationDestination(
                             isPresented: Binding(
-                                get: { viewStore.isPresented },
+                                get: { viewStore.route != nil },
                                 set: { isPresented in
                                     if !isPresented {
                                         viewStore.send(.routeDismissed)
                                     }
                                 }
-                            ),
-                            destination: {
-                                switch viewStore.route {
-                                case .success: SuccessFocusScreen()
-                                case .fail: FailFocusScreen()
-                                case .none: EmptyView()
-                                }
+                            )
+                        ) {
+                            switch viewStore.route {
+                            case .success: SuccessFocusScreen(
+                                onFinish: { viewStore.send(.tabBackToMainMenu) },
+                                onBreak: { viewStore.send(.tapBreak) }
+                            )
+                            case .fail: FailFocusScreen()
+                            case .none: EmptyView()
                             }
-                        )
+                        }
+                    
                 }
             )
         }

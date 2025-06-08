@@ -114,7 +114,7 @@ class PomodoroViewModel(
     private fun cancelPomodoro() = viewModelScope.launch {
         if(uiState.value.status == SessionType.CountDown){
             emit(PomodoroEffect.CancelCountdown)
-            _uiState.update { it.copy(status = SessionType.BreakTime) }
+            _uiState.update { it.copy(status = SessionType.Start) }
         } else {
             _uiState.update { it.copy(showAlert = true) }
         }

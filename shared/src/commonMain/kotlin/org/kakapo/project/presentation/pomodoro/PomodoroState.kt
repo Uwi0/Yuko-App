@@ -13,7 +13,7 @@ data class PomodoroState(
     val focusDuration: Double = 30.0,
     val shortRestDuration: Double = 5.0,
     val numberOfCycles: Double = 3.0,
-    val status: SessionType = SessionType.BreakTime,
+    val status: SessionType = SessionType.Start,
     val showAlert: Boolean = false,
     val showSheet: Boolean = false
 ) {
@@ -34,7 +34,7 @@ data class PomodoroState(
         val durationInMinutes = focusDuration * MINUTES
         return this.copy(
             pomodoroTime = durationInMinutes.toInt().toFormatMinutesAndSeconds(),
-            status = SessionType.BreakTime,
+            status = SessionType.Start,
             showSheet = false
         )
     }

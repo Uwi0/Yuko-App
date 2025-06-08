@@ -23,7 +23,6 @@ struct FilledButtonView<Content: View>: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity, alignment: .center)
             .background(
                 RoundedRectangle(cornerRadius: 16)
                     .fill(containerColor)

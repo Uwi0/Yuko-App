@@ -3,8 +3,8 @@ import ComposableArchitecture
 import Shared
 
 struct PomodoroRoute: View {
-        
-    @ObservedObject var viewStore: ViewStore<MainMenuFeature.State, MainMenuFeature.Action>
+			
+	@Bindable var store: StoreOf<PomodoroFeature>
     
     @StateObject private var viewModel = PomodoroViewModel()
     @ObservedObject private var pomodoroTimerService = BackgroundTimerService()
@@ -27,10 +27,8 @@ struct PomodoroRoute: View {
         case .showError(let effect): print("error \(effect.message)")
         case .cancelCountdown: stopCountDownTimer()
         case .cancelPomodoro: stopPomodoroTimer()
-        case .showSuccess:
-            viewStore.send(.selectRoute(.pomodoroSuccess))
-            print("Success called")
-        case .showFail: viewStore.send(.selectRoute(.pomodoroFail))
+        case .showSuccess: print("Success")
+        case .showFail: print("Failure")
         }
         viewModel.uiEffect = nil
     }

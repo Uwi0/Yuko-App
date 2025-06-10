@@ -3,16 +3,16 @@ import ComposableArchitecture
 
 @main
 struct iOSApp: App {
-    
-    init () {
-        Koin.start()
-    }
-    
-    var body: some Scene {
-        WindowGroup {
-            MainMenuScreen(store: Store(initialState: MainMenuFeature.State()){
-                MainMenuFeature()
-            })
-        }
-    }
+	
+	static let store = Store(initialState: RootFeature.State(), reducer: { RootFeature()})
+	
+	init () {
+		Koin.start()
+	}
+	
+	var body: some Scene {
+		WindowGroup {
+			RootView(store: iOSApp.store)
+		}
+	}
 }

@@ -1,10 +1,3 @@
-//
-//  NotesScreen.swift
-//  yuko
-//
-//  Created by dwi prasetyo on 06/06/25.
-//
-
 import SwiftUI
 
 struct NotesScreen: View {

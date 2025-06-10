@@ -146,7 +146,10 @@
 				FB276E812DEC823A00CA97EA /* Frameworks */,
 				B9DA97B22DC1472C00A4DA20 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 1;
 		};
 		B9DA97B22DC1472C00A4DA20 /* Products */ = {
 			isa = PBXGroup;

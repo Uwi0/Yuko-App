@@ -12,18 +12,15 @@ struct NotesRoute: View {
 			.task {
 				viewModel.initData()
 			}
-			.onReceive(viewModel.$effect.compactMap { $0 }) { effect in
-					observeEffect(effect: effect)
+			.onReceive(viewModel.effectPublisher) { effect in
+				observeEffect(effect: effect)
 			}
 	}
 	
-	private func observeEffect(effect: NotesEffect?) {
-		guard let effect = effect else { return }
+	private func observeEffect(effect: NotesEffect) {
 		switch onEnum(of: effect) {
 		case .tapToNote: store.send(.tapToNote)
 		case .tapToAddNote: store.send(.tapToAddNote)
 		}
-		
-		viewModel.effect = nil
 	}
 }

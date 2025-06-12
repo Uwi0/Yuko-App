@@ -4,10 +4,14 @@ import Shared
 import KMPNativeCoroutinesCombine
 
 final class NotesViewModel: ObservableObject {
-	@Published var effect: NotesEffect? = nil
 	
 	private let viewModel: NotesViewModelKt = Koin.shared.get()
 	private var effectCancellable: AnyCancellable?
+	private let effectSubject = PassthroughSubject<NotesEffect, Never>()
+	
+	var effectPublisher: AnyPublisher<NotesEffect, Never> {
+		effectSubject.eraseToAnyPublisher()
+	}
 	
 	func initData() {
 		observeEffect()
@@ -22,13 +26,11 @@ final class NotesViewModel: ObservableObject {
 		effectCancellable = publihser.sink { completion in
 			print("completion \(completion)")
 		} receiveValue: { [weak self] effect in
-			self?.update(effect: effect)
+			self?.effectSubject.send(effect)
 		}
 	}
 	
-	private func update(effect: NotesEffect) {
-		DispatchQueue.main.async {
-			self.effect = effect
-		}
+	deinit {
+		effectCancellable?.cancel()
 	}
 }

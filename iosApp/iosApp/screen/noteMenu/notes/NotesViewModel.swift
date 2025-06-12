@@ -6,8 +6,8 @@ import KMPNativeCoroutinesCombine
 final class NotesViewModel: ObservableObject {
 	
 	private let viewModel: NotesViewModelKt = Koin.shared.get()
-	private var effectCancellable: AnyCancellable?
 	private let effectSubject = PassthroughSubject<NotesEffect, Never>()
+	private var effectCancellable: AnyCancellable?
 	
 	var effectPublisher: AnyPublisher<NotesEffect, Never> {
 		effectSubject.eraseToAnyPublisher()

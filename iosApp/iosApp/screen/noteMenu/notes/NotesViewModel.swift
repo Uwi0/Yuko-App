@@ -26,7 +26,13 @@ final class NotesViewModel: ObservableObject {
 		effectCancellable = publihser.sink { completion in
 			print("completion \(completion)")
 		} receiveValue: { [weak self] effect in
-			self?.effectSubject.send(effect)
+			self?.send(effect: effect)
+		}
+	}
+	
+	func send(effect: NotesEffect) {
+		DispatchQueue.main.async {
+			self.effectSubject.send(effect)
 		}
 	}
 	

@@ -1,11 +1,26 @@
 import SwiftUI
+import Shared
 
 struct NotesScreen: View {
-    var body: some View {
-        Text("Hello Notes")
-    }
+	
+	let onEvent: (NotesEvent) -> Void
+	
+	var body: some View {
+		VStack(spacing: 16) {
+			Text("Hello Notes")
+			HStack {
+				Button("Go to Note"){
+					onEvent(.TapToNote())
+				}
+				Button("Go to Add Note") {
+					onEvent(.TapToAddNote())
+				}
+			}
+		}
+		
+	}
 }
 
 #Preview {
-    NotesScreen()
+	NotesScreen(onEvent: { _ in })
 }

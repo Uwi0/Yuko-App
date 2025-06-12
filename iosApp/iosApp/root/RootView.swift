@@ -12,14 +12,26 @@ struct RootView: View {
 			switch state.case {
 			case let .pomodoroScreen(pomodoroStore):
 				PomodoroRoute(store: pomodoroStore)
+				
+			//MARK: Note Screen Feature
 			case let .notesScreen(notesStore):
 				NotesRoute(store: notesStore)
+				
+			case let .addNoteScreen(addNoteStore):
+				AddNoteRoute(store: addNoteStore)
+				
+			case let .noteScreen(noteStore):
+				NoteRoute(store: noteStore)
+				
 			case let .todosScreen(todosStore):
 				TodosRoute(store: todosStore)
+				
 			case let .habitsScreen(habitsStore):
 				HabitsRoute(store: habitsStore)
+				
 			case let .settingsScreen(settingsStore):
 				SettingsRoute(store: settingsStore)
+				
 			}
 		}
 	}

@@ -6,7 +6,7 @@ struct RootView: View {
 	@Bindable var store: StoreOf<RootFeature>
 	
 	var body: some View {
-		NavigationStackStore(store.scope(state: \.path, action: \.path)) {
+		NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
 			MainMenuScreen(store: store.scope(state: \.mainMenu, action: \.mainMenu))
 		} destination: { state in
 			switch state.case {

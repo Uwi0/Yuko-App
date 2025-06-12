@@ -59,5 +59,6 @@ struct RootFeature {
 				return .none
 			}
 		}
+		.forEach(\.path, action: \.path)
 	}
 }

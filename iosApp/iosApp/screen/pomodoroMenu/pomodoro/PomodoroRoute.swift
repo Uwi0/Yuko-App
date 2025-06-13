@@ -19,7 +19,11 @@ struct PomodoroRoute: View {
 				observe(effect: effect)
 			}
 			.fullScreenCover(isPresented: viewModel.uiState.showSuccessBinding) {
-				Text("Success")
+				SuccessFocusScreen(
+					onFinish: { viewModel.handle(event: .FinishPomodoro())},
+					onBreak: { viewModel.handle(event: .StartBreak())},
+					backToPomodoro: { viewModel.handle(event: .ContinuePomodoro())}
+				)
 			}
 			.fullScreenCover(isPresented: viewModel.uiState.showFailureBinding) {
 				Text("Fail")
@@ -32,6 +36,8 @@ struct PomodoroRoute: View {
 		case .showError(let effect): print("error \(effect.message)")
 		case .cancelCountdown: stopCountDownTimer()
 		case .cancelPomodoro: stopPomodoroTimer()
+		case .finishPomodoro: print(".finishPomodoro")
+		case .startBreak: print(".startBreak")
 		}
 	}
 	

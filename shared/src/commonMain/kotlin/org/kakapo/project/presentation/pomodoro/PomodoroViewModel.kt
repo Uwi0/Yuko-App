@@ -50,6 +50,9 @@ class PomodoroViewModel(
             is PomodoroEvent.ShowAlert -> _uiState.update { it.copy(showAlert = event.shown) }
             PomodoroEvent.SaveSettings -> saveSessionSettings()
             PomodoroEvent.DoActionButton -> doActionButton()
+            PomodoroEvent.ContinuePomodoro -> _uiState.update { it.resetScreenState() }
+            PomodoroEvent.FinishPomodoro -> finishPomodoro()
+            PomodoroEvent.StartBreak -> startBreak()
         }
     }
 
@@ -122,6 +125,16 @@ class PomodoroViewModel(
     private fun cancelPomodoro() = viewModelScope.launch {
         emit(PomodoroEffect.CancelCountdown)
         _uiState.update { it.copy(session = SessionType.Start) }
+    }
+
+    private fun startBreak() {
+        _uiState.update { it.resetScreenState() }
+        emit(PomodoroEffect.StartBreak)
+    }
+
+    private fun finishPomodoro() {
+        _uiState.update { it.resetScreenState() }
+        emit(PomodoroEffect.FinishPomodoro)
     }
 
     private fun handleError(throwable: Throwable?) {

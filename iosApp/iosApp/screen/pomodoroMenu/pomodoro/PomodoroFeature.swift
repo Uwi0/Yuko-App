@@ -9,17 +9,13 @@ struct PomodoroFeature {
 	}
 	
 	enum Action {
-		case navigateToSuccess
-		case navigateToFailure
+		case navigateToMain
 	}
 	
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
-			case .navigateToSuccess:
-				return .none
-			case .navigateToFailure:
-				return .none
+			case .navigateToMain: return .none
 			}
 		}
 	}

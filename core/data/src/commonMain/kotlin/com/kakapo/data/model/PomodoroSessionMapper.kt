@@ -32,8 +32,11 @@ fun SessionSettingsModel.toSessionSettingsPref() = SessionSettingsPref(
     cycleCount = cycleCount
 )
 
-fun SessionSettingsPref.toSessionSettingsModel() = SessionSettingsModel(
-    focusDuration = focusDuration,
-    restDuration = restDuration,
-    cycleCount = cycleCount
-)
+fun SessionSettingsPref.toSessionSettingsModel(): SessionSettingsModel {
+    val focusDuration = if (focusDuration <= 0) 25.0 else focusDuration
+    return SessionSettingsModel(
+        focusDuration = focusDuration,
+        restDuration = restDuration,
+        cycleCount = cycleCount
+    )
+}

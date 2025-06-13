@@ -83,11 +83,14 @@ enum class PomodoroScreenState {
     FailPage
 }
 
+
 sealed class PomodoroEffect {
     data class ShowError(val message: String): PomodoroEffect()
     data class StartPomodoro(val time: Int): PomodoroEffect()
     data object CancelCountdown: PomodoroEffect()
     data object CancelPomodoro: PomodoroEffect()
+    data object StartBreak: PomodoroEffect()
+    data object FinishPomodoro: PomodoroEffect()
 }
 
 sealed class PomodoroEvent {
@@ -102,4 +105,7 @@ sealed class PomodoroEvent {
     data class ShowAlert(val shown: Boolean) : PomodoroEvent()
     data object SaveSettings: PomodoroEvent()
     data object DoActionButton: PomodoroEvent()
+    data object FinishPomodoro: PomodoroEvent()
+    data object StartBreak: PomodoroEvent()
+    data object ContinuePomodoro: PomodoroEvent()
 }

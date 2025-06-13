@@ -12,6 +12,7 @@ struct RootFeature {
 	enum Action {
 		case path(StackAction<Path.State, Path.Action>)
 		case mainMenu(MainMenuFeature.Action)
+		case resetNavigation
 	}
 	
 	@Reducer(state: .equatable)
@@ -35,25 +36,18 @@ struct RootFeature {
 		}
 		
 		Reduce(Self.baseReducer(state:action:))
+		Reduce(Self.reducePomodoroNavigation(state:action:))
 		Reduce(Self.reduceNoteNavigation(state:action:))
 		
 		.forEach(\.path, action: \.path)
 	}
+	
+	private static let delay: UInt64 = 300_000_000
 }
 
 extension RootFeature {
 	static func baseReducer(state: inout State, action: Action) -> Effect<Action> {
 		switch action {
-			
-		case .mainMenu(.tapToPomodoro):
-			state.path = StackState()
-			state.path.append(.pomodoroScreen(PomodoroFeature.State()))
-			return .none
-			
-		case .mainMenu(.tapToNotes):
-			state.path = StackState()
-			state.path.append(.notesScreen(NotesFeature.State()))
-			return .none
 			
 		case .mainMenu(.tapToTodos):
 			state.path = StackState()
@@ -72,6 +66,32 @@ extension RootFeature {
 			
 		case .path:
 			return .none
+			
+		case .resetNavigation:
+			state.path = StackState()
+			return .none
+			
+		default: return .none
+		}
+	}
+}
+
+extension RootFeature {
+	static func reducePomodoroNavigation(state: inout State, action: Action) -> Effect<Action> {
+		switch action {
+			
+		case .mainMenu(.tapToPomodoro):
+			state.path = StackState()
+			state.path.append(.pomodoroScreen(PomodoroFeature.State()))
+			return .none
+			
+		case .path(.element(_, action: .pomodoroScreen(.navigateToMain))):
+			return .run { send in
+				try await Task.sleep(nanoseconds: Self.delay)
+				await send(.resetNavigation)
+			}
+			
+		default: return .none
 		}
 	}
 }

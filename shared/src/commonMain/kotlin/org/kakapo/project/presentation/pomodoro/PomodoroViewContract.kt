@@ -108,4 +108,5 @@ sealed class PomodoroEvent {
     data object FinishPomodoro: PomodoroEvent()
     data object StartBreak: PomodoroEvent()
     data object ContinuePomodoro: PomodoroEvent()
+    data object RetryPomodoro: PomodoroEvent()
 }

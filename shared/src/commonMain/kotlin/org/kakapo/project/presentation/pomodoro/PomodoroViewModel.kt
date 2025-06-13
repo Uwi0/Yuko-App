@@ -53,6 +53,7 @@ class PomodoroViewModel(
             PomodoroEvent.ContinuePomodoro -> _uiState.update { it.resetScreenState() }
             PomodoroEvent.FinishPomodoro -> finishPomodoro()
             PomodoroEvent.StartBreak -> startBreak()
+            PomodoroEvent.RetryPomodoro -> retryPomodoro()
         }
     }
 
@@ -130,6 +131,11 @@ class PomodoroViewModel(
     private fun startBreak() {
         _uiState.update { it.resetScreenState() }
         emit(PomodoroEffect.StartBreak)
+    }
+
+    private fun retryPomodoro() {
+        _uiState.update { it.resetScreenState() }
+        startPomodoro()
     }
 
     private fun finishPomodoro() {

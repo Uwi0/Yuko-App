@@ -41,16 +41,15 @@ class PomodoroViewModel(
         when (event) {
             is PomodoroEvent.ChangePomodoroTime -> _uiState.update { it.copy(pomodoroTime = event.time) }
             is PomodoroEvent.ChangeFocusTime -> _uiState.update { it.copy(focusDuration = event.time) }
-            is PomodoroEvent.ChangeStatus -> _uiState.update { it.copy(status = event.status) }
+            is PomodoroEvent.ChangeStatus -> _uiState.update { it.copy(session = event.status) }
             is PomodoroEvent.ShowSheet -> _uiState.update { it.copy(showSheet = event.show) }
             is PomodoroEvent.ChangeShortRestTime -> _uiState.update { it.copy(shortRestDuration = event.time) }
             is PomodoroEvent.SetNumberOfCycles -> _uiState.update { it.copy(numberOfCycles = event.number) }
             is PomodoroEvent.SaveProgress -> saveSessionProgress(event.isSuccess)
             is PomodoroEvent.ChangeCountDownTime -> _uiState.update { it.copy(countDownTime = event.time) }
             is PomodoroEvent.ShowAlert -> _uiState.update { it.copy(showAlert = event.shown) }
-            PomodoroEvent.StartPomodoro -> startPomodoro()
             PomodoroEvent.SaveSettings -> saveSessionSettings()
-            PomodoroEvent.CancelTimer -> cancelPomodoro()
+            PomodoroEvent.DoActionButton -> doActionButton()
         }
     }
 
@@ -88,10 +87,20 @@ class PomodoroViewModel(
         )
     }
 
+    private fun doActionButton() {
+        val session = _uiState.value.session
+        when (session) {
+            SessionType.Start -> startPomodoro()
+            SessionType.Cancel -> cancelPomodoro()
+            SessionType.GiveUp -> _uiState.update { it.copy(showAlert = true) }
+            SessionType.BreakTime -> emit(PomodoroEffect.CancelPomodoro)
+        }
+    }
+
     private fun startPomodoro() {
-        val duration = _uiState.value.focusDuration.toInt() * PomodoroState.MINUTES
+        val duration = _uiState.value.durationInMinutes
         startTime = Clock.System.now().epochSeconds
-        _uiState.update { it.copy(status = SessionType.CountDown) }
+        _uiState.update { it.copy(session = SessionType.Cancel) }
         emit(PomodoroEffect.StartPomodoro(duration))
     }
 
@@ -102,7 +111,7 @@ class PomodoroViewModel(
             loadTotalPointEarned()
         }
 
-        if(isSuccess) emit(PomodoroEffect.ShowSuccess)
+        if (isSuccess) emit(PomodoroEffect.ShowSuccess)
         else emit(PomodoroEffect.ShowFail)
 
         sessionRepository.saveSessionProgress(param).fold(
@@ -112,12 +121,8 @@ class PomodoroViewModel(
     }
 
     private fun cancelPomodoro() = viewModelScope.launch {
-        if(uiState.value.status == SessionType.CountDown){
-            emit(PomodoroEffect.CancelCountdown)
-            _uiState.update { it.copy(status = SessionType.Start) }
-        } else {
-            _uiState.update { it.copy(showAlert = true) }
-        }
+        emit(PomodoroEffect.CancelCountdown)
+        _uiState.update { it.copy(session = SessionType.Start) }
     }
 
     private fun handleError(throwable: Throwable?) {

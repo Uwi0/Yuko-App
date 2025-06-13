@@ -23,7 +23,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var backgroundEntryTime: Date?
     private var initialTimerDuration: Int = 0
-    private var sessionType: String = SessionType.focus.name
+    private var sessionType: String = "Focus"
     
     private var currentActivity: Activity<FocusTimerAttributes>?
     
@@ -269,7 +269,7 @@ final class BackgroundTimerService: NSObject, TimerServiceProtocol, ObservableOb
     
     func startTimer(
         initialTime: Int,
-        sessionType: String = SessionType.focus.name,
+        sessionType: String = "Focus",
         interval: TimeInterval = 1,
         onTick: @escaping (Int) -> Void,
         onFinish: @escaping () -> Void

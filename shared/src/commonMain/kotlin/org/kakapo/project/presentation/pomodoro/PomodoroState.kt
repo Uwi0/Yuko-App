@@ -13,13 +13,15 @@ data class PomodoroState(
     val focusDuration: Double = 30.0,
     val shortRestDuration: Double = 5.0,
     val numberOfCycles: Double = 3.0,
-    val status: SessionType = SessionType.Start,
+    val session: SessionType = SessionType.Start,
     val showAlert: Boolean = false,
     val showSheet: Boolean = false
 ) {
 
+    val durationInMinutes: Int
+        get() = (focusDuration * MINUTES).toInt()
+
     fun setPomodoro(): PomodoroState {
-        val durationInMinutes = focusDuration * MINUTES
         val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
         return this.copy(pomodoroTime = time, showSheet = false)
     }
@@ -31,10 +33,9 @@ data class PomodoroState(
         )
 
     fun initialState(): PomodoroState {
-        val durationInMinutes = focusDuration * MINUTES
         return this.copy(
-            pomodoroTime = durationInMinutes.toInt().toFormatMinutesAndSeconds(),
-            status = SessionType.Start,
+            pomodoroTime = durationInMinutes.toFormatMinutesAndSeconds(),
+            session = SessionType.Start,
             showSheet = false
         )
     }
@@ -82,10 +83,9 @@ sealed class PomodoroEvent {
     data class SetNumberOfCycles(val number: Double) : PomodoroEvent()
     data class ChangeStatus(val status: SessionType) : PomodoroEvent()
     data class ShowSheet(val show: Boolean) : PomodoroEvent()
-    data object SaveSettings: PomodoroEvent()
-    data object StartPomodoro : PomodoroEvent()
     data class SaveProgress(val isSuccess: Boolean): PomodoroEvent()
     data class ChangeCountDownTime(val time: String): PomodoroEvent()
-    data object CancelTimer: PomodoroEvent()
     data class ShowAlert(val shown: Boolean) : PomodoroEvent()
+    data object SaveSettings: PomodoroEvent()
+    data object DoActionButton: PomodoroEvent()
 }

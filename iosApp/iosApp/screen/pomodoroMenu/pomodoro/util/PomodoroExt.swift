@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Shared
 
 extension Int {
@@ -18,5 +19,15 @@ extension SessionType {
 		case .giveUp: "Give Up"
 		case .breakTime: "Skip Break Time"
 		}
+	}
+}
+
+extension PomodoroState {
+	var showSuccessBinding: Binding<Bool> {
+		Binding(get: { self.showSuccessPage }, set: { _ in self.resetScreenState() } )
+	}
+	
+	var showFailureBinding: Binding<Bool> {
+		Binding(get: { self.showFailPage }, set: {_ in self.resetScreenState() })
 	}
 }

@@ -106,13 +106,12 @@ class PomodoroViewModel(
 
     private fun saveSessionProgress(isSuccess: Boolean) = viewModelScope.launch {
         val param = _uiState.value.getPomodoroSessionParam(startTime, isSuccess)
+        val screenState = if (isSuccess) PomodoroScreenState.SuccessPage
+        else PomodoroScreenState.FailPage
         val onSuccess: (Unit) -> Unit = {
-            _uiState.update { it.initialState() }
+            _uiState.update { it.initialState(screenState = screenState) }
             loadTotalPointEarned()
         }
-
-        if (isSuccess) emit(PomodoroEffect.ShowSuccess)
-        else emit(PomodoroEffect.ShowFail)
 
         sessionRepository.saveSessionProgress(param).fold(
             onSuccess = onSuccess,

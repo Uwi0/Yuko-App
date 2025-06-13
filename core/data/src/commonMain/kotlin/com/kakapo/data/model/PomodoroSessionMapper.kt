@@ -8,11 +8,11 @@ data class PomodoroSessionParam(
     val startTime: Long,
     val endTime: Long,
     val duration: Long,
-    val pointEarned: Long,
     val isCompleted: Boolean,
     val reasonFailed: String? = null,
     val note: String? = null
 ) {
+    val pointEarned get() = if (isCompleted) duration / 5 else -5L
 
     fun toEntity() = PomodoroSessionEntity(
         startTime = startTime,

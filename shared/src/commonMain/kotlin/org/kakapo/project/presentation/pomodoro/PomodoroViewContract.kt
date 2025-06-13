@@ -15,11 +15,22 @@ data class PomodoroState(
     val numberOfCycles: Double = 3.0,
     val session: SessionType = SessionType.Start,
     val showAlert: Boolean = false,
-    val showSheet: Boolean = false
+    val showSheet: Boolean = false,
+    val screenState: PomodoroScreenState = PomodoroScreenState.Pomodoro,
 ) {
 
     val durationInMinutes: Int
         get() = (focusDuration * MINUTES).toInt()
+
+    val showSuccessPage: Boolean
+        get() = screenState == PomodoroScreenState.SuccessPage
+
+    val showFailPage: Boolean
+        get() = screenState == PomodoroScreenState.FailPage
+
+    fun resetScreenState(): PomodoroState {
+        return this.copy(screenState = PomodoroScreenState.Pomodoro)
+    }
 
     fun setPomodoro(): PomodoroState {
         val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
@@ -32,10 +43,11 @@ data class PomodoroState(
             cycleCount = numberOfCycles
         )
 
-    fun initialState(): PomodoroState {
+    fun initialState(screenState: PomodoroScreenState = PomodoroScreenState.Pomodoro): PomodoroState {
         return this.copy(
             pomodoroTime = durationInMinutes.toFormatMinutesAndSeconds(),
             session = SessionType.Start,
+            screenState = screenState,
             showSheet = false
         )
     }
@@ -51,12 +63,10 @@ data class PomodoroState(
     }
 
     fun getPomodoroSessionParam(startTime: Long, isComplete: Boolean) : PomodoroSessionParam {
-        val pointEarned = if (isComplete) (focusDuration / 5).toLong() else - 1
         return PomodoroSessionParam(
             startTime = startTime,
             endTime = Clock.System.now().epochSeconds,
             duration = focusDuration.toLong(),
-            pointEarned = pointEarned,
             isCompleted = isComplete
         )
     }
@@ -67,13 +77,17 @@ data class PomodoroState(
     }
 }
 
+enum class PomodoroScreenState {
+    Pomodoro,
+    SuccessPage,
+    FailPage
+}
+
 sealed class PomodoroEffect {
     data class ShowError(val message: String): PomodoroEffect()
     data class StartPomodoro(val time: Int): PomodoroEffect()
     data object CancelCountdown: PomodoroEffect()
     data object CancelPomodoro: PomodoroEffect()
-    data object ShowSuccess: PomodoroEffect()
-    data object ShowFail: PomodoroEffect()
 }
 
 sealed class PomodoroEvent {

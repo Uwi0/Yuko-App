@@ -18,6 +18,12 @@ struct PomodoroRoute: View {
 			.onReceive(viewModel.effectPublisher) { effect in
 				observe(effect: effect)
 			}
+			.fullScreenCover(isPresented: viewModel.uiState.showSuccessBinding) {
+				Text("Success")
+			}
+			.fullScreenCover(isPresented: viewModel.uiState.showFailureBinding) {
+				Text("Fail")
+			}
 	}
 	
 	private func observe(effect: PomodoroEffect) {
@@ -26,8 +32,6 @@ struct PomodoroRoute: View {
 		case .showError(let effect): print("error \(effect.message)")
 		case .cancelCountdown: stopCountDownTimer()
 		case .cancelPomodoro: stopPomodoroTimer()
-		case .showSuccess: print("Success")
-		case .showFail: print("Failure")
 		}
 	}
 	

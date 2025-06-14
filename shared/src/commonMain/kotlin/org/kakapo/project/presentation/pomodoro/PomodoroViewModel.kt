@@ -54,6 +54,7 @@ class PomodoroViewModel(
             PomodoroEvent.FinishPomodoro -> finishPomodoro()
             PomodoroEvent.StartBreak -> startBreak()
             PomodoroEvent.RetryPomodoro -> retryPomodoro()
+            PomodoroEvent.FinishBreak -> _uiState.update { it.copy(screenState = PomodoroScreenState.BreakSuccess) }
         }
     }
 
@@ -102,7 +103,7 @@ class PomodoroViewModel(
     }
 
     private fun startPomodoro() {
-        val duration = _uiState.value.durationInMinutes
+        val duration = _uiState.value.durationFocusInMinutes
         startTime = Clock.System.now().epochSeconds
         _uiState.update { it.copy(session = SessionType.Cancel) }
         emit(PomodoroEffect.StartPomodoro(duration))
@@ -130,6 +131,7 @@ class PomodoroViewModel(
 
     private fun startBreak() {
         _uiState.update { it.resetScreenState() }
+        _uiState.update { it.copy(session = SessionType.BreakTime) }
         emit(PomodoroEffect.StartBreak)
     }
 

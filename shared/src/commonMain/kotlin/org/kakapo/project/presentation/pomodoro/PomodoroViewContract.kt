@@ -19,8 +19,11 @@ data class PomodoroState(
     val screenState: PomodoroScreenState = PomodoroScreenState.Pomodoro,
 ) {
 
-    val durationInMinutes: Int
+    val durationFocusInMinutes: Int
         get() = (focusDuration * MINUTES).toInt()
+
+    val durationRestInMinutes: Int
+        get() = (shortRestDuration * MINUTES).toInt()
 
     val showSuccessPage: Boolean
         get() = screenState == PomodoroScreenState.SuccessPage
@@ -28,12 +31,15 @@ data class PomodoroState(
     val showFailPage: Boolean
         get() = screenState == PomodoroScreenState.FailPage
 
+    val showBreakSuccessPage: Boolean
+        get() = screenState == PomodoroScreenState.BreakSuccess
+
     fun resetScreenState(): PomodoroState {
         return this.copy(screenState = PomodoroScreenState.Pomodoro)
     }
 
     fun setPomodoro(): PomodoroState {
-        val time = durationInMinutes.toInt().toFormatMinutesAndSeconds()
+        val time = durationFocusInMinutes.toInt().toFormatMinutesAndSeconds()
         return this.copy(pomodoroTime = time, showSheet = false)
     }
 
@@ -45,7 +51,7 @@ data class PomodoroState(
 
     fun initialState(screenState: PomodoroScreenState = PomodoroScreenState.Pomodoro): PomodoroState {
         return this.copy(
-            pomodoroTime = durationInMinutes.toFormatMinutesAndSeconds(),
+            pomodoroTime = durationFocusInMinutes.toFormatMinutesAndSeconds(),
             session = SessionType.Start,
             screenState = screenState,
             showSheet = false
@@ -80,9 +86,9 @@ data class PomodoroState(
 enum class PomodoroScreenState {
     Pomodoro,
     SuccessPage,
-    FailPage
+    FailPage,
+    BreakSuccess
 }
-
 
 sealed class PomodoroEffect {
     data class ShowError(val message: String): PomodoroEffect()
@@ -109,4 +115,5 @@ sealed class PomodoroEvent {
     data object StartBreak: PomodoroEvent()
     data object ContinuePomodoro: PomodoroEvent()
     data object RetryPomodoro: PomodoroEvent()
+    data object FinishBreak: PomodoroEvent()
 }

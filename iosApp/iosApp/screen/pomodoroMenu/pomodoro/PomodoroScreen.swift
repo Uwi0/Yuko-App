@@ -99,7 +99,7 @@ struct PomodoroScreen: View {
 			onClick: { onEvent(.DoActionButton())},
 			content: { Text(title)}
 		)
-		.frame(width: 120)
+		.frame(width: 168)
 	}
 }
 

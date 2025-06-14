@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FailFocusScreen: View {
+struct BreakTimeFinishScreen: View {
 	
 	let onRetry: () -> Void
 	let onFinish: () -> Void
@@ -9,7 +9,7 @@ struct FailFocusScreen: View {
 	
 	var body: some View {
 		VStack(spacing: 16) {
-			Text("It's okay, try to be more focus and comitment next time")
+			Text("Nice. Your break time is over, lets go again")
 			ActionButton()
 		}
 		.padding(.horizontal, 16)
@@ -18,23 +18,23 @@ struct FailFocusScreen: View {
 	
 	@ViewBuilder
 	private func ActionButton() -> some View {
-		HStack(spacing: 16) {
+		HStack {
 			FilledButtonView(
 				onClick: onRetry,
-				content: { Text("Try again") }
+				content: { Text("Start Again")
+				}
 			)
-			.frame(maxWidth: Self.BUTTON_WIDTH)
+			.frame(width: Self.BUTTON_WIDTH)
 			
 			OutlinedButtonView(
 				onClick: onFinish,
 				content: { Text("Finish")}
 			)
 			.frame(width: Self.BUTTON_WIDTH)
-				
 		}
 	}
 }
 
 #Preview {
-	FailFocusScreen(onRetry: {}, onFinish: {})
+	BreakTimeFinishScreen(onRetry: {}, onFinish: {})
 }

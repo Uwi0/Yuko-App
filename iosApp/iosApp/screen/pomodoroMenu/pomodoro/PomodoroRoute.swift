@@ -31,6 +31,12 @@ struct PomodoroRoute: View {
 					onFinish: { viewModel.handle(event: .FinishPomodoro()) }
 				)
 			}
+			.fullScreenCover(isPresented: viewModel.uiState.showBreakSuccessBinding) {
+				BreakTimeFinishScreen(
+					onRetry: { viewModel.handle(event: .RetryPomodoro())},
+					onFinish: { viewModel.handle(event: .FinishPomodoro())}
+				)
+			}
 	}
 	
 	private func observe(effect: PomodoroEffect) {
@@ -40,7 +46,7 @@ struct PomodoroRoute: View {
 		case .cancelCountdown: stopCountDownTimer()
 		case .cancelPomodoro: stopPomodoroTimer()
 		case .finishPomodoro: store.send(.navigateToMain)
-		case .startBreak: print(".startBreak")
+		case .startBreak: startBreakTimer()
 		}
 	}
 	
@@ -71,6 +77,20 @@ struct PomodoroRoute: View {
 			},
 			onFinish: {
 				viewModel.handle(event: .SaveProgress(isSuccess: true))
+			}
+		)
+	}
+	
+	private func startBreakTimer() {
+		let duration = Int(viewModel.uiState.durationRestInMinutes)
+		pomodoroTimerService.remainingTime = duration
+		pomodoroTimerService.startTimer(
+			initialTime: duration,
+			onTick: { time in
+				viewModel.handle(event: .ChangePomodoroTime(time: time.toFormatMinutesAndSeconds()))
+			},
+			onFinish: {
+				viewModel.handle(event: .FinishBreak())
 			}
 		)
 	}

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct OutlinedContentButtonView<Content: View>: View {
+struct OutlinedButtonView<Content: View>: View {
 	let content: Content
 	let onClick: () -> Void
 	
@@ -24,7 +24,7 @@ struct OutlinedContentButtonView<Content: View>: View {
 	}
 }
 
-extension OutlinedContentButtonView {
+extension OutlinedButtonView {
 	init(
 		onClick: @escaping () -> Void,
 		@ViewBuilder content: () -> Content
@@ -35,5 +35,5 @@ extension OutlinedContentButtonView {
 }
 
 #Preview {
-	OutlinedContentButtonView(onClick: {}, content: { Text("Hello world")})
+	OutlinedButtonView(onClick: {}, content: { Text("Hello world")})
 }

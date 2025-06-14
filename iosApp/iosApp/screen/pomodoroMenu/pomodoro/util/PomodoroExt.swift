@@ -24,10 +24,14 @@ extension SessionType {
 
 extension PomodoroState {
 	var showSuccessBinding: Binding<Bool> {
-		Binding(get: { self.showSuccessPage }, set: { _ in self.resetScreenState() } )
+		Binding(get: { self.showSuccessPage }, set: { _ in  } )
 	}
 	
 	var showFailureBinding: Binding<Bool> {
-		Binding(get: { self.showFailPage }, set: {_ in self.resetScreenState() })
+		Binding(get: { self.showFailPage }, set: {_ in  })
+	}
+	
+	var showBreakSuccessBinding: Binding<Bool> {
+		Binding(get: { self.showBreakSuccessPage }, set: { _ in })
 	}
 }

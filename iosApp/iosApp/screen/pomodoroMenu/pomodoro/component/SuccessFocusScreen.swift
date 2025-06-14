@@ -44,7 +44,7 @@ struct SuccessFocusScreen: View {
 			)
 			.frame(width: Self.BUTTON_WIDTH)
 			
-			OutlinedContentButtonView(
+			OutlinedButtonView(
 				onClick: onFinish,
 				content: {
 					Text("Back to Pomodoro")

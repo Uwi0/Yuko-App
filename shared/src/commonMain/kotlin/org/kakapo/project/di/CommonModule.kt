@@ -8,6 +8,7 @@ import com.kakapo.database.datasource.base.PomodoroSessionLocalDatasource
 import com.kakapo.database.datasource.implementation.PomodoroSessionLocalDatasourceImpl
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
+import org.kakapo.project.presentation.addNote.AddNoteViewModel
 import org.kakapo.project.presentation.notes.NotesViewModel
 import org.kakapo.project.presentation.pomodoro.PomodoroViewModel
 import org.koin.core.KoinApplication
@@ -23,6 +24,7 @@ object CommonModule {
     val viewModel: Module = module {
         viewModel { PomodoroViewModel(get()) }
         viewModel { NotesViewModel() }
+        viewModel { AddNoteViewModel() }
     }
 
     val localDatasourceModule: Module = module {

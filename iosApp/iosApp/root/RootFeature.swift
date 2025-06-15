@@ -30,6 +30,8 @@ struct RootFeature {
 		case settingsScreen(SettingsFeature)
 	}
 	
+	static let delay: UInt64 = 300_000_000
+	
 	var body: some ReducerOf<Self> {
 		Scope(state: \.mainMenu, action: \.mainMenu) {
 			MainMenuFeature()
@@ -41,8 +43,6 @@ struct RootFeature {
 		
 		.forEach(\.path, action: \.path)
 	}
-	
-	private static let delay: UInt64 = 300_000_000
 }
 
 extension RootFeature {
@@ -69,48 +69,6 @@ extension RootFeature {
 			
 		case .resetNavigation:
 			state.path = StackState()
-			return .none
-			
-		default: return .none
-		}
-	}
-}
-
-extension RootFeature {
-	static func reducePomodoroNavigation(state: inout State, action: Action) -> Effect<Action> {
-		switch action {
-			
-		case .mainMenu(.tapToPomodoro):
-			state.path = StackState()
-			state.path.append(.pomodoroScreen(PomodoroFeature.State()))
-			return .none
-			
-		case .path(.element(_, action: .pomodoroScreen(.navigateToMain))):
-			return .run { send in
-				try await Task.sleep(nanoseconds: Self.delay)
-				await send(.resetNavigation)
-			}
-			
-		default: return .none
-		}
-	}
-}
-
-extension RootFeature {
-	static func reduceNoteNavigation(state: inout State, action: Action) -> Effect<Action> {
-		switch action {
-			
-		case .mainMenu(.tapToNotes):
-			state.path = StackState()
-			state.path.append(.notesScreen(NotesFeature.State()))
-			return .none
-			
-		case .path(.element(_, .notesScreen(.tapToAddNote))):
-			state.path.append(.addNoteScreen(AddNoteFeature.State()))
-			return .none
-			
-		case .path(.element(_, .notesScreen(.tapToNote))):
-			state.path.append(.noteScreen(NoteFeature.State()))
 			return .none
 			
 		default: return .none

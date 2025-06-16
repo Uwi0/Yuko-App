@@ -8,7 +8,7 @@ struct AddNoteRoute: View {
 	@StateObject private var viewModel = AddNoteViewModel()
 	
 	var body: some View {
-		AddNoteScreen(onEvent: viewModel.handle(event:))
+		AddNoteScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData()

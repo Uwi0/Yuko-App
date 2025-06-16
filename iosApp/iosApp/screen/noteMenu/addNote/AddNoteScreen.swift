@@ -3,6 +3,7 @@ import Shared
 
 struct AddNoteScreen: View {
 	
+	@Binding var state: AddNoteState
 	let onEvent: (AddNoteEvent) -> Void
 	
 	var body: some View {
@@ -25,7 +26,23 @@ struct AddNoteScreen: View {
 	@ViewBuilder
 	private func Content() -> some View {
 		VStack {
-			Text("Hello Add note")
+			TextField(
+				"Title",
+				text: Binding(
+					get: { state.title},
+					set: { title in onEvent(.TitleChanged(title: title))})
+			)
+			.font(Typography.titleLarge)
+			
+			TextField(
+				"Note",
+				text: Binding(
+					get: { state.note },
+					set: { note in onEvent(.NoteChanged(note: note))}
+				)
+			)
+			.font(Typography.bodyMedium)
+			
 		}
 		.padding(.vertical, 24)
 		.padding(.horizontal, 16)
@@ -33,5 +50,9 @@ struct AddNoteScreen: View {
 }
 
 #Preview {
-	AddNoteScreen(onEvent: { _ in })
+	
+	AddNoteScreen(
+		state: .constant(.companion.default())
+		,onEvent: { _ in }
+	)
 }

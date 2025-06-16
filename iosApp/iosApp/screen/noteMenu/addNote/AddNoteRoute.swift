@@ -21,6 +21,7 @@ struct AddNoteRoute: View {
 	private func observe(effect: AddNoteEffect) {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
+		case .successSaveNote: store.send(.navigateBack)
 		}
 	}
 }

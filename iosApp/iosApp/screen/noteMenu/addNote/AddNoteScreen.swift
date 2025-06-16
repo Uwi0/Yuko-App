@@ -19,6 +19,10 @@ struct AddNoteScreen: View {
 	private func TopBar() -> some View {
 		NavigationTopAppbar(
 			title: "Add Note",
+			actionContent: {
+				Image(systemName: "square.and.arrow.down")
+					.onTapGesture { onEvent(.SaveNote()) }
+			},
 			onAction: { onEvent(.NavigateBack())}
 		)
 	}

@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface NotesRepository {
     suspend fun saveNote(param: NotesParam): Result<Unit>
     fun loadNotes(): Flow<List<NotesModel>>
+    suspend fun loadNoteById(id: Long): Result<NotesModel>
 }

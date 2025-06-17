@@ -4,6 +4,7 @@ import Shared
 struct NotesListView: View {
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 	let notes: [NotesModel]
+	let onEvent: (NotesEvent) -> Void
 	
 	private var isGrid: Bool {
 		horizontalSizeClass == .regular
@@ -37,10 +38,11 @@ struct NotesListView: View {
 	private func ListView() -> some View {
 		ForEach(notes, id: \.id) { note in
 			NoteItemView(note: note)
+				.onTapGesture { onEvent(.TapToNote(noteId: note.id)) }
 		}
 	}
 }
 
 #Preview {
-	NotesListView(notes: dummyNotesModel)
+	NotesListView(notes: dummyNotesModel, onEvent: { _ in })
 }

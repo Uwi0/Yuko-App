@@ -21,7 +21,7 @@ struct NotesRoute: View {
 	private func observeEffect(effect: NotesEffect) {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
-		case .tapToNote: store.send(.tapToNote)
+		case let .tapToNote(note): store.send(.tapToNote(note.noteId))
 		case .tapToAddNote: store.send(.tapToAddNote)
 		case let .showError(error): print("error: \(error.message)")
 		}

@@ -14,8 +14,8 @@ extension RootFeature {
 			state.path.append(.addNoteScreen(AddNoteFeature.State()))
 			return .none
 			
-		case .path(.element(_, .notesScreen(.tapToNote))):
-			state.path.append(.noteScreen(NoteFeature.State()))
+		case .path(.element(_, .notesScreen(.tapToNote(let id)))):
+			state.path.append(.noteScreen(NoteFeature.State(id: id)))
 			return .none
 			
 		case .path(.element(_, .notesScreen(.navigateBack))):
@@ -23,6 +23,10 @@ extension RootFeature {
 			return .none
 			
 		case .path(.element(_, .addNoteScreen(.navigateBack))):
+			_ = state.path.popLast()
+			return .none
+			
+		case .path(.element(_, .noteScreen(.navigateBack))):
 			_ = state.path.popLast()
 			return .none
 			

@@ -15,6 +15,7 @@ import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.kakapo.project.presentation.addNote.AddNoteViewModel
+import org.kakapo.project.presentation.note.NoteViewModel
 import org.kakapo.project.presentation.notes.NotesViewModel
 import org.kakapo.project.presentation.pomodoro.PomodoroViewModel
 import org.koin.core.KoinApplication
@@ -34,6 +35,7 @@ object CommonModule {
         viewModel { PomodoroViewModel(get()) }
         viewModel { NotesViewModel(get()) }
         viewModel { AddNoteViewModel(get()) }
+        viewModel { NoteViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {

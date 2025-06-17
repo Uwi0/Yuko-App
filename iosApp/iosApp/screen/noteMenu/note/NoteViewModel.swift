@@ -1,41 +1,41 @@
 import Foundation
-import Combine
 import Shared
+import Combine
 import KMPNativeCoroutinesCombine
 
-final class NotesViewModel: ObservableObject {
+final class NoteViewModel: ObservableObject {
 	
-	@Published var state: NotesState = .companion.default()
+	@Published var state: NoteState = .companion.default()
 	
-	private let viewModel: NotesViewModelKt = Koin.shared.get()
-	private let effectSubject = PassthroughSubject<NotesEffect, Never>()
+	private let viewModel: NoteViewModelKt = Koin.shared.get()
+	private let effectSubject = PassthroughSubject<NoteEffect, Never>()
 	private var stateCancellable: AnyCancellable?
 	private var effectCancellable: AnyCancellable?
 	
-	var effectPublisher: AnyPublisher<NotesEffect, Never> {
+	var effectPublisher: AnyPublisher<NoteEffect, Never> {
 		effectSubject.eraseToAnyPublisher()
 	}
 	
-	func initData() {
-		viewModel.doInitData()
+	func initData(noteId: Int64) {
+		viewModel.doInitData(noteId: noteId)
 		observeState()
 		observeEffect()
 	}
 	
-	func handle(event: NotesEvent) {
+	func handle(event: NoteEvent) {
 		viewModel.handleEvent(event: event)
 	}
 	
-	private func observeState() {
-		let publisher = createPublisher(for: viewModel.uiStateFlow)
-		stateCancellable = publisher.sink { completion in
+	func observeState() {
+		let publihser = createPublisher(for: viewModel.uiStateFlow)
+		stateCancellable = publihser.sink { completion in
 			print("completion \(completion)")
 		} receiveValue: { [weak self] state in
 			self?.update(state: state)
 		}
 	}
 	
-	private func update(state: NotesState) {
+	private func update(state: NoteState) {
 		DispatchQueue.main.async {
 			self.state = state
 		}
@@ -50,7 +50,7 @@ final class NotesViewModel: ObservableObject {
 		}
 	}
 	
-	func send(effect: NotesEffect) {
+	private func send(effect: NoteEffect) {
 		DispatchQueue.main.async {
 			self.effectSubject.send(effect)
 		}

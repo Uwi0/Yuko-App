@@ -39,4 +39,8 @@ class NotesLocalDatasourceImpl(
             notes.map(NotesTable::toNotesEntity)
         }
 
+    override suspend fun getNoteById(id: Long): Result<NotesEntity> = runCatching {
+        notesQuery.getNoteById(id).executeAsOne().toNotesEntity()
+    }
+
 }

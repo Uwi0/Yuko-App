@@ -11,7 +11,7 @@ struct NotesFeature {
 	enum Action {
 		case navigateBack
 		case tapToAddNote
-		case tapToNote
+		case tapToNote(Int64)
 	}
 	
 	var body: some ReducerOf<Self> {

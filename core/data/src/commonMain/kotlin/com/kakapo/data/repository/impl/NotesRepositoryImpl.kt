@@ -20,4 +20,8 @@ class NotesRepositoryImpl(
     override fun loadNotes(): Flow<List<NotesModel>> {
         return notesLocalDatasource.getNotes().mapEach(NotesEntity::toNotesModel)
     }
+
+    override suspend fun loadNoteById(id: Long): Result<NotesModel> {
+        return notesLocalDatasource.getNoteById(id).mapCatching(NotesEntity::toNotesModel)
+    }
 }

@@ -29,7 +29,7 @@ struct NotesScreen: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
-		NotesListView(notes: state.notes)
+		NotesListView(notes: state.notes, onEvent: onEvent)
 			.padding(.vertical, 24)
 			.padding(.horizontal, 16)
 	}

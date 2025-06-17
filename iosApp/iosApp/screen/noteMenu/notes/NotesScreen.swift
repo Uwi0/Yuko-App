@@ -29,11 +29,9 @@ struct NotesScreen: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
-		VStack(spacing: 16) {
-			ForEach(state.notes, id: \.id) { note in
-					Text(note.title)
-			}
-		}
+		NotesListView(notes: state.notes)
+			.padding(.vertical, 24)
+			.padding(.horizontal, 16)
 	}
 }
 

@@ -1,0 +1,32 @@
+import SwiftUI
+import Shared
+
+struct NoteItemView: View {
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass
+	let note: NotesModel
+	private let borderWidth: CGFloat = 1
+	private var isGridView: Bool {
+		horizontalSizeClass == .regular
+	}
+	
+	var body: some View {
+		VStack(spacing: 16) {
+			Text(note.title)
+				.font(Typography.titleMedium)
+			Text(note.note)
+				.font(Typography.bodyMedium)
+		}
+		.padding()
+		.frame(maxWidth: isGridView ? 480 : .infinity, alignment: .leading)
+		.background(ColorTheme.surface)
+		.overlay(
+			RoundedRectangle(cornerRadius: ShapeStyles.medium)
+				.stroke(ColorTheme.onSurface, lineWidth: borderWidth)
+		)
+		
+	}
+}
+
+#Preview {
+	NoteItemView(note: NotesModel(id: 0, title: "Hello", note: "World"))
+}

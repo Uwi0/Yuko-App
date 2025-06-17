@@ -36,6 +36,7 @@ class NoteViewModel(
     fun handleEvent(event: NoteEvent) {
         when(event) {
             NoteEvent.NavigateBack -> emit(NoteEffect.NavigateBack)
+            NoteEvent.DeleteNote -> deleteNote()
         }
     }
 
@@ -44,6 +45,16 @@ class NoteViewModel(
             _uiState.value = _uiState.value.copy(note = note)
         }
         notesRepository.loadNoteById(noteId).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
+    private fun deleteNote()  = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            emit(NoteEffect.NavigateBack)
+        }
+        notesRepository.deleteNoteById(noteId).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

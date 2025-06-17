@@ -17,7 +17,19 @@ struct NoteScreen: View {
 	
 	@ViewBuilder
 	private func TopAppbar() -> some View {
-		NavigationTopAppbar(title: "Note", onAction: { onEvent(.NavigateBack())})
+		NavigationTopAppbar(
+			title: "Note",
+			actionContent: {
+				Image(systemName: "trash")
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.frame(width: 24, height: 24)
+					.onTapGesture {
+						onEvent(.DeleteNote())
+					}
+			},
+			onAction: { onEvent(.NavigateBack())}
+		)
 	}
 	
 	@ViewBuilder

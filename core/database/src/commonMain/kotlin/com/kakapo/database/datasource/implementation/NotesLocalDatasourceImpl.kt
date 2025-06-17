@@ -43,4 +43,8 @@ class NotesLocalDatasourceImpl(
         notesQuery.getNoteById(id).executeAsOne().toNotesEntity()
     }
 
+    override suspend fun deleteNoteById(id: Long): Result<Unit> = runCatching {
+        notesQuery.deleteNoteById(id)
+    }
+
 }

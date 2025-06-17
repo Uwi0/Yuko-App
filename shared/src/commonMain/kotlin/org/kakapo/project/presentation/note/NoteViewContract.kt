@@ -17,4 +17,5 @@ sealed class NoteEffect {
 
 sealed class NoteEvent {
     data object NavigateBack : NoteEvent()
+    data object DeleteNote : NoteEvent()
 }

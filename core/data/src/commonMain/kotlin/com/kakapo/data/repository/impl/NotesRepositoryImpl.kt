@@ -24,4 +24,8 @@ class NotesRepositoryImpl(
     override suspend fun loadNoteById(id: Long): Result<NotesModel> {
         return notesLocalDatasource.getNoteById(id).mapCatching(NotesEntity::toNotesModel)
     }
+
+    override suspend fun deleteNoteById(id: Long): Result<Unit> {
+        return notesLocalDatasource.deleteNoteById(id)
+    }
 }

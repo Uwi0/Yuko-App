@@ -17,6 +17,7 @@ junit = "4.13.2"
 kermit = "2.0.5"
 koin-bom = "4.0.4"
 kotlin = "2.1.21"
+kotlin-coroutines = "1.10.2"
 kotlinStdlib = "2.1.21"
 kotlinx-datetime = "0.6.2"
 kotlinx-serialization = "1.8.0"
@@ -51,6 +52,7 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-com
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core" }
+kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }

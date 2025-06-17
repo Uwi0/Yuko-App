@@ -9,6 +9,7 @@ struct NotesFeature {
 	}
 	
 	enum Action {
+		case navigateBack
 		case tapToAddNote
 		case tapToNote
 	}
@@ -18,6 +19,7 @@ struct NotesFeature {
 			switch action {
 			case .tapToAddNote: return .none
 			case .tapToNote: return .none
+			case .navigateBack: return .none
 			}
 		}
 	}

@@ -24,3 +24,6 @@ INSERT OR ABORT INTO NotesTable(
     ?,
     ?
 );
+
+getAllNotes:
+SELECT * FROM NotesTable;

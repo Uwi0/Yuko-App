@@ -8,7 +8,7 @@ struct NavigationTopAppbar<Content: View>: View {
 		let onAction: () -> Void
 		
 		var body: some View {
-				HStack(spacing: 16) {
+			HStack(alignment: .center, spacing: 16) {
 						Image(systemName: showDrawer ? "line.3.horizontal" :"arrow.left")
 								.resizable()
 								.scaledToFit()

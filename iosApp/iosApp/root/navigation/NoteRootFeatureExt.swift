@@ -18,6 +18,10 @@ extension RootFeature {
 			state.path.append(.noteScreen(NoteFeature.State()))
 			return .none
 			
+		case .path(.element(_, .notesScreen(.navigateBack))):
+			_ = state.path.popLast()
+			return .none
+			
 		case .path(.element(_, .addNoteScreen(.navigateBack))):
 			_ = state.path.popLast()
 			return .none

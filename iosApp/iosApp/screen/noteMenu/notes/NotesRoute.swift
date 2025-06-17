@@ -8,7 +8,8 @@ struct NotesRoute: View {
 	@StateObject private var viewModel = NotesViewModel()
 	
 	var body: some View {
-		NotesScreen(onEvent: viewModel.handle(event:))
+		NotesScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
+			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData()
 			}
@@ -19,8 +20,10 @@ struct NotesRoute: View {
 	
 	private func observeEffect(effect: NotesEffect) {
 		switch onEnum(of: effect) {
+		case .navigateBack: store.send(.navigateBack)
 		case .tapToNote: store.send(.tapToNote)
 		case .tapToAddNote: store.send(.tapToAddNote)
+		case let .showError(error): print("error: \(error.message)")
 		}
 	}
 }

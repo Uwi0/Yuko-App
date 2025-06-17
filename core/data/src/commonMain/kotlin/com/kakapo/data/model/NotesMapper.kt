@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.NotesEntity
+import com.kakapo.model.NotesModel
 import kotlinx.datetime.Clock
 
 data class NotesParam(
@@ -22,3 +23,9 @@ data class NotesParam(
         )
     }
 }
+
+fun NotesEntity.toNotesModel() = NotesModel(
+    id = id,
+    title = title,
+    note = note
+)

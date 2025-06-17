@@ -12,6 +12,8 @@ import com.kakapo.database.datasource.implementation.NotesLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.PomodoroSessionLocalDatasourceImpl
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import org.kakapo.project.presentation.addNote.AddNoteViewModel
 import org.kakapo.project.presentation.notes.NotesViewModel
 import org.kakapo.project.presentation.pomodoro.PomodoroViewModel
@@ -19,21 +21,24 @@ import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 expect val platformModule: Module
 
 object CommonModule {
 
+    const val IO = "IO"
+
     val viewModel: Module = module {
         viewModel { PomodoroViewModel(get()) }
-        viewModel { NotesViewModel() }
+        viewModel { NotesViewModel(get()) }
         viewModel { AddNoteViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {
         factory<PomodoroSessionLocalDatasource> { PomodoroSessionLocalDatasourceImpl(get()) }
-        factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get()) }
+        factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferencesModule: Module = module {
@@ -44,6 +49,10 @@ object CommonModule {
         factory<PomodoroSessionRepository> { PomodoroSessionRepositoryImpl(get(), get()) }
         factory<NotesRepository> { NotesRepositoryImpl(get()) }
     }
+
+    val coroutineModule: Module = module {
+        single(qualifier = named(IO)) { Dispatchers.IO }
+    }
 }
 
 fun initKoin(
@@ -51,7 +60,16 @@ fun initKoin(
     viewModel: Module = CommonModule.viewModel,
     localDatasource: Module = CommonModule.localDatasourceModule,
     preference: Module = CommonModule.preferencesModule,
-    repository: Module = CommonModule.repositoryModule
+    repository: Module = CommonModule.repositoryModule,
+    coroutineModule: Module = CommonModule.coroutineModule
 ): KoinApplication = startKoin {
-    modules(appModule, viewModel, localDatasource, preference, repository, platformModule)
+    modules(
+        appModule,
+        viewModel,
+        localDatasource,
+        preference,
+        repository,
+        coroutineModule,
+        platformModule
+    )
 }

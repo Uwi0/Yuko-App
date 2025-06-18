@@ -20,6 +20,14 @@ struct NoteScreen: View {
 		NavigationTopAppbar(
 			title: "Note",
 			actionContent: {
+				Image(systemName: "pencil")
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.frame(width: 24, height: 24)
+					.onTapGesture {
+						onEvent(.EditNote())
+					}
+				Spacer().frame(width: 8)
 				Image(systemName: "trash")
 					.resizable()
 					.aspectRatio(contentMode: .fit)
@@ -27,6 +35,7 @@ struct NoteScreen: View {
 					.onTapGesture {
 						onEvent(.DeleteNote())
 					}
+				
 			},
 			onAction: { onEvent(.NavigateBack())}
 		)

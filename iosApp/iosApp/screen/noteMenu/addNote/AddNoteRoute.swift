@@ -11,7 +11,7 @@ struct AddNoteRoute: View {
 		AddNoteScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
-				viewModel.initData()
+				viewModel.initData(noteId: store.state.id)
 			}
 			.onReceive(viewModel.effectPublisher) { effect in
 				observe(effect: effect)
@@ -22,6 +22,7 @@ struct AddNoteRoute: View {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
 		case .successSaveNote: store.send(.navigateBack)
+		case let .showError(error): print("Error: \(error)")
 		}
 	}
 }

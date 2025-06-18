@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.notes.NotesEffect
 import kotlin.native.ObjCName
 
 @ObjCName("NoteViewModelKt")
@@ -37,6 +38,7 @@ class NoteViewModel(
         when(event) {
             NoteEvent.NavigateBack -> emit(NoteEffect.NavigateBack)
             NoteEvent.DeleteNote -> deleteNote()
+            NoteEvent.EditNote -> emit(NoteEffect.TapToEditNote(noteId))
         }
     }
 

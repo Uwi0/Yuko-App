@@ -8,5 +8,6 @@ kotlin {
         implementation(projects.core.model)
         implementation(projects.core.database)
         implementation(projects.core.preference)
+        implementation(libs.kermit)
     }
 }

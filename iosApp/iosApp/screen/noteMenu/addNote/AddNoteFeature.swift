@@ -4,8 +4,8 @@ import ComposableArchitecture
 @Reducer
 struct AddNoteFeature {
 	@ObservableState
-	struct State: Equatable, Identifiable {
-		let id: UUID = UUID()
+	struct State: Equatable{
+		var id: Int64 = 0
 	}
 	
 	enum Action {

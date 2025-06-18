@@ -1,5 +1,6 @@
 package com.kakapo.data.repository.impl
 
+import co.touchlab.kermit.Logger
 import com.kakapo.common.mapEach
 import com.kakapo.data.model.NotesParam
 import com.kakapo.data.model.toNotesModel
@@ -14,7 +15,9 @@ class NotesRepositoryImpl(
 ) : NotesRepository {
 
     override suspend fun saveNote(param: NotesParam): Result<Unit> {
-        return notesLocalDatasource.insertNote(param.toNotesEntity())
+        Logger.d { "param: $param" }
+        return if (param.id == 0L) notesLocalDatasource.insertNote(param.toNotesEntity())
+        else notesLocalDatasource.updateNote(param.toNotesEntity())
     }
 
     override fun loadNotes(): Flow<List<NotesModel>> {

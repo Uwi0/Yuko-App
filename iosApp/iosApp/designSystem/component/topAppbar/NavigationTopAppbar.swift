@@ -19,7 +19,7 @@ struct NavigationTopAppbar<Content: View>: View {
 						Text(title)
 								.font(Typography.titleLarge)
 						Spacer()
-						HStack {
+				HStack(spacing: 8) {
 								actionContent
 										.fontWeight(.semibold)
 						}

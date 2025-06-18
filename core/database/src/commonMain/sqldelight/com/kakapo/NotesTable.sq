@@ -33,3 +33,12 @@ SELECT * FROM NotesTable WHERE id = ?;
 
 deleteNoteById:
 DELETE FROM NotesTable WHERE id = ?;
+
+updateNote:
+UPDATE NotesTable SET
+    title = ?,
+    content = ?,
+    updatedAt = ?,
+    isArchived = ?,
+    isPinned = ?
+WHERE id = ?;

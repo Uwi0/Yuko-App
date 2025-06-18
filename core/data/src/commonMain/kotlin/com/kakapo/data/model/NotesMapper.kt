@@ -5,6 +5,7 @@ import com.kakapo.model.NotesModel
 import kotlinx.datetime.Clock
 
 data class NotesParam(
+    val id: Long = 0L,
     val title: String = "",
     val note: String = "",
     val createdAt: Long = Clock.System.now().toEpochMilliseconds(),
@@ -14,6 +15,7 @@ data class NotesParam(
 ) {
     fun toNotesEntity(): NotesEntity {
         return NotesEntity(
+            id = id,
             title = title,
             note = note,
             createdAt = createdAt,

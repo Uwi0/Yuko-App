@@ -22,6 +22,7 @@ struct NoteRoute: View {
 		switch onEnum(of: effect) {
 		case let .showError(error): print(error.message)
 		case .navigateBack: store.send(.navigateBack)
+		case let .tapToEditNote(effect): store.send(.navigateToEdit(effect.noteId))
 		}
 	}
 }

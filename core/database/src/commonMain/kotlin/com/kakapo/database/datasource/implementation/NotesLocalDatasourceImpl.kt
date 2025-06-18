@@ -31,6 +31,17 @@ class NotesLocalDatasourceImpl(
         )
     }
 
+    override suspend fun updateNote(entity: NotesEntity): Result<Unit> = runCatching {
+        notesQuery.updateNote(
+            title = entity.title,
+            content = entity.note,
+            updatedAt = entity.updatedAt,
+            isArchived = entity.isArchived.asLong(),
+            isPinned = entity.isPinned.asLong(),
+            id = entity.id
+        )
+    }
+
     override fun getNotes(): Flow<List<NotesEntity>> = notesQuery
         .getAllNotes()
         .asFlow()

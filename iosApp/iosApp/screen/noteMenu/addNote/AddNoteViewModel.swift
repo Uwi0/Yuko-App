@@ -16,7 +16,8 @@ final class AddNoteViewModel: ObservableObject {
 		effectSubject.eraseToAnyPublisher( )
 	}
 	
-	func initData() {
+	func initData(noteId: Int64) {
+		viewModel.doInitData(noteId: noteId)
 		observeState()
 		observeEffect()
 	}

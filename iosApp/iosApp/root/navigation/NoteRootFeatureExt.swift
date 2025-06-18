@@ -30,6 +30,10 @@ extension RootFeature {
 			_ = state.path.popLast()
 			return .none
 			
+		case .path(.element(_, .noteScreen(.navigateToEdit(let noteId)))):
+			state.path.append(.addNoteScreen(AddNoteFeature.State(id: noteId)))
+			return .none
+			
 		default: return .none
 		}
 	}

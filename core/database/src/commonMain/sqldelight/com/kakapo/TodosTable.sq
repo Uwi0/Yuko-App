@@ -1,0 +1,32 @@
+CREATE TABLE TodosTable (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    isDone INTEGER NOT NULL DEFAULT 0,
+    dueDate INTEGER NOT NULL,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL,
+    pinned INTEGER NOT NULL DEFAULT 0,
+    priority INTEGER NOT NULL DEFAULT 0
+);
+
+insertTodo:
+INSERT OR ABORT INTO TodosTable(
+    title,
+    description,
+    isDone,
+    dueDate,
+    createdAt,
+    updatedAt,
+    pinned,
+    priority
+) VALUES (
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);

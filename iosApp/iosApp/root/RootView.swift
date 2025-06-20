@@ -26,6 +26,9 @@ struct RootView: View {
 			case let .todosScreen(todosStore):
 				TodosRoute(store: todosStore)
 				
+			case let .addTodoScreen(addTodoStore):
+				AddTodoRoute(store: addTodoStore)
+				
 			case let .habitsScreen(habitsStore):
 				HabitsRoute(store: habitsStore)
 				

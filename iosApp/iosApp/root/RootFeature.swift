@@ -26,6 +26,9 @@ struct RootFeature {
 		
 		//MARK: Todos Feature
 		case todosScreen(TodosFeature)
+		case addTodoScreen(AddTodoFeature)
+		
+		//MARK: Habit feature
 		case habitsScreen(HabitsFeature)
 		case settingsScreen(SettingsFeature)
 	}
@@ -40,6 +43,7 @@ struct RootFeature {
 		Reduce(Self.baseReducer(state:action:))
 		Reduce(Self.reducePomodoroNavigation(state:action:))
 		Reduce(Self.reduceNoteNavigation(state:action:))
+		Reduce(Self.reduceTodosNavigation(state:action:))
 		
 		.forEach(\.path, action: \.path)
 	}
@@ -48,11 +52,6 @@ struct RootFeature {
 extension RootFeature {
 	static func baseReducer(state: inout State, action: Action) -> Effect<Action> {
 		switch action {
-			
-		case .mainMenu(.tapToTodos):
-			state.path = StackState()
-			state.path.append(.todosScreen(TodosFeature.State()))
-			return .none
 			
 		case .mainMenu(.tapToHabits):
 			state.path = StackState()

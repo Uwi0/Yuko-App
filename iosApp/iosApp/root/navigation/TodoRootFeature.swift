@@ -19,6 +19,10 @@ extension RootFeature {
 			_ = state.path.popLast()
 			return .none
 			
+		case .path(.element(_, .addTodoScreen(.navigateBack))):
+			_ = state.path.popLast()
+			return .none
+			
 		default : return .none
 		}
 	}

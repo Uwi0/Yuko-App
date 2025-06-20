@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.todos
+package org.kakapo.project.presentation.todoMenu.addTodo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,21 +8,21 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
 
-@ObjCName("TodosViewModelKt")
-class TodosViewModel: ViewModel() {
+@ObjCName("AddTodoViewModelKt")
+class AddTodoViewModel: ViewModel() {
 
     @NativeCoroutines
     val uiEffect get() = _uiEffect.asSharedFlow()
-    private var _uiEffect = MutableSharedFlow<TodosEffect>()
+    private val _uiEffect = MutableSharedFlow<AddTodoEffect>()
 
-    fun handleEvent(event: TodosEvent) {
+    fun handleEvent(event: AddTodoEvent) {
         when(event) {
-            TodosEvent.NavigateBack -> emit(TodosEffect.NavigateBack)
-            TodosEvent.TapToAddTodo -> emit(TodosEffect.TapToAddTodo)
+            AddTodoEvent.NavigateBack -> emit(AddTodoEffect.NavigateBack)
+            AddTodoEvent.SaveTodo -> TODO()
         }
     }
 
-    private fun emit(effect: TodosEffect) = viewModelScope.launch {
+    private fun emit(effect: AddTodoEffect) = viewModelScope.launch {
         _uiEffect.emit(effect)
     }
 }

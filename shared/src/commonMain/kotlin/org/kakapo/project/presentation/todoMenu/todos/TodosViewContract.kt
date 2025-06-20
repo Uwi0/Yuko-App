@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.todos
+package org.kakapo.project.presentation.todoMenu.todos
 
 sealed class TodosEffect {
     data object NavigateBack : TodosEffect()

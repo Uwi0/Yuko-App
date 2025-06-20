@@ -1,11 +1,35 @@
 import SwiftUI
+import Shared
 
 struct AddTodoScreen: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+	
+	let onEvent: (AddTodoEvent) -> Void
+	
+	var body: some View {
+		VStack {
+			TopAppbarView()
+			Divider()
+			ContentView()
+			Spacer()
+		}
+	}
+	
+	@ViewBuilder
+	private func TopAppbarView() -> some View {
+		NavigationTopAppbar(
+			title: "Add Todo",
+			onAction: { onEvent(.NavigateBack()) }
+		)
+	}
+	
+	@ViewBuilder
+	private func ContentView() -> some View {
+		VStack {
+			Text("Hello from Add Todo")
+		}
+	}
 }
 
 #Preview {
-    AddTodoScreen()
+	AddTodoScreen(onEvent: { _ in })
 }

@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.addNote
+package org.kakapo.project.presentation.noteMenu.addNote
 
 import com.kakapo.data.model.NotesParam
 import com.kakapo.model.NotesModel

@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.pomodoro
+package org.kakapo.project.presentation.pomodoroMenu.pomodoro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

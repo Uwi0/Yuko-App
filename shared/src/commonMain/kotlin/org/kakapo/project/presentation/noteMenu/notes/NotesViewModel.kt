@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.notes
+package org.kakapo.project.presentation.noteMenu.notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

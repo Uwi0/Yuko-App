@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.pomodoro.ext
+package org.kakapo.project.presentation.pomodoroMenu.pomodoro.ext
 
 fun Int.toFormatMinutesAndSeconds(): String {
     val minutes = this / 60

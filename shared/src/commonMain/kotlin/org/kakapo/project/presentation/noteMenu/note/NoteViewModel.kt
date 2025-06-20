@@ -1,8 +1,7 @@
-package org.kakapo.project.presentation.addNote
+package org.kakapo.project.presentation.noteMenu.note
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -11,42 +10,40 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.native.ObjCName
 
-@ObjCName("AddNoteViewModelKt")
-class AddNoteViewModel(
+@ObjCName("NoteViewModelKt")
+class NoteViewModel(
     private val notesRepository: NotesRepository
-) : ViewModel() {
+): ViewModel() {
 
     @NativeCoroutinesState
     val uiState get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(AddNoteState())
+    private val _uiState = MutableStateFlow(NoteState())
 
     @NativeCoroutines
     val uiEffect get() = _uiEffect.asSharedFlow()
-    private val _uiEffect = MutableSharedFlow<AddNoteEffect>()
+    private val _uiEffect = MutableSharedFlow<NoteEffect>()
 
     private var noteId: Long = 0
 
     fun initData(noteId: Long) {
         this.noteId = noteId
-        if(noteId != 0L) loadNoteBy(noteId)
+        loadNoteBy(noteId)
     }
 
-    fun handleEvent(event: AddNoteEvent) {
-        when (event) {
-            AddNoteEvent.NavigateBack -> emit(AddNoteEffect.NavigateBack)
-            is AddNoteEvent.NoteChanged -> _uiState.update { it.copy(note = event.note) }
-            is AddNoteEvent.TitleChanged -> _uiState.update { it.copy(title = event.title) }
-            AddNoteEvent.SaveNote -> saveNote()
+    fun handleEvent(event: NoteEvent) {
+        when(event) {
+            NoteEvent.NavigateBack -> emit(NoteEffect.NavigateBack)
+            NoteEvent.DeleteNote -> deleteNote()
+            NoteEvent.EditNote -> emit(NoteEffect.TapToEditNote(noteId))
         }
     }
 
     private fun loadNoteBy(noteId: Long) = viewModelScope.launch {
         val onSuccess: (NotesModel) -> Unit = { note ->
-            _uiState.update { it.copy(note = note) }
+            _uiState.value = _uiState.value.copy(note = note)
         }
         notesRepository.loadNoteById(noteId).fold(
             onSuccess = onSuccess,
@@ -54,20 +51,22 @@ class AddNoteViewModel(
         )
     }
 
-    private fun saveNote() = viewModelScope.launch {
-        val notesParam = uiState.value.asNotesParam(noteId)
-        notesRepository.saveNote(notesParam).fold(
-            onSuccess = { emit(AddNoteEffect.SuccessSaveNote) },
+    private fun deleteNote()  = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            emit(NoteEffect.NavigateBack)
+        }
+        notesRepository.deleteNoteById(noteId).fold(
+            onSuccess = onSuccess,
             onFailure = ::handleError
         )
     }
 
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"
-        emit(AddNoteEffect.ShowError(message))
+        emit(NoteEffect.ShowError(message))
     }
 
-    private fun emit(effect: AddNoteEffect) = viewModelScope.launch {
+    private fun emit(effect: NoteEffect) = viewModelScope.launch {
         _uiEffect.emit(effect)
     }
 }

@@ -1,10 +1,10 @@
-package org.kakapo.project.presentation.pomodoro
+package org.kakapo.project.presentation.pomodoroMenu.pomodoro
 
 import com.kakapo.data.model.PomodoroSessionParam
 import com.kakapo.model.SessionType
 import com.kakapo.model.SessionSettingsModel
 import kotlinx.datetime.Clock
-import org.kakapo.project.presentation.pomodoro.ext.toFormatMinutesAndSeconds
+import org.kakapo.project.presentation.pomodoroMenu.pomodoro.ext.toFormatMinutesAndSeconds
 
 data class PomodoroState(
     val pointEarned: Long = 0,

@@ -1,5 +1,5 @@
 {
-  "originHash" : "e64d2cba4a202d7de0772701539fecafd127555a89b567b4c391df51a7f7af3a",
+  "originHash" : "9819093f9162046f957ccbf82158af490b6d95eec02c94c6dd6664b053ab0702",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/rickclephas/KMP-NativeCoroutines",
       "state" : {
         "branch" : "master",
-        "revision" : "9d5542880b5e1d8614f95e57c716d3dcc7b601c1"
+        "revision" : "2373e5add0026d89d938cc35ebf17a203d5ce859"
       }
     },
     {

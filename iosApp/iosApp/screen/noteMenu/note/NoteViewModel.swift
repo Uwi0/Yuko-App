@@ -28,32 +28,24 @@ final class NoteViewModel: ObservableObject {
 	
 	func observeState() {
 		let publihser = createPublisher(for: viewModel.uiStateFlow)
-		stateCancellable = publihser.sink { completion in
-			print("completion \(completion)")
-		} receiveValue: { [weak self] state in
-			self?.update(state: state)
-		}
-	}
-	
-	private func update(state: NoteState) {
-		DispatchQueue.main.async {
-			self.state = state
-		}
+		stateCancellable = publihser
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("completion \(completion)")
+			} receiveValue: { [weak self] state in
+				self?.state = state
+			}
 	}
 	
 	private func observeEffect() {
 		let publihser = createPublisher(for: viewModel.uiEffect)
-		effectCancellable = publihser.sink { completion in
-			print("completion \(completion)")
-		} receiveValue: { [weak self] effect in
-			self?.send(effect: effect)
-		}
-	}
-	
-	private func send(effect: NoteEffect) {
-		DispatchQueue.main.async {
-			self.effectSubject.send(effect)
-		}
+		effectCancellable = publihser
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("completion \(completion)")
+			} receiveValue: { [weak self] effect in
+				self?.effectSubject.send(effect)
+			}
 	}
 	
 	deinit {

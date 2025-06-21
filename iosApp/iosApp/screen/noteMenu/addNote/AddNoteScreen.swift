@@ -21,6 +21,9 @@ struct AddNoteScreen: View {
 			title: "Add Note",
 			actionContent: {
 				Image(systemName: "square.and.arrow.down")
+					.resizable()
+					.scaledToFit()
+					.frame(width: 24, height: 24)
 					.onTapGesture { onEvent(.SaveNote()) }
 			},
 			onAction: { onEvent(.NavigateBack())}

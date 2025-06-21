@@ -8,7 +8,7 @@ struct AddTodoRoute: View {
 	@StateObject private var viewModel = AddTodoViewModel()
 	
 	var body: some View {
-		AddTodoScreen(onEvent: viewModel.handle(event:))
+		AddTodoScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData()
@@ -21,6 +21,7 @@ struct AddTodoRoute: View {
 	private func observe(effect: AddTodoEffect) {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
+		case let .showError(error): print("Error: \(error.message)")
 		}
 	}
 }

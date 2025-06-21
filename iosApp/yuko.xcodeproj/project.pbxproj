@@ -12,11 +12,11 @@
 		FB276E962DEC823B00CA97EA /* YukoPomodoroLiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FB276E802DEC823A00CA97EA /* YukoPomodoroLiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB2801452DEDC1020068DAC1 /* ActivityKit.framework */; };
 		FB2801472DEDC10A0068DAC1 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB276E822DEC823A00CA97EA /* WidgetKit.framework */; };
-		FB6A3C182DF2DE01003C5DFC /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */; };
-		FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */; };
-		FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */; };
-		FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */; };
-		FB99C5492DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FB99C5482DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift */; };
+		FBF5DF262E0663A9004CD513 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5DF252E0663A9004CD513 /* ComposableArchitecture */; };
+		FBF5DF292E0663D1004CD513 /* KMPNativeCoroutinesAsync in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5DF282E0663D1004CD513 /* KMPNativeCoroutinesAsync */; };
+		FBF5DF2B2E0663D1004CD513 /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5DF2A2E0663D1004CD513 /* KMPNativeCoroutinesCombine */; };
+		FBF5DF2D2E0663D1004CD513 /* KMPNativeCoroutinesCore in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5DF2C2E0663D1004CD513 /* KMPNativeCoroutinesCore */; };
+		FBF5DF2F2E0663D1004CD513 /* KMPNativeCoroutinesRxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5DF2E2E0663D1004CD513 /* KMPNativeCoroutinesRxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,13 +112,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBF5DF292E0663D1004CD513 /* KMPNativeCoroutinesAsync in Frameworks */,
+				FBF5DF2B2E0663D1004CD513 /* KMPNativeCoroutinesCombine in Frameworks */,
+				FBF5DF2D2E0663D1004CD513 /* KMPNativeCoroutinesCore in Frameworks */,
+				FBF5DF2F2E0663D1004CD513 /* KMPNativeCoroutinesRxSwift in Frameworks */,
 				FB2801462DEDC1020068DAC1 /* ActivityKit.framework in Frameworks */,
-				FB99C5432DDC623D00628AB6 /* KMPNativeCoroutinesAsync in Frameworks */,
-				FB6A3C182DF2DE01003C5DFC /* ComposableArchitecture in Frameworks */,
-				FB99C5452DDC623D00628AB6 /* KMPNativeCoroutinesCombine in Frameworks */,
-				FB99C5472DDC623D00628AB6 /* KMPNativeCoroutinesCore in Frameworks */,
-				FB99C5492DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift in Frameworks */,
 				FB2801472DEDC10A0068DAC1 /* WidgetKit.framework in Frameworks */,
+				FBF5DF262E0663A9004CD513 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,11 +194,11 @@
 			);
 			name = yuko;
 			packageProductDependencies = (
-				FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */,
-				FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */,
-				FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */,
-				FB99C5482DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift */,
-				FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */,
+				FBF5DF252E0663A9004CD513 /* ComposableArchitecture */,
+				FBF5DF282E0663D1004CD513 /* KMPNativeCoroutinesAsync */,
+				FBF5DF2A2E0663D1004CD513 /* KMPNativeCoroutinesCombine */,
+				FBF5DF2C2E0663D1004CD513 /* KMPNativeCoroutinesCore */,
+				FBF5DF2E2E0663D1004CD513 /* KMPNativeCoroutinesRxSwift */,
 			);
 			productName = iosApp;
 			productReference = B9DA97B12DC1472C00A4DA20 /* Yuko.app */;
@@ -254,8 +254,8 @@
 			mainGroup = B9DA97A82DC1472C00A4DA20;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
-				FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				FBF5DF242E0663A9004CD513 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B9DA97B22DC1472C00A4DA20 /* Products */;
@@ -617,7 +617,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+		FBF5DF242E0663A9004CD513 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
@@ -625,7 +625,7 @@
 				minimumVersion = 1.20.2;
 			};
 		};
-		FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
+		FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/KMP-NativeCoroutines";
 			requirement = {
@@ -636,29 +636,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FB6A3C172DF2DE01003C5DFC /* ComposableArchitecture */ = {
+		FBF5DF252E0663A9004CD513 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB6A3C162DF2DE00003C5DFC /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			package = FBF5DF242E0663A9004CD513 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
 		};
-		FB99C5422DDC623D00628AB6 /* KMPNativeCoroutinesAsync */ = {
+		FBF5DF282E0663D1004CD513 /* KMPNativeCoroutinesAsync */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			package = FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
 			productName = KMPNativeCoroutinesAsync;
 		};
-		FB99C5442DDC623D00628AB6 /* KMPNativeCoroutinesCombine */ = {
+		FBF5DF2A2E0663D1004CD513 /* KMPNativeCoroutinesCombine */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			package = FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
 			productName = KMPNativeCoroutinesCombine;
 		};
-		FB99C5462DDC623D00628AB6 /* KMPNativeCoroutinesCore */ = {
+		FBF5DF2C2E0663D1004CD513 /* KMPNativeCoroutinesCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			package = FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
 			productName = KMPNativeCoroutinesCore;
 		};
-		FB99C5482DDC623D00628AB6 /* KMPNativeCoroutinesRxSwift */ = {
+		FBF5DF2E2E0663D1004CD513 /* KMPNativeCoroutinesRxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FB99C5412DDC623D00628AB6 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
+			package = FBF5DF272E0663D1004CD513 /* XCRemoteSwiftPackageReference "KMP-NativeCoroutines" */;
 			productName = KMPNativeCoroutinesRxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

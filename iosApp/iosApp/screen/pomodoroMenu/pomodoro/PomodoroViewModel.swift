@@ -28,32 +28,24 @@ final class PomodoroViewModel: ObservableObject {
 	
 	private func observeUiState() {
 		let publihser = createPublisher(for: viewModel.uiStateFlow)
-		stateCancellable = publihser.sink { completion in
-			print("completion \(completion)")
-		} receiveValue: { [weak self] state in
-			self?.update(state: state)
-		}
-	}
-	
-	private func update(state: PomodoroState) {
-		DispatchQueue.main.async {
-			self.uiState = state
-		}
+		stateCancellable = publihser
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("completion \(completion)")
+			} receiveValue: { [weak self] state in
+				self?.uiState = state
+			}
 	}
 	
 	private func observeEffects() {
 		let publihser = createPublisher(for: viewModel.uiEffect)
-		effectCancellable = publihser.sink { completion in
-			print("completion \(completion)")
-		} receiveValue: { [weak self] effect in
-			self?.send(effect: effect)
-		}
-	}
-	
-	private func send(effect: PomodoroEffect) {
-		DispatchQueue.main.async {
-			self.effectSubject.send(effect)
-		}
+		effectCancellable = publihser
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("completion \(completion)")
+			} receiveValue: { [weak self] effect in
+				self?.effectSubject.send(effect)
+			}
 	}
 	
 	deinit {

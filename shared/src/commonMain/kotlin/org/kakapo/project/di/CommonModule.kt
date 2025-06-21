@@ -43,7 +43,7 @@ object CommonModule {
         viewModel { AddNoteViewModel(get()) }
         viewModel { NoteViewModel(get()) }
         viewModel { TodosViewModel() }
-        viewModel { AddTodoViewModel() }
+        viewModel { AddTodoViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {

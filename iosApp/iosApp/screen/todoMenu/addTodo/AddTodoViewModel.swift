@@ -7,19 +7,33 @@ final class AddTodoViewModel: ObservableObject {
 	
 	private let viewModel: AddTodoViewModelKt = Koin.shared.get()
 	private let effectSubject = PassthroughSubject<AddTodoEffect, Never>()
+	private var stateCancellable: AnyCancellable?
 	private var effectCancellable: AnyCancellable?
 	
+	@Published var state: AddTodoState = .companion.default()
 	var effectPublsher: AnyPublisher<AddTodoEffect, Never> {
 		effectSubject.eraseToAnyPublisher()
 	}
 	
-	
 	func initData() {
 		observeEffect()
+		observeState()
 	}
 	
 	func handle(event: AddTodoEvent) {
 		viewModel.handleEvent(event: event)
+	}
+	
+	private func observeState() {
+		let publisher = createPublisher(for: viewModel.uiStateFlow)
+		
+		stateCancellable = publisher
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("Compose \(completion)")
+			} receiveValue: { [weak self] state in
+				self?.state = state
+			}
 	}
 	
 	private func observeEffect() {
@@ -36,5 +50,6 @@ final class AddTodoViewModel: ObservableObject {
 	
 	deinit {
 		effectCancellable?.cancel()
+		stateCancellable?.cancel()
 	}
 }

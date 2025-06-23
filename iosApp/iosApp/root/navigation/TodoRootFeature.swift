@@ -16,12 +16,10 @@ extension RootFeature {
 			return .none
 			
 		case .path(.element(_, .todosScreen(.navigateBack))):
-			_ = state.path.popLast()
-			return .none
+			return .run { send in await send(.navigateBack)}
 			
 		case .path(.element(_, .addTodoScreen(.navigateBack))):
-			_ = state.path.popLast()
-			return .none
+			return .run { send in await send(.navigateBack)}
 			
 		default : return .none
 		}

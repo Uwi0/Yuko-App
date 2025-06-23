@@ -4,7 +4,7 @@ import ComposableArchitecture
 @main
 struct iOSApp: App {
 	
-	static let store = Store(initialState: RootFeature.State(), reducer: { RootFeature()})
+	static let store = Store(initialState: RootFeature.State(), reducer: { RootFeature()._printChanges() })
 	
 	init () {
 		Koin.start()

@@ -13,6 +13,7 @@ struct RootFeature {
 		case path(StackAction<Path.State, Path.Action>)
 		case mainMenu(MainMenuFeature.Action)
 		case resetNavigation
+		case navigateBack
 	}
 	
 	@Reducer(state: .equatable)
@@ -47,9 +48,12 @@ struct RootFeature {
 		
 		.forEach(\.path, action: \.path)
 	}
+	
+	
 }
 
 extension RootFeature {
+	
 	static func baseReducer(state: inout State, action: Action) -> Effect<Action> {
 		switch action {
 			
@@ -68,6 +72,10 @@ extension RootFeature {
 			
 		case .resetNavigation:
 			state.path = StackState()
+			return .none
+			
+		case .navigateBack:
+			_ = state.path.popLast()
 			return .none
 			
 		default: return .none

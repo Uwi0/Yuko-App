@@ -19,16 +19,13 @@ extension RootFeature {
 			return .none
 			
 		case .path(.element(_, .notesScreen(.navigateBack))):
-			_ = state.path.popLast()
-			return .none
+			return .run { send in await send(.navigateBack)}
 			
 		case .path(.element(_, .addNoteScreen(.navigateBack))):
-			_ = state.path.popLast()
-			return .none
+			return .run { send in await send(.navigateBack)}
 			
 		case .path(.element(_, .noteScreen(.navigateBack))):
-			_ = state.path.popLast()
-			return .none
+			return .run { send in await send(.navigateBack)}
 			
 		case .path(.element(_, .noteScreen(.navigateToEdit(let noteId)))):
 			state.path.append(.addNoteScreen(AddNoteFeature.State(id: noteId)))

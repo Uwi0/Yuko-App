@@ -20,4 +20,4 @@ Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-mu
 
 ⚠️ Please note:
 This repository does not include the gamified version of Yuko.
-The gamified version, which features interactive UI elements and pixel-art design, is being developed privately and will be released at a later stage.
+The gamified version, which features interactive UI elements , is being developed privately and will be released at a later stage.

@@ -21,4 +21,5 @@ sealed class TodosEvent {
     data object NavigateBack : TodosEvent()
     data object TapToAddTodo : TodosEvent()
     data class NavigateToTodo(val id: Long) : TodosEvent()
+    data class ToggleTodoIsDone(val id: Long, val isDone: Boolean) : TodosEvent()
 }

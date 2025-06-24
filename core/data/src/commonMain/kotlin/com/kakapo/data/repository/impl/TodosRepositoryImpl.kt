@@ -8,6 +8,7 @@ import com.kakapo.database.model.TodosEntity
 import com.kakapo.model.TodoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
 
 class TodosRepositoryImpl(
     private val todoLocalDatasource: TodosLocalDatasource
@@ -21,8 +22,19 @@ class TodosRepositoryImpl(
         return todoLocalDatasource.getTodoById(id).map(TodosEntity::toTodoModel)
     }
 
+    override suspend fun toggleTodoIsDoneById(
+        id: Long,
+        isDone: Boolean
+    ): Result<Unit> {
+        return todoLocalDatasource.updateTodoFinishedById(
+            id = id,
+            isDone = isDone,
+            updateAt = Clock.System.now().epochSeconds
+        )
+    }
+
     override fun loadTodos(): Flow<List<TodoModel>> {
         return todoLocalDatasource.getTodos()
-            .map { todos -> todos.map (TodosEntity::toTodoModel) }
+            .map { todos -> todos.map(TodosEntity::toTodoModel) }
     }
 }

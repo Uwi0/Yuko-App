@@ -4,6 +4,7 @@ import Shared
 struct TodoItem: View {
 	
 	let item: TodoModel
+	var onToggle: (Int64, Bool) -> Void = {_, _ in }
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 	
 	private var isGridView: Bool {
@@ -50,7 +51,7 @@ struct TodoItem: View {
 	@ViewBuilder
 	private func CustomCheckbox() -> some View {
 		let tintColor = item.isDone ? ColorTheme.primary : ColorTheme.secondary
-		Button(action: {} ) {
+		Button(action: { onToggle(item.id, !item.isDone)} ) {
 			Image(systemName: item.isDone ? "checkmark.circle" : "circle")
 				.resizable()
 				.frame(width: 24, height: 24)

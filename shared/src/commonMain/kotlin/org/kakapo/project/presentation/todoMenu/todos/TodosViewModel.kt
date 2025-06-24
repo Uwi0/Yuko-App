@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.todoMenu.todos.TodosEffect.*
 import kotlin.native.ObjCName
 
 @ObjCName("TodosViewModelKt")
@@ -35,9 +36,10 @@ class TodosViewModel(
 
     fun handleEvent(event: TodosEvent) {
         when(event) {
-            is TodosEvent.NavigateToTodo -> emit(TodosEffect.NavigateToTodo(event.id))
-            TodosEvent.NavigateBack -> emit(TodosEffect.NavigateBack)
-            TodosEvent.TapToAddTodo -> emit(TodosEffect.TapToAddTodo)
+            is TodosEvent.NavigateToTodo -> emit(NavigateToTodo(event.id))
+            is TodosEvent.ToggleTodoIsDone -> toggleTodoIsDone(event.id, event.isDone)
+            TodosEvent.NavigateBack -> emit(NavigateBack)
+            TodosEvent.TapToAddTodo -> emit(TapToAddTodo)
         }
     }
 
@@ -51,9 +53,16 @@ class TodosViewModel(
         )
     }
 
+    private fun toggleTodoIsDone(id: Long, isDone: Boolean) = viewModelScope.launch {
+        todosRepository.toggleTodoIsDoneById(id, isDone).fold(
+            onSuccess = { loadTodos() },
+            onFailure = ::handleError
+        )
+    }
+
     private fun handleError(throwable: Throwable?){
         val message = throwable?.message ?: "An unknown error occurred"
-        emit(TodosEffect.ShowError(message))
+        emit(ShowError(message))
     }
 
     private fun emit(effect: TodosEffect) = viewModelScope.launch {

@@ -36,3 +36,9 @@ SELECT * FROM TodosTable;
 
 getTodoById:
 SELECT * FROM TodosTable WHERE id = ?;
+
+updateFinishedTodoById:
+UPDATE TodosTable SET
+    isDone = ?,
+    updatedAt = ?
+WHERE id = ?;

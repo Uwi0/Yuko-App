@@ -38,10 +38,15 @@ struct TodosListView: View {
 	@ViewBuilder
 	private func ListView() -> some View {
 		ForEach(todos, id: \.id) { item in
-			TodoItem(item: item)
-				.onTapGesture {
-					onEvent(.NavigateToTodo(id: item.id))
+			TodoItem(
+				item: item,
+				onToggle: { id, isDone in
+					onEvent(.ToggleTodoIsDone(id: id, isDone: isDone))
 				}
+			)
+			.onTapGesture {
+				onEvent(.NavigateToTodo(id: item.id))
+			}
 		}
 	}
 }

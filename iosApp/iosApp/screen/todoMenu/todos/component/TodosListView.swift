@@ -4,6 +4,7 @@ import Shared
 struct TodosListView: View {
 	
 	let todos: [TodoModel]
+	let onEvent: (TodosEvent) -> Void
 	
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 	private var isGrid: Bool {
@@ -38,10 +39,13 @@ struct TodosListView: View {
 	private func ListView() -> some View {
 		ForEach(todos, id: \.id) { item in
 			TodoItem(item: item)
+				.onTapGesture {
+					onEvent(.NavigateToTodo())
+				}
 		}
 	}
 }
 
 #Preview {
-	TodosListView(todos: dummyTodosModel)
+	TodosListView(todos: dummyTodosModel, onEvent: { _ in })
 }

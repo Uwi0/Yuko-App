@@ -2,7 +2,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct TodosFeature {
+struct TodoFeature {
 	@ObservableState
 	struct State: Equatable {
 		
@@ -10,16 +10,12 @@ struct TodosFeature {
 	
 	enum Action {
 		case navigateBack
-		case tapToAddTodo
-		case navigateToTodo
 	}
 	
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
 			case .navigateBack: return .none
-			case .tapToAddTodo: return .none
-			case .navigateToTodo: return .none
 			}
 		}
 	}

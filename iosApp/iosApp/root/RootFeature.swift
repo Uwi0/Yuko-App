@@ -28,6 +28,7 @@ struct RootFeature {
 		//MARK: Todos Feature
 		case todosScreen(TodosFeature)
 		case addTodoScreen(AddTodoFeature)
+		case todoScreen(TodoFeature)
 		
 		//MARK: Habit feature
 		case habitsScreen(HabitsFeature)

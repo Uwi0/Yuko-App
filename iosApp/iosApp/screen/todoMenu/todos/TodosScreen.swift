@@ -33,7 +33,7 @@ struct TodosScreen: View {
 	@ViewBuilder
 	private func ContentView() -> some View {
 		VStack(spacing: 16) {
-			TodosListView(todos: state.todos)
+			TodosListView(todos: state.todos, onEvent: onEvent)
 		}
 		.padding(.horizontal, 16)
 		.padding(.vertical, 24)

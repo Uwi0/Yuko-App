@@ -23,6 +23,7 @@ import org.kakapo.project.presentation.noteMenu.note.NoteViewModel
 import org.kakapo.project.presentation.noteMenu.notes.NotesViewModel
 import org.kakapo.project.presentation.pomodoroMenu.pomodoro.PomodoroViewModel
 import org.kakapo.project.presentation.todoMenu.addTodo.AddTodoViewModel
+import org.kakapo.project.presentation.todoMenu.todo.TodoViewModel
 import org.kakapo.project.presentation.todoMenu.todos.TodosViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -44,6 +45,7 @@ object CommonModule {
         viewModel { NoteViewModel(get()) }
         viewModel { TodosViewModel(get()) }
         viewModel { AddTodoViewModel(get()) }
+        viewModel { TodoViewModel()  }
     }
 
     val localDatasourceModule: Module = module {

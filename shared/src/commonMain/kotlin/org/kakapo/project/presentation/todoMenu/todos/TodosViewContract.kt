@@ -14,9 +14,11 @@ sealed class TodosEffect {
     data object NavigateBack : TodosEffect()
     data object TapToAddTodo : TodosEffect()
     data class ShowError(val message: String) : TodosEffect()
+    data object NavigateToTodo : TodosEffect()
 }
 
 sealed class TodosEvent {
     data object NavigateBack : TodosEvent()
     data object TapToAddTodo : TodosEvent()
+    data object NavigateToTodo : TodosEvent()
 }

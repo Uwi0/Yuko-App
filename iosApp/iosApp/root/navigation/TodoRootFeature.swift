@@ -16,10 +16,17 @@ extension RootFeature {
 			return .none
 			
 		case .path(.element(_, .todosScreen(.navigateBack))):
-			return .run { send in await send(.navigateBack)}
+			return .run { send in await send(.navigateBack) }
+			
+		case .path(.element(_, .todosScreen(.navigateToTodo))):
+			state.path.append(.todoScreen(TodoFeature.State()))
+			return .none
 			
 		case .path(.element(_, .addTodoScreen(.navigateBack))):
-			return .run { send in await send(.navigateBack)}
+			return .run { send in await send(.navigateBack) }
+			
+		case .path(.element(_, .todoScreen(.navigateBack))):
+			return .run { send in await send(.navigateBack) }
 			
 		default : return .none
 		}

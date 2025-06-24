@@ -42,14 +42,14 @@ object CommonModule {
         viewModel { NotesViewModel(get()) }
         viewModel { AddNoteViewModel(get()) }
         viewModel { NoteViewModel(get()) }
-        viewModel { TodosViewModel() }
+        viewModel { TodosViewModel(get()) }
         viewModel { AddTodoViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {
         factory<PomodoroSessionLocalDatasource> { PomodoroSessionLocalDatasourceImpl(get()) }
         factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get(), get(named(IO))) }
-        factory<TodosLocalDatasource> { TodosLocalDatasourceImpl(get()) }
+        factory<TodosLocalDatasource> { TodosLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferencesModule: Module = module {

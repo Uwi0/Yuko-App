@@ -3,6 +3,7 @@ import Shared
 
 struct TodosScreen: View {
 	
+	@Binding var state: TodosState
 	let onEvent: (TodosEvent) -> Void
 	
 	var body: some View {
@@ -32,7 +33,7 @@ struct TodosScreen: View {
 	@ViewBuilder
 	private func ContentView() -> some View {
 		VStack(spacing: 16) {
-			Text("Empty Todos")
+			TodosListView(todos: state.todos)
 		}
 		.padding(.horizontal, 16)
 		.padding(.vertical, 24)
@@ -40,5 +41,5 @@ struct TodosScreen: View {
 }
 
 #Preview {
-	TodosScreen(onEvent: { _ in })
+	TodosScreen(state: .constant(.companion.default()),onEvent: { _ in })
 }

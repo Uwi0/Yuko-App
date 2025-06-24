@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.TodosEntity
+import com.kakapo.model.TodoModel
 import kotlin.time.Clock
 
 data class TodosParam(
@@ -26,3 +27,10 @@ data class TodosParam(
         priority = priority
     )
 }
+
+fun TodosEntity.toTodoModel() = TodoModel(
+    id = id,
+    title = title,
+    description = description,
+    isDone = isDone
+)

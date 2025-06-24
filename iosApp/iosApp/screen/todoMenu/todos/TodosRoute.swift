@@ -8,7 +8,7 @@ struct TodosRoute: View {
 	@StateObject private var viewModel = TodosViewModel()
 	
 	var body: some View {
-		TodosScreen(onEvent: viewModel.handle(event:))
+		TodosScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData()
@@ -21,6 +21,7 @@ struct TodosRoute: View {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
 		case .tapToAddTodo: store.send(.tapToAddTodo)
+		case let .showError(error): print("error: \(error.message)")
 		}
 	}
 }

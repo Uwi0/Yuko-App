@@ -2,9 +2,9 @@ import SwiftUI
 import Shared
 
 struct NoteItemView: View {
-	@Environment(\.horizontalSizeClass) var horizontalSizeClass
+	
 	let note: NotesModel
-	private let borderWidth: CGFloat = 1
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 	private var isGridView: Bool {
 		horizontalSizeClass == .regular
 	}
@@ -17,11 +17,14 @@ struct NoteItemView: View {
 				.font(Typography.bodyMedium)
 		}
 		.padding()
-		.frame(maxWidth: isGridView ? 480 : .infinity, alignment: .leading)
+		.frame(
+			maxWidth: isGridView ? SizeConstant.ItemMaxWidht : .infinity,
+			alignment: .leading
+		)
 		.background(ColorTheme.surface)
 		.overlay(
 			RoundedRectangle(cornerRadius: ShapeStyles.medium)
-				.stroke(ColorTheme.onSurface, lineWidth: borderWidth)
+				.stroke(ColorTheme.onSurface, lineWidth: SizeConstant.BorderWidth)
 		)
 		
 	}

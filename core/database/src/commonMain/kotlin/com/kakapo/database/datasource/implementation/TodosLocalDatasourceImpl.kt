@@ -1,12 +1,22 @@
 package com.kakapo.database.datasource.implementation
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.TodosTable
 import com.kakapo.common.asLong
 import com.kakapo.database.datasource.base.TodosLocalDatasource
 import com.kakapo.database.model.TodosEntity
+import com.kakapo.database.model.toTodosEntity
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class TodosLocalDatasourceImpl(sqlDriver: SqlDriver): TodosLocalDatasource {
+class TodosLocalDatasourceImpl(
+    sqlDriver: SqlDriver,
+    private val dispatcher: CoroutineDispatcher
+): TodosLocalDatasource {
 
     private val todoQuery = Database(sqlDriver).todosTableQueries
 
@@ -21,5 +31,12 @@ class TodosLocalDatasourceImpl(sqlDriver: SqlDriver): TodosLocalDatasource {
             pinned = entity.pinned.asLong(),
             priority = entity.priority
         )
+    }
+
+    override fun getTodos(): Flow<List<TodosEntity>> {
+        return todoQuery.getTodos()
+            .asFlow()
+            .mapToList(dispatcher)
+            .map{ todos -> todos.map(TodosTable::toTodosEntity) }
     }
 }

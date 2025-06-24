@@ -21,7 +21,7 @@ struct TodosRoute: View {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
 		case .tapToAddTodo: store.send(.tapToAddTodo)
-		case .navigateToTodo: store.send(.navigateToTodo)
+		case let .navigateToTodo(item): store.send(.navigateToTodo(item.id))
 		case let .showError(error): print("error: \(error.message)")
 		}
 	}

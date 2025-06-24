@@ -35,9 +35,9 @@ class TodosViewModel(
 
     fun handleEvent(event: TodosEvent) {
         when(event) {
+            is TodosEvent.NavigateToTodo -> emit(TodosEffect.NavigateToTodo(event.id))
             TodosEvent.NavigateBack -> emit(TodosEffect.NavigateBack)
             TodosEvent.TapToAddTodo -> emit(TodosEffect.TapToAddTodo)
-            TodosEvent.NavigateToTodo -> emit(TodosEffect.NavigateToTodo)
         }
     }
 

@@ -18,8 +18,8 @@ extension RootFeature {
 		case .path(.element(_, .todosScreen(.navigateBack))):
 			return .run { send in await send(.navigateBack) }
 			
-		case .path(.element(_, .todosScreen(.navigateToTodo))):
-			state.path.append(.todoScreen(TodoFeature.State()))
+		case .path(.element(_, .todosScreen(.navigateToTodo(let id)))):
+			state.path.append(.todoScreen(TodoFeature.State(todoId: id)))
 			return .none
 			
 		case .path(.element(_, .addTodoScreen(.navigateBack))):

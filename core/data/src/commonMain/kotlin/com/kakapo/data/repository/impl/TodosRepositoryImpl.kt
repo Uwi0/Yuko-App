@@ -17,6 +17,10 @@ class TodosRepositoryImpl(
         return todoLocalDatasource.insertTodo(param.toEntity())
     }
 
+    override suspend fun loadTodoById(id: Long): Result<TodoModel> {
+        return todoLocalDatasource.getTodoById(id).map(TodosEntity::toTodoModel)
+    }
+
     override fun loadTodos(): Flow<List<TodoModel>> {
         return todoLocalDatasource.getTodos()
             .map { todos -> todos.map (TodosEntity::toTodoModel) }

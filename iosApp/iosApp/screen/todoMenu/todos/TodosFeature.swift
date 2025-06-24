@@ -11,7 +11,7 @@ struct TodosFeature {
 	enum Action {
 		case navigateBack
 		case tapToAddTodo
-		case navigateToTodo
+		case navigateToTodo(Int64)
 	}
 	
 	var body: some ReducerOf<Self> {

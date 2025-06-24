@@ -33,3 +33,6 @@ INSERT OR ABORT INTO TodosTable(
 
 getTodos:
 SELECT * FROM TodosTable;
+
+getTodoById:
+SELECT * FROM TodosTable WHERE id = ?;

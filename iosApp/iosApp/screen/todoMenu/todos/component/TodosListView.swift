@@ -40,7 +40,7 @@ struct TodosListView: View {
 		ForEach(todos, id: \.id) { item in
 			TodoItem(item: item)
 				.onTapGesture {
-					onEvent(.NavigateToTodo())
+					onEvent(.NavigateToTodo(id: item.id))
 				}
 		}
 	}

@@ -33,6 +33,10 @@ class TodosLocalDatasourceImpl(
         )
     }
 
+    override suspend fun getTodoById(id: Long): Result<TodosEntity> = runCatching {
+        todoQuery.getTodoById(id).executeAsOne().toTodosEntity()
+    }
+
     override fun getTodos(): Flow<List<TodosEntity>> {
         return todoQuery.getTodos()
             .asFlow()

@@ -8,10 +8,10 @@ struct TodoRoute: View {
 	@StateObject private var viewModel = TodoViewModel()
 	
 	var body: some View {
-		TodoScreen(onEvent: viewModel.handle(event:))
+		TodoScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
-				viewModel.initData()
+				viewModel.initData(id: store.todoId)
 			}
 			.onReceive(viewModel.effectPublihser) { effect in
 				observe(effect: effect)

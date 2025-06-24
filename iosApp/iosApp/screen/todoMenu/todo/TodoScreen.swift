@@ -3,6 +3,7 @@ import Shared
 
 struct TodoScreen: View {
 	
+	@Binding var state: TodoState
 	let onEvent: (TodoEvent) -> Void
 	
 	var body: some View {
@@ -21,6 +22,10 @@ struct TodoScreen: View {
 	@ViewBuilder
 	private func ContentView() -> some View {
 		VStack(spacing: 16) {
+			Text(state.title)
+				.font(Typography.titleMedium)
+			Text(state.description_)
+				.font(Typography.bodyMedium)
 			Spacer()
 		}
 		.padding(.horizontal, 16)
@@ -29,5 +34,5 @@ struct TodoScreen: View {
 }
 
 #Preview {
-	TodoScreen(onEvent: { _ in })
+	TodoScreen(state: .constant(.companion.default()),onEvent: { _ in })
 }

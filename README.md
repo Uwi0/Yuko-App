@@ -17,3 +17,7 @@ is edited
 
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+⚠️ Please note:
+This repository does not include the gamified version of Yuko.
+The gamified version, which features interactive UI elements , is being developed privately and will be released at a later stage.

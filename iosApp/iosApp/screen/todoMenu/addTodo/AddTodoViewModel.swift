@@ -15,7 +15,8 @@ final class AddTodoViewModel: ObservableObject {
 		effectSubject.eraseToAnyPublisher()
 	}
 	
-	func initData() {
+	func initData(id: Int64) {
+		viewModel.doInitData(id: id)
 		observeEffect()
 		observeState()
 	}

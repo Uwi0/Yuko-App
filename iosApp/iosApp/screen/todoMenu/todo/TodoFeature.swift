@@ -10,12 +10,14 @@ struct TodoFeature {
 	
 	enum Action {
 		case navigateBack
+		case tapToEditTodo(Int64)
 	}
 	
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
 			case .navigateBack: return .none
+			case .tapToEditTodo: return .none
 			}
 		}
 	}

@@ -20,8 +20,10 @@ data class  TodoState(
 sealed class TodoEffect {
     data object NavigateBack : TodoEffect()
     data class ShowError(val message: String) : TodoEffect()
+    data class TapToEditTodo(val id: Long) : TodoEffect()
 }
 
 sealed class TodoEvent {
     data object NavigateBack : TodoEvent()
+    data object TapToEditTodo : TodoEvent()
 }

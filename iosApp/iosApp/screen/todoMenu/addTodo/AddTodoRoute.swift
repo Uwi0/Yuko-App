@@ -11,7 +11,7 @@ struct AddTodoRoute: View {
 		AddTodoScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
-				viewModel.initData()
+				viewModel.initData(id: store.todoId)
 			}
 			.onReceive(viewModel.effectPublsher) { effect in
 					observe(effect: effect)

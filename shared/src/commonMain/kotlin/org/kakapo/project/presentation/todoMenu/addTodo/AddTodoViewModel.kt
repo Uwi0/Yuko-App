@@ -3,6 +3,7 @@ package org.kakapo.project.presentation.todoMenu.addTodo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.TodosRepository
+import com.kakapo.model.TodoModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,6 +27,13 @@ class AddTodoViewModel(
     val uiEffect get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<AddTodoEffect>()
 
+    private var todoId: Long = 0
+
+    fun initData(id: Long) {
+        todoId = id
+        if (id > 0) loadTodoBy(id)
+    }
+
     fun handleEvent(event: AddTodoEvent) {
         when(event) {
             is AddTodoEvent.ChangedDescription -> _uiState.update { it.copy(description = event.description) }
@@ -35,8 +43,18 @@ class AddTodoViewModel(
         }
     }
 
+    private fun loadTodoBy(id: Long) = viewModelScope.launch {
+        val onSuccess: (TodoModel) -> Unit = { todo ->
+            _uiState.update { it.copy(todo = todo) }
+        }
+        todosRepository.loadTodoBy(id).fold(
+            onSuccess = onSuccess,
+            onFailure = ::handleError
+        )
+    }
+
     private fun saveTodo() = viewModelScope.launch {
-        val todoParam = uiState.value.asTodosParam()
+        val todoParam = uiState.value.asTodosParam(todoId)
         val onSuccess: (Unit) -> Unit = {
             emit(AddTodoEffect.NavigateBack)
         }

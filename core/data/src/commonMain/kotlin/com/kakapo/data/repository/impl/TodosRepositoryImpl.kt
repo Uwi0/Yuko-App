@@ -15,10 +15,15 @@ class TodosRepositoryImpl(
 ) : TodosRepository {
 
     override suspend fun saveTodos(param: TodosParam): Result<Unit> {
-        return todoLocalDatasource.insertTodo(param.toEntity())
+        val todoEntity = param.toEntity()
+        return if (param.id == 0L) {
+            todoLocalDatasource.insertTodo(todoEntity)
+        } else {
+            todoLocalDatasource.updateTodoById(todoEntity)
+        }
     }
 
-    override suspend fun loadTodoById(id: Long): Result<TodoModel> {
+    override suspend fun loadTodoBy(id: Long): Result<TodoModel> {
         return todoLocalDatasource.getTodoById(id).map(TodosEntity::toTodoModel)
     }
 

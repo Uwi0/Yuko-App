@@ -7,5 +7,6 @@ interface TodosLocalDatasource {
     suspend fun insertTodo(entity: TodosEntity): Result<Unit>
     suspend fun getTodoById(id: Long): Result<TodosEntity>
     suspend fun updateTodoFinishedById(id: Long, isDone: Boolean, updateAt: Long): Result<Unit>
+    suspend fun updateTodoById(entity: TodosEntity): Result<Unit>
     fun getTodos(): Flow<List<TodosEntity>>
 }

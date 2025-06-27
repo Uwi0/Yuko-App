@@ -37,6 +37,7 @@ class TodoViewModel(
     fun handleEvent(event: TodoEvent) {
         when(event) {
             TodoEvent.NavigateBack -> emit(TodoEffect.NavigateBack)
+            TodoEvent.TapToEditTodo -> emit(TodoEffect.TapToEditTodo(todoId))
         }
     }
 
@@ -44,7 +45,7 @@ class TodoViewModel(
         val onSuccess: (TodoModel) -> Unit = { todo ->
             _uiState.update { it.copy(todo = todo) }
         }
-        todosRepository.loadTodoById(id).fold(
+        todosRepository.loadTodoBy(id).fold(
             onSuccess = onSuccess,
             onFailure = ::handleError
         )

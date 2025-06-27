@@ -5,7 +5,7 @@ import ComposableArchitecture
 struct AddTodoFeature {
 	@ObservableState
 	struct State: Equatable {
-		
+		var todoId: Int64 = 0
 	}
 	
 	enum Action {

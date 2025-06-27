@@ -1,12 +1,20 @@
 package org.kakapo.project.presentation.todoMenu.addTodo
 
 import com.kakapo.data.model.TodosParam
+import com.kakapo.model.TodoModel
 
 data class AddTodoState(
     val title: String = "",
     val description: String = ""
 ) {
-    fun asTodosParam() = TodosParam(
+
+    fun copy(todo: TodoModel) = copy(
+        title = todo.title,
+        description = todo.description
+    )
+
+    fun asTodosParam(id: Long) = TodosParam(
+        id = id,
         title = title,
         description = description
     )

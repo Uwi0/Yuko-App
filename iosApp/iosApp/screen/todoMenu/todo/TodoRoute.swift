@@ -22,6 +22,7 @@ struct TodoRoute: View {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
 		case let .showError(error): print("error: \(error)")
+		case let .tapToEditTodo(todo): store.send(.tapToEditTodo(todo.id))
 		}
 	}
 }

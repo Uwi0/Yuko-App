@@ -42,3 +42,14 @@ UPDATE TodosTable SET
     isDone = ?,
     updatedAt = ?
 WHERE id = ?;
+
+updateTodoById:
+UPDATE TodosTable SET
+    title = ?,
+    description = ?,
+    isDone = ?,
+    dueDate = ?,
+    updatedAt = ?,
+    pinned = ?,
+    priority = ?
+WHERE id = ?;

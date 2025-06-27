@@ -49,6 +49,19 @@ class TodosLocalDatasourceImpl(
         )
     }
 
+    override suspend fun updateTodoById(entity: TodosEntity): Result<Unit> = runCatching {
+        todoQuery.updateTodoById(
+            title = entity.title,
+            description = entity.description,
+            isDone = entity.isDone.asLong(),
+            dueDate = entity.dueDate,
+            updatedAt = entity.updatedAt,
+            pinned = entity.pinned.asLong(),
+            priority = entity.priority,
+            id = entity.id
+        )
+    }
+
     override fun getTodos(): Flow<List<TodosEntity>> {
         return todoQuery.getTodos()
             .asFlow()

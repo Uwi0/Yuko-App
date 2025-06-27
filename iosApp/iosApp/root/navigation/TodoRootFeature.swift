@@ -28,6 +28,10 @@ extension RootFeature {
 		case .path(.element(_, .todoScreen(.navigateBack))):
 			return .run { send in await send(.navigateBack) }
 			
+		case .path(.element(_, .todoScreen(.tapToEditTodo(let id)))):
+			state.path.append(.addTodoScreen(AddTodoFeature.State(todoId: id)))
+			return .none
+			
 		default : return .none
 		}
 	}

@@ -2,7 +2,7 @@ package com.kakapo.data.model
 
 import com.kakapo.database.model.NotesEntity
 import com.kakapo.model.NotesModel
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 data class NotesParam(
     val id: Long = 0L,

@@ -8,7 +8,7 @@ import com.kakapo.database.model.TodosEntity
 import com.kakapo.model.TodoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class TodosRepositoryImpl(
     private val todoLocalDatasource: TodosLocalDatasource

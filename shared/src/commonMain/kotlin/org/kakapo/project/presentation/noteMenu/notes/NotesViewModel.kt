@@ -2,8 +2,6 @@ package org.kakapo.project.presentation.noteMenu.notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakapo.common.asResult
-import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -13,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.ext.asCustomResult
+import org.kakapo.project.presentation.ext.subscribe
 import kotlin.native.ObjCName
 
 @ObjCName("NotesViewModelKt")
@@ -44,7 +44,7 @@ class NotesViewModel(
         val onSuccess: (List<NotesModel>) -> Unit = { notes ->
             _uiState.value = _uiState.value.copy(notes = notes)
         }
-        notesRepository.loadNotes().asResult().subscribe(
+        notesRepository.loadNotes().asCustomResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )

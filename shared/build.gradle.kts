@@ -21,7 +21,6 @@ kotlin {
             export(projects.core.common)
             export(libs.androidx.lifecycle.viewmodel)
             freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
-            freeCompilerArgs += "-XXLanguage:+ImplicitSignedToUnsignedIntegerConversion"
             xcf.add(this)
         }
     }

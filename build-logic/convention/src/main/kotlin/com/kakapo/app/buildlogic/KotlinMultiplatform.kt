@@ -55,7 +55,6 @@ internal fun Project.configureKotlinMultiplatform(
             compileTaskProvider.configure {
                 compilerOptions {
                     freeCompilerArgs.add("-Xallocator=custom")
-                    freeCompilerArgs.add("-XXLanguage:+ImplicitSignedToUnsignedIntegerConversion")
                     freeCompilerArgs.add("-Xadd-light-debug=enable")
                     freeCompilerArgs.add("-Xexpect-actual-classes")
 

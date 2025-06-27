@@ -2,6 +2,8 @@ package org.kakapo.project.presentation.todoMenu.todos
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakapo.common.asResult
+import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.TodosRepository
 import com.kakapo.model.TodoModel
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
@@ -12,8 +14,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.kakapo.project.presentation.ext.asCustomResult
-import org.kakapo.project.presentation.ext.subscribe
 import org.kakapo.project.presentation.todoMenu.todos.TodosEffect.*
 import kotlin.native.ObjCName
 
@@ -47,7 +47,7 @@ class TodosViewModel(
         val onSuccess: (List<TodoModel>) -> Unit = { todos ->
             _uiState.update { it.copy(todos = todos) }
         }
-        todosRepository.loadTodos().asCustomResult().subscribe(
+        todosRepository.loadTodos().asResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )

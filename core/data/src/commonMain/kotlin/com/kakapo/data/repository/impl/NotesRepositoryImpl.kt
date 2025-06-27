@@ -1,7 +1,7 @@
 package com.kakapo.data.repository.impl
 
 import co.touchlab.kermit.Logger
-import com.kakapo.common.ext.mapEach
+import com.kakapo.common.mapEach
 import com.kakapo.data.model.NotesParam
 import com.kakapo.data.model.toNotesModel
 import com.kakapo.data.repository.base.NotesRepository

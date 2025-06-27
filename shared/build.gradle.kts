@@ -18,6 +18,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             export(projects.core.model)
+            export(projects.core.common)
             export(libs.androidx.lifecycle.viewmodel)
             freeCompilerArgs += "-Xbinary=bundleId=com.kakapo.oakane"
             freeCompilerArgs += "-XXLanguage:+ImplicitSignedToUnsignedIntegerConversion"
@@ -28,6 +29,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.model)
+            api(projects.core.common)
             implementation(projects.core.database)
             implementation(projects.core.data)
             implementation(projects.core.preference)

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.10.1"
+agp = "8.11.0"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -24,7 +24,7 @@ kotlinx-serialization = "1.8.0"
 ksp = "2.1.21-2.0.1"
 kmp-nativecoroutines = "1.0.0-ALPHA-42"
 sqldelight = "2.1.0"
-sekie = "0.10.2"
+sekie = "0.10.4"
 runner = "1.6.2"
 core = "1.6.1"
 

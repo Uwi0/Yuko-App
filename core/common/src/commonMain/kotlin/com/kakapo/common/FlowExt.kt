@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.ext
+package com.kakapo.common
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,7 +12,7 @@ sealed interface CustomResult<out T> {
     data object Loading : CustomResult<Nothing>
 }
 
-fun <T> Flow<T>?.asCustomResult(): Flow<CustomResult<T>> {
+fun <T> Flow<T>?.asResult(): Flow<CustomResult<T>> {
     return this?.map<T, CustomResult<T>> {
         CustomResult.Success(it)
     }
@@ -36,3 +36,7 @@ suspend fun <T> Flow<CustomResult<T>>.subscribe(
         }
     }
 }
+
+
+inline fun <T, R> Flow<List<T>>.mapEach(crossinline transform: (T) -> R): Flow<List<R>> =
+    this.map { list -> list.map(transform) }

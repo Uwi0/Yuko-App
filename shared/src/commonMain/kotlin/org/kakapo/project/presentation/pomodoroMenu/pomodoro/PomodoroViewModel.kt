@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlin.native.ObjCName
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class PomodoroViewModel(
     private val _uiState = MutableStateFlow(PomodoroState())
 
     @NativeCoroutines
-    val uiEffect get() = _uiEffect.asSharedFlow()
+    val uiEffect: SharedFlow<PomodoroEffect> get() = _uiEffect.asSharedFlow()
     private val _uiEffect = MutableSharedFlow<PomodoroEffect>()
 
     private var startTime = 0L

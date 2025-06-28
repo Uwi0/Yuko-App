@@ -50,6 +50,7 @@ final class AddTodoViewModel: ObservableObject {
 	}
 	
 	deinit {
+		viewModel.onCleared()
 		effectCancellable?.cancel()
 		stateCancellable?.cancel()
 	}

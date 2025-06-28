@@ -1,33 +1,17 @@
 package org.kakapo.project.presentation.todoMenu.todo
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.TodosRepository
 import com.kakapo.model.TodoModel
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
 @ObjCName("TodoViewModelKt")
 class TodoViewModel(
     private val todosRepository: TodosRepository
-): ViewModel() {
-
-    @NativeCoroutinesState
-    val uiState: StateFlow<TodoState> get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(TodoState())
-
-    @NativeCoroutines
-    val uiEffect: SharedFlow<TodoEffect> get() = _uiEffect.asSharedFlow()
-    private val _uiEffect = MutableSharedFlow<TodoEffect>()
+): BaseViewModel<TodoState, TodoEffect, TodoEvent>(TodoState()) {
 
     private var todoId: Long = 0
 
@@ -36,7 +20,7 @@ class TodoViewModel(
         loadTodo(id)
     }
 
-    fun handleEvent(event: TodoEvent) {
+    override fun handleEvent(event: TodoEvent) {
         when(event) {
             TodoEvent.NavigateBack -> emit(TodoEffect.NavigateBack)
             TodoEvent.TapToEditTodo -> emit(TodoEffect.TapToEditTodo(todoId))
@@ -56,9 +40,5 @@ class TodoViewModel(
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"
         emit(TodoEffect.ShowError(message))
-    }
-
-    private fun emit(effect: TodoEffect) = viewModelScope.launch {
-        _uiEffect.emit(effect)
     }
 }

@@ -32,6 +32,7 @@ final class TodoViewModel: ObservableObject {
 			.sink { completion in
 				print("completion \(completion)")
 			} receiveValue: { [weak self] state in
+				guard let state else { return }
 				self?.state = state
 			}
 	}
@@ -43,11 +44,13 @@ final class TodoViewModel: ObservableObject {
 			.sink { completion in
 				print("completion \(completion)")
 			} receiveValue: { [weak self] effect in
+				guard let effect else { return }
 				self?.effectSubject.send(effect)
 			}
 	}
 	
 	deinit {
+		viewModel.onCleared()
 		stateCancellable?.cancel()
 		effectCancellable?.cancel()
 	}

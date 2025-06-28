@@ -1,35 +1,19 @@
 package org.kakapo.project.presentation.pomodoroMenu.pomodoro
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.PomodoroSessionRepository
-import com.kakapo.model.SessionType
 import com.kakapo.model.SessionSettingsModel
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlin.native.ObjCName
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import com.kakapo.model.SessionType
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.util.BaseViewModel
+import kotlin.native.ObjCName
 import kotlin.time.Clock
 
 @ObjCName("PomodoroViewModelKT")
 class PomodoroViewModel(
     private val sessionRepository: PomodoroSessionRepository,
-) : ViewModel() {
-
-    @NativeCoroutinesState
-    val uiState: StateFlow<PomodoroState> get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(PomodoroState())
-
-    @NativeCoroutines
-    val uiEffect: SharedFlow<PomodoroEffect> get() = _uiEffect.asSharedFlow()
-    private val _uiEffect = MutableSharedFlow<PomodoroEffect>()
+) : BaseViewModel<PomodoroState, PomodoroEffect, PomodoroEvent>(PomodoroState()) {
 
     private var startTime = 0L
 
@@ -38,7 +22,7 @@ class PomodoroViewModel(
         loadTotalPointEarned()
     }
 
-    fun handleEvent(event: PomodoroEvent) {
+    override fun handleEvent(event: PomodoroEvent) {
         when (event) {
             is PomodoroEvent.ChangePomodoroTime -> _uiState.update { it.copy(pomodoroTime = event.time) }
             is PomodoroEvent.ChangeFocusTime -> _uiState.update { it.copy(focusDuration = event.time) }
@@ -148,9 +132,5 @@ class PomodoroViewModel(
 
     private fun handleError(throwable: Throwable?) {
         emit(PomodoroEffect.ShowError(throwable?.message ?: "Unknown Error"))
-    }
-
-    private fun emit(effect: PomodoroEffect) = viewModelScope.launch {
-        _uiEffect.emit(effect)
     }
 }

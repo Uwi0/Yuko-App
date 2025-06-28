@@ -1,33 +1,17 @@
 package org.kakapo.project.presentation.noteMenu.addNote
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
 @ObjCName("AddNoteViewModelKt")
 class AddNoteViewModel(
     private val notesRepository: NotesRepository
-) : ViewModel() {
-
-    @NativeCoroutinesState
-    val uiState: StateFlow<AddNoteState> get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(AddNoteState())
-
-    @NativeCoroutines
-    val uiEffect: SharedFlow<AddNoteEffect> get() = _uiEffect.asSharedFlow()
-    private val _uiEffect = MutableSharedFlow<AddNoteEffect>()
+) : BaseViewModel<AddNoteState, AddNoteEffect, AddNoteEvent>(AddNoteState()) {
 
     private var noteId: Long = 0
 
@@ -36,7 +20,7 @@ class AddNoteViewModel(
         if(noteId != 0L) loadNoteBy(noteId)
     }
 
-    fun handleEvent(event: AddNoteEvent) {
+    override fun handleEvent(event: AddNoteEvent) {
         when (event) {
             AddNoteEvent.NavigateBack -> emit(AddNoteEffect.NavigateBack)
             is AddNoteEvent.NoteChanged -> _uiState.update { it.copy(note = event.note) }
@@ -66,9 +50,5 @@ class AddNoteViewModel(
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"
         emit(AddNoteEffect.ShowError(message))
-    }
-
-    private fun emit(effect: AddNoteEffect) = viewModelScope.launch {
-        _uiEffect.emit(effect)
     }
 }

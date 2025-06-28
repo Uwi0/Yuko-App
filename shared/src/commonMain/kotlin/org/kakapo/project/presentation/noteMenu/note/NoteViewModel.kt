@@ -1,32 +1,16 @@
 package org.kakapo.project.presentation.noteMenu.note
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
 @ObjCName("NoteViewModelKt")
 class NoteViewModel(
     private val notesRepository: NotesRepository
-): ViewModel() {
-
-    @NativeCoroutinesState
-    val uiState: StateFlow<NoteState> get() = _uiState.asStateFlow()
-    private val _uiState = MutableStateFlow(NoteState())
-
-    @NativeCoroutines
-    val uiEffect: SharedFlow<NoteEffect> get() = _uiEffect.asSharedFlow()
-    private val _uiEffect = MutableSharedFlow<NoteEffect>()
+): BaseViewModel<NoteState, NoteEffect, NoteEvent>(NoteState()) {
 
     private var noteId: Long = 0
 
@@ -35,7 +19,7 @@ class NoteViewModel(
         loadNoteBy(noteId)
     }
 
-    fun handleEvent(event: NoteEvent) {
+    override fun handleEvent(event: NoteEvent) {
         when(event) {
             NoteEvent.NavigateBack -> emit(NoteEffect.NavigateBack)
             NoteEvent.DeleteNote -> deleteNote()
@@ -66,9 +50,5 @@ class NoteViewModel(
     private fun handleError(throwable: Throwable?) {
         val message = throwable?.message ?: "Unknown error"
         emit(NoteEffect.ShowError(message))
-    }
-
-    private fun emit(effect: NoteEffect) = viewModelScope.launch {
-        _uiEffect.emit(effect)
     }
 }

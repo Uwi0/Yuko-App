@@ -10,10 +10,10 @@ struct RootView: View {
 			MainMenuScreen(store: store.scope(state: \.mainMenu, action: \.mainMenu))
 		} destination: { state in
 			switch state.case {
+				
 			case let .pomodoroScreen(pomodoroStore):
 				PomodoroRoute(store: pomodoroStore)
 				
-			//MARK: Note Screen Feature
 			case let .notesScreen(notesStore):
 				NotesRoute(store: notesStore)
 				
@@ -34,6 +34,9 @@ struct RootView: View {
 				
 			case let .habitsScreen(habitsStore):
 				HabitsRoute(store: habitsStore)
+				
+			case let .addHabitScreen(addHabitStore):
+				AddHabitRoute(store: addHabitStore)
 				
 			case let .settingsScreen(settingsStore):
 				SettingsRoute(store: settingsStore)

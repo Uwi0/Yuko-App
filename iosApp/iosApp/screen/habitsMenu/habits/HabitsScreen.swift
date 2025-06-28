@@ -30,6 +30,9 @@ struct HabitsScreen: View {
 			.resizable()
 			.scaledToFit()
 			.frame(width: 24, height: 24)
+			.onTapGesture {
+				onEvent(.TapToAddHabit())
+			}
 	}
 	
 	@ViewBuilder

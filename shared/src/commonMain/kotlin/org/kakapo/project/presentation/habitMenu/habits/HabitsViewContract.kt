@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.habitMenu
+package org.kakapo.project.presentation.habitMenu.habits
 
 data class HabitsState(
     val loading: Boolean = false

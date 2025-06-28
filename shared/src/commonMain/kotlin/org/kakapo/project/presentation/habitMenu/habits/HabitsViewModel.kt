@@ -1,4 +1,4 @@
-package org.kakapo.project.presentation.habitMenu
+package org.kakapo.project.presentation.habitMenu.habits
 
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName

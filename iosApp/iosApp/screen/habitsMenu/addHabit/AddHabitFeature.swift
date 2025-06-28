@@ -2,7 +2,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct HabitsFeature {
+struct AddHabitFeature {
 	@ObservableState
 	struct State: Equatable {
 		
@@ -10,14 +10,12 @@ struct HabitsFeature {
 	
 	enum Action {
 		case navigateBack
-		case tapToAddHabit
 	}
 	
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
 			case .navigateBack: return .none
-			case .tapToAddHabit: return .none
 			}
 		}
 	}

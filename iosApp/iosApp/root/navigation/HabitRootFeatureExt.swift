@@ -13,6 +13,10 @@ extension RootFeature {
 		case .path(.element(_, .habitsScreen(.navigateBack))):
 			return .run { send in await send(.navigateBack) }
 			
+		case .path(.element(_, .habitsScreen(.tapToAddHabit))):
+			state.path.append(.addHabitScreen(AddHabitFeature.State()))
+			return .none
+			
 		default : return .none
 		}
 	}

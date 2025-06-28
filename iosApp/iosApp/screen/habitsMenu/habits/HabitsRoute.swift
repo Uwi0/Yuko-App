@@ -21,7 +21,7 @@ struct HabitsRoute: View {
 	private func observe(effect: HabitsEffect) {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
-		case .tapToAddHabit: store.send(.tapToAddHabbit)
+		case .tapToAddHabit: store.send(.tapToAddHabit)
 		}
 	}
 }

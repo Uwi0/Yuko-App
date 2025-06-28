@@ -32,6 +32,7 @@ struct RootFeature {
 		
 		//MARK: Habit feature
 		case habitsScreen(HabitsFeature)
+		case addHabitScreen(AddHabitFeature)
 		case settingsScreen(SettingsFeature)
 	}
 	

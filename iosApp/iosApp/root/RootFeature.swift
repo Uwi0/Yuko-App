@@ -46,6 +46,7 @@ struct RootFeature {
 		Reduce(Self.reducePomodoroNavigation(state:action:))
 		Reduce(Self.reduceNoteNavigation(state:action:))
 		Reduce(Self.reduceTodosNavigation(state:action:))
+		Reduce(Self.reduceHabitNavigation(state:action:))
 		
 		.forEach(\.path, action: \.path)
 	}
@@ -57,11 +58,6 @@ extension RootFeature {
 	
 	static func baseReducer(state: inout State, action: Action) -> Effect<Action> {
 		switch action {
-			
-		case .mainMenu(.tapToHabits):
-			state.path = StackState()
-			state.path.append(.habitsScreen(HabitsFeature.State()))
-			return .none
 			
 		case .mainMenu(.tapToSettings):
 			state.path = StackState()

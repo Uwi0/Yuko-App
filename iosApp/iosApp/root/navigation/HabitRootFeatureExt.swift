@@ -17,6 +17,9 @@ extension RootFeature {
 			state.path.append(.addHabitScreen(AddHabitFeature.State()))
 			return .none
 			
+		case .path(.element(_, .addHabitScreen(.navigateBack))):
+			return .run { send in await send(.navigateBack) }
+			
 		default : return .none
 		}
 	}

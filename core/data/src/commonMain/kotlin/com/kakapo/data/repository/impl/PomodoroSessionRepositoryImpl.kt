@@ -5,7 +5,7 @@ import com.kakapo.data.model.toSessionSettingsModel
 import com.kakapo.data.model.toSessionSettingsPref
 import com.kakapo.data.repository.base.PomodoroSessionRepository
 import com.kakapo.database.datasource.base.PomodoroSessionLocalDatasource
-import com.kakapo.model.SessionSettingsModel
+import com.kakapo.model.pomodoro.SessionSettingsModel
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.utils.getSessionSettings
 import com.kakapo.preference.datasource.utils.saveSessionSettings

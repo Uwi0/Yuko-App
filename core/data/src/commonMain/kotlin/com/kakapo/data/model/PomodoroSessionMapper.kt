@@ -1,7 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.PomodoroSessionEntity
-import com.kakapo.model.SessionSettingsModel
+import com.kakapo.model.pomodoro.SessionSettingsModel
 import com.kakapo.preference.model.SessionSettingsPref
 
 data class PomodoroSessionParam(

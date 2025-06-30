@@ -53,7 +53,7 @@ object CommonModule {
         viewModel { AddTodoViewModel(get()) }
         viewModel { TodoViewModel(get()) }
         viewModel { HabitsViewModel() }
-        viewModel { AddHabitViewModel() }
+        viewModel { AddHabitViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {

@@ -20,7 +20,9 @@ class HabitLocalDatasourceImpl(
             startDate = entity.startDate,
             isArchived = entity.isArchived.asLong(),
             createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
+            updatedAt = entity.updatedAt,
+            habitType = entity.habitType,
+            dayFrequency = entity.dayFrequency
         )
     }
 }

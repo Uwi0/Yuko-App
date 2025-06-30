@@ -1,4 +1,4 @@
-package com.kakapo.model
+package com.kakapo.model.pomodoro
 
 data class SessionSettingsModel(
     val focusDuration: Double,

@@ -1,8 +1,8 @@
 package org.kakapo.project.presentation.pomodoroMenu.pomodoro
 
 import com.kakapo.data.model.PomodoroSessionParam
-import com.kakapo.model.SessionType
-import com.kakapo.model.SessionSettingsModel
+import com.kakapo.model.pomodoro.SessionType
+import com.kakapo.model.pomodoro.SessionSettingsModel
 import org.kakapo.project.presentation.pomodoroMenu.pomodoro.ext.toFormatMinutesAndSeconds
 import kotlin.time.Clock
 

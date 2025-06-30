@@ -2,8 +2,8 @@ package org.kakapo.project.presentation.pomodoroMenu.pomodoro
 
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.PomodoroSessionRepository
-import com.kakapo.model.SessionSettingsModel
-import com.kakapo.model.SessionType
+import com.kakapo.model.pomodoro.SessionSettingsModel
+import com.kakapo.model.pomodoro.SessionType
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel

@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface HabitLocalDatasource {
     suspend fun insertHabit(entity: HabitEntity): Result<Unit>
+    suspend fun deleteHabitBy(id: Long): Result<Unit>
     fun getHabits(today: Long): Flow<List<HabitEntity>>
 }

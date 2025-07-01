@@ -19,6 +19,10 @@ class HabitRepositoryImpl(
         return habitLocalDatasource.insertHabit(entity)
     }
 
+    override suspend fun deleteHabitBy(id: Long): Result<Unit> {
+        return habitLocalDatasource.deleteHabitBy(id)
+    }
+
     override fun loadHabitsToday(): Flow<List<HabitModel>> {
         val toHabits: (List<HabitEntity>) -> List<HabitModel> = { habits ->
             habits.map(HabitEntity::toHabitModel)

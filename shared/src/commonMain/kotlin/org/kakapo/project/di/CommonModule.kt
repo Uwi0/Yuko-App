@@ -23,6 +23,8 @@ import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.kakapo.project.presentation.habitMenu.addHabit.AddHabitViewModel
+import org.kakapo.project.presentation.habitMenu.badHabit.BadHabitViewModel
+import org.kakapo.project.presentation.habitMenu.goodHabit.GoodHabitViewModel
 import org.kakapo.project.presentation.habitMenu.habits.HabitsViewModel
 import org.kakapo.project.presentation.noteMenu.addNote.AddNoteViewModel
 import org.kakapo.project.presentation.noteMenu.note.NoteViewModel
@@ -54,6 +56,8 @@ object CommonModule {
         viewModel { TodoViewModel(get()) }
         viewModel { HabitsViewModel(get()) }
         viewModel { AddHabitViewModel(get()) }
+        viewModel { BadHabitViewModel(get()) }
+        viewModel { GoodHabitViewModel(get()) }
     }
 
     val localDatasourceModule: Module = module {

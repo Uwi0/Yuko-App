@@ -28,6 +28,9 @@ extension RootFeature {
 		case .path(.element(_, .addHabitScreen(.navigateBack))):
 			return .run { send in await send(.navigateBack) }
 			
+		case .path(.element(_, .goodHabitScreen(.navigateBack))):
+			return .run { send in await send(.navigateBack) }
+			
 		default : return .none
 		}
 	}

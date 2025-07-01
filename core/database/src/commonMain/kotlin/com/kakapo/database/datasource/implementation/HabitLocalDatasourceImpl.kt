@@ -33,6 +33,10 @@ class HabitLocalDatasourceImpl(
         )
     }
 
+    override suspend fun deleteHabitBy(id: Long): Result<Unit> = runCatching {
+        habitQuery.deleteHabitById(id)
+    }
+
     override fun getHabits(today: Long): Flow<List<HabitEntity>> {
         return habitQuery
             .getHabitsWithTodayCheck(today)

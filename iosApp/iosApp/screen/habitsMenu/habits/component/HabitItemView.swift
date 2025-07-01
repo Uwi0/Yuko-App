@@ -4,6 +4,7 @@ import Shared
 struct HabitItemView: View {
 	
 	let habit: HabitModel
+	let onEvent: (HabitsEvent) -> Void
 	
 	var body: some View {
 		HStack {
@@ -12,6 +13,9 @@ struct HabitItemView: View {
 			TrailingContentView()
 		}
 		.modifier(BorderedCardModifier())
+		.onTapGesture {
+			onEvent(.TappedHabit(id: habit.id, type: habit.habitType))
+		}
 	}
 	
 	@ViewBuilder
@@ -30,5 +34,5 @@ struct HabitItemView: View {
 }
 
 #Preview {
-	HabitItemView(habit: dummyHabit)
+	HabitItemView(habit: dummyHabit, onEvent: { _ in })
 }

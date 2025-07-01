@@ -13,6 +13,14 @@ extension RootFeature {
 		case .path(.element(_, .habitsScreen(.navigateBack))):
 			return .run { send in await send(.navigateBack) }
 			
+		case .path(.element(_, .habitsScreen(.navigateToGoodHabit(let id)))):
+			state.path.append(.goodHabitScreen(GoodHabitFeature.State(id: id)))
+			return .none
+			
+		case .path(.element(_, .habitsScreen(.navigateToBadHabit(let id)))):
+			state.path.append(.badHabitScreen(BadHabitFeature.State(id: id)))
+			return .none
+			
 		case .path(.element(_, .habitsScreen(.tapToAddHabit))):
 			state.path.append(.addHabitScreen(AddHabitFeature.State()))
 			return .none

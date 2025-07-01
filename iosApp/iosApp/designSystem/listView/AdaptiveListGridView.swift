@@ -10,7 +10,7 @@ struct AdaptiveListGridView<Content: View, T: Identifiable>: View {
 	
 	init(
 		items: [T],
-		gridMinSize: CGFloat = 200,
+		gridMinSize: CGFloat = 360,
 		spacing: CGFloat = 16,
 		@ViewBuilder content: @escaping (T) -> Content
 	) {

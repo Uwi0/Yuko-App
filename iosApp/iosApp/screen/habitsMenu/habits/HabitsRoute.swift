@@ -23,6 +23,8 @@ struct HabitsRoute: View {
 		case .navigateBack: store.send(.navigateBack)
 		case .tapToAddHabit: store.send(.tapToAddHabit)
 		case let .showError(error): print("error: \(error)")
+		case let .navigateToBadHabit(habit): store.send(.navigateToBadHabit(habit.id))
+		case let .navigateToGoodHabit(habit): store.send(.navigateToGoodHabit(habit.id))
 		}
 	}
 }

@@ -11,6 +11,8 @@ struct HabitsFeature {
 	enum Action {
 		case navigateBack
 		case tapToAddHabit
+		case navigateToGoodHabit(Int64)
+		case navigateToBadHabit(Int64)
 	}
 	
 	var body: some ReducerOf<Self> {
@@ -18,6 +20,8 @@ struct HabitsFeature {
 			switch action {
 			case .navigateBack: return .none
 			case .tapToAddHabit: return .none
+			case .navigateToGoodHabit: return .none
+			case .navigateToBadHabit: return .none
 			}
 		}
 	}

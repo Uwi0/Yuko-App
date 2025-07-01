@@ -4,10 +4,11 @@ import Shared
 struct HabitListView: View {
 	
 	let habits: [HabitModel]
+	let onEvent: (HabitsEvent) -> Void
 	
 	var body: some View {
 		AdaptiveListGridView(items: habits) { habit in
-				HabitItemView(habit: habit)
+				HabitItemView(habit: habit, onEvent: onEvent)
 		}
 	}
 }
@@ -17,5 +18,5 @@ extension HabitModel: @retroactive Identifiable {
 }
 
 #Preview {
-	HabitListView(habits: [])
+	HabitListView(habits: [], onEvent: { _ in })
 }

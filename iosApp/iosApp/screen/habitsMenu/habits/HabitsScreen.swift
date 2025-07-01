@@ -39,7 +39,7 @@ struct HabitsScreen: View {
 	@ViewBuilder
 	private func ContentView() -> some View {
 		VStack {
-			HabitListView(habits: state.habits)
+			HabitListView(habits: state.habits, onEvent: onEvent)
 		}
 		.padding(.horizontal, 16)
 		.padding(.vertical, 24)

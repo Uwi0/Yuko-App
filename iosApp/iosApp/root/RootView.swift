@@ -38,6 +38,12 @@ struct RootView: View {
 			case let .addHabitScreen(addHabitStore):
 				AddHabitRoute(store: addHabitStore)
 				
+			case let .goodHabitScreen(goodHabitStore):
+				GoodHabitRoute(store: goodHabitStore)
+				
+			case let .badHabitScreen(badHabitStore):
+				BadHabitRoute(store: badHabitStore)
+				
 			case let .settingsScreen(settingsStore):
 				SettingsRoute(store: settingsStore)
 				

@@ -3,6 +3,7 @@ import Shared
 
 struct HabitsScreen: View {
 	
+	@Binding var state: HabitsState
 	let onEvent: (HabitsEvent) -> Void
 	
 	var body: some View {
@@ -38,8 +39,7 @@ struct HabitsScreen: View {
 	@ViewBuilder
 	private func ContentView() -> some View {
 		VStack {
-			Text("Hello habbits")
-			Spacer()
+			HabitListView(habits: state.habits)
 		}
 		.padding(.horizontal, 16)
 		.padding(.vertical, 24)
@@ -47,5 +47,5 @@ struct HabitsScreen: View {
 }
 
 #Preview {
-	HabitsScreen(onEvent: { _ in })
+	HabitsScreen(state: .constant(.companion.default()), onEvent: { _ in })
 }

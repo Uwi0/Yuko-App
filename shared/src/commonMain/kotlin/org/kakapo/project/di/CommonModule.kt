@@ -52,7 +52,7 @@ object CommonModule {
         viewModel { TodosViewModel(get()) }
         viewModel { AddTodoViewModel(get()) }
         viewModel { TodoViewModel(get()) }
-        viewModel { HabitsViewModel() }
+        viewModel { HabitsViewModel(get()) }
         viewModel { AddHabitViewModel(get()) }
     }
 
@@ -60,7 +60,7 @@ object CommonModule {
         factory<PomodoroSessionLocalDatasource> { PomodoroSessionLocalDatasourceImpl(get()) }
         factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get(), get(named(IO))) }
         factory<TodosLocalDatasource> { TodosLocalDatasourceImpl(get(), get(named(IO))) }
-        factory<HabitLocalDatasource> { HabitLocalDatasourceImpl(get()) }
+        factory<HabitLocalDatasource> { HabitLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferencesModule: Module = module {

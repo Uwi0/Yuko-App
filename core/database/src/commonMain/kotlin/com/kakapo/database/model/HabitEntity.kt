@@ -1,5 +1,7 @@
 package com.kakapo.database.model
 
+import com.kakapo.GetHabitsWithTodayCheck
+
 data class HabitEntity(
     val id: Long = 0,
     val name: String = "",
@@ -10,5 +12,22 @@ data class HabitEntity(
     val startDate: Long = 0,
     val isArchived: Boolean = false,
     val createdAt: Long = 0,
-    val updatedAt: Long = 0
+    val updatedAt: Long = 0,
+    val isCompletedToday: Boolean = false
 )
+
+fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
+    return HabitEntity(
+        id = id,
+        name = name,
+        description = description,
+        frequency = frequency,
+        dayFrequency = dayFrequency,
+        habitType = habitType,
+        startDate = startDate,
+        isArchived = isArchived == 1L,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+        isCompletedToday = isCompletedToday == 1L
+    )
+}

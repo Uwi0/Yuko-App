@@ -1,6 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.database.model.HabitEntity
+import com.kakapo.model.HabitModel
 
 data class HabitParam(
     val id: Long = 0,
@@ -24,4 +25,14 @@ data class HabitParam(
             updatedAt = updatedAt
         )
     }
+}
+
+fun HabitEntity.toHabitModel(): HabitModel {
+    return HabitModel(
+        id = id,
+        name = name,
+        description = description,
+        isGoodHabit = habitType == 1L,
+        isCompleteToday = isCompletedToday
+    )
 }

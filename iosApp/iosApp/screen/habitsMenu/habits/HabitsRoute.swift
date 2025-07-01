@@ -8,7 +8,7 @@ struct HabitsRoute: View {
 	@StateObject private var viewModel = HabitsViewModel()
 	
 	var body: some View {
-		HabitsScreen(onEvent: viewModel.handle(event:))
+		HabitsScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData()
@@ -22,6 +22,7 @@ struct HabitsRoute: View {
 		switch onEnum(of: effect) {
 		case .navigateBack: store.send(.navigateBack)
 		case .tapToAddHabit: store.send(.tapToAddHabit)
+		case let .showError(error): print("error: \(error)")
 		}
 	}
 }

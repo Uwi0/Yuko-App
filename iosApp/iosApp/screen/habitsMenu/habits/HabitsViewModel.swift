@@ -16,6 +16,7 @@ final class HabitsViewModel: ObservableObject {
 	private var effectCancellable: AnyCancellable?
 	
 	func initData() {
+		viewModel.doInitData()
 		observeState()
 		observeEffect()
 	}

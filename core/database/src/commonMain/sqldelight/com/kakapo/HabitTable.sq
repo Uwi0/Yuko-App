@@ -33,3 +33,23 @@ INSERT OR ABORT INTO HabitTable(
     ?,
     ?
 );
+
+getHabitsWithTodayCheck:
+SELECT
+    h.id,
+    h.name,
+    h.description,
+    h.frequency,
+    h.startDate,
+    h.isArchived,
+    h.createdAt,
+    h.updatedAt,
+    h.habitType,
+    h.dayFrequency,
+    CASE
+        WHEN hc.id IS NOT NULL THEN 1
+        ELSE 0
+    END AS isCompletedToday
+FROM HabitTable h
+LEFT JOIN HabitCheckTable hc
+    ON h.id = hc.habitId AND hc.date = :today;

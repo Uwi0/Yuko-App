@@ -1,6 +1,9 @@
 package com.kakapo.model
 
+import kotlin.native.ObjCName
+
 data class NotesModel(
+    @ObjCName("noteId")
     val id: Long = 0L,
     val title: String = "",
     val note: String = "",

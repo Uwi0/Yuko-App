@@ -1,6 +1,9 @@
 package com.kakapo.model
 
+import kotlin.native.ObjCName
+
 data class TodoModel(
+    @ObjCName("todoId")
     val id: Long  = 0L,
     val title: String = "",
     val description: String = "",

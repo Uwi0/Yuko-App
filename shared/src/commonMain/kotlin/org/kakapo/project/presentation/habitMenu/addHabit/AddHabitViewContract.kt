@@ -1,6 +1,8 @@
 package org.kakapo.project.presentation.habitMenu.addHabit
 
 import com.kakapo.data.model.HabitParam
+import com.kakapo.model.habit.HabitType
+import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays
 
 data class AddHabitState(
@@ -23,7 +25,8 @@ data class AddHabitState(
     fun asHabitParam(): HabitParam{
         return HabitParam(
             name = name,
-            description = description
+            description = description,
+            habitType = type.toLong()
         )
     }
 
@@ -45,7 +48,4 @@ sealed class AddHabitEvent {
     data object SaveHabit: AddHabitEvent()
 }
 
-enum class HabitType {
-    GOOD, BAD
-}
 

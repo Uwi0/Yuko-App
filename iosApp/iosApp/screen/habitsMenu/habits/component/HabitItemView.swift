@@ -9,9 +9,18 @@ struct HabitItemView: View {
 		HStack {
 			Text(habit.name)
 			Spacer()
-			CheckBoxView()
+			TrailingContentView()
 		}
 		.modifier(BorderedCardModifier())
+	}
+	
+	@ViewBuilder
+	private func TrailingContentView() -> some View {
+		if habit.isGoodHabit {
+			CheckBoxView()
+		} else {
+			Text("\(habit.lastSlipDate) days clean")
+		}
 	}
 	
 	@ViewBuilder

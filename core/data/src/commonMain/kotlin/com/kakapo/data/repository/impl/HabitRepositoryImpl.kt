@@ -6,7 +6,7 @@ import com.kakapo.data.model.toHabitModel
 import com.kakapo.data.repository.base.HabitRepository
 import com.kakapo.database.datasource.base.HabitLocalDatasource
 import com.kakapo.database.model.HabitEntity
-import com.kakapo.model.HabitModel
+import com.kakapo.model.habit.HabitModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -13,7 +13,8 @@ data class HabitEntity(
     val isArchived: Boolean = false,
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
-    val isCompletedToday: Boolean = false
+    val isCompletedToday: Boolean = false,
+    val lastSlipDate: Long? = null
 )
 
 fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
@@ -28,6 +29,7 @@ fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
         isArchived = isArchived == 1L,
         createdAt = createdAt,
         updatedAt = updatedAt,
-        isCompletedToday = isCompletedToday == 1L
+        isCompletedToday = isCompletedToday == 1L,
+        lastSlipDate = lastSlipDate
     )
 }

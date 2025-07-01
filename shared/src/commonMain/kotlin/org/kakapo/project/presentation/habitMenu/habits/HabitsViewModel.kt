@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.HabitRepository
-import com.kakapo.model.HabitModel
+import com.kakapo.model.habit.HabitModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel

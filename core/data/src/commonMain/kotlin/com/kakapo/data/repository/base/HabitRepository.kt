@@ -1,7 +1,7 @@
 package com.kakapo.data.repository.base
 
 import com.kakapo.data.model.HabitParam
-import com.kakapo.model.HabitModel
+import com.kakapo.model.habit.HabitModel
 import kotlinx.coroutines.flow.Flow
 
 interface HabitRepository {

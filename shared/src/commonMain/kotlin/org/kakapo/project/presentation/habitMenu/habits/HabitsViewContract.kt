@@ -1,6 +1,6 @@
 package org.kakapo.project.presentation.habitMenu.habits
 
-import com.kakapo.model.HabitModel
+import com.kakapo.model.habit.HabitModel
 
 data class HabitsState(
     val loading: Boolean = false,

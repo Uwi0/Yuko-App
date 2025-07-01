@@ -20,16 +20,15 @@ struct AddNoteScreen: View {
 		NavigationTopAppbar(
 			title: "Add Note",
 			actionContent: {
-				Image(systemName: "square.and.arrow.down")
-					.resizable()
-					.scaledToFit()
-					.frame(width: 24, height: 24)
-					.onTapGesture { onEvent(.SaveNote()) }
+				TopBarActionButton(
+					imageName: "square.and.arrow.down",
+					onClick: { onEvent(.SaveNote()) }
+				)
 			},
 			onAction: { onEvent(.NavigateBack())}
 		)
 	}
-
+	
 	@ViewBuilder
 	private func Content() -> some View {
 		VStack {

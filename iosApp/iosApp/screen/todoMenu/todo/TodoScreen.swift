@@ -19,22 +19,15 @@ struct TodoScreen: View {
 		NavigationTopAppbar(
 			title: "Todo",
 			actionContent: {
-				EditButtonView()
+				TopBarActionButton(
+					imageName: "pencil",
+					onClick: { onEvent(.TapToEditTodo()) }
+				)
 			},
 			onAction: { onEvent(.NavigateBack())}
 		)
 	}
 	
-	@ViewBuilder
-	private func EditButtonView() -> some View {
-		Image(systemName: "pencil")
-			.resizable()
-			.scaledToFit()
-			.frame(width: 24, height: 24)
-			.onTapGesture {
-				onEvent(.TapToEditTodo())
-			}
-	}
 	
 	@ViewBuilder
 	private func ContentView() -> some View {

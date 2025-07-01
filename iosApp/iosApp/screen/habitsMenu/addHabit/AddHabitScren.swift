@@ -20,21 +20,13 @@ struct AddHabitScren: View {
 		NavigationTopAppbar(
 			title: "Add Habit",
 			actionContent: {
-				SaveIconButton()
+				TopBarActionButton(
+					imageName: "square.and.arrow.down",
+					onClick: { onEvent(.SaveHabit()) }
+				)
 			},
 			onAction: { onEvent(.NavigateBack())}
 		)
-	}
-	
-	@ViewBuilder
-	private func SaveIconButton() -> some View {
-		Image(systemName: "square.and.arrow.down")
-			.resizable()
-			.scaledToFit()
-			.frame(width: 24, height: 24)
-			.onTapGesture {
-				onEvent(.SaveHabit())
-			}
 	}
 	
 	@ViewBuilder

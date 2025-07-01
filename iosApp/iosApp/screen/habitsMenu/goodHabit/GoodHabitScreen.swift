@@ -15,7 +15,21 @@ struct GoodHabitScreen: View {
 	
 	@ViewBuilder
 	private func TopAppbarView() -> some View {
-		NavigationTopAppbar(title: "Good Habit", onAction: { onEvent(.NavigateBack())})
+		NavigationTopAppbar(
+			title: "Good Habit",
+			actionContent: {
+				TopBarActionButton(
+					imageName: "trash",
+					onClick: { onEvent(.DeleteHabit())}
+				)
+			},
+			onAction: { onEvent(.NavigateBack())}
+		)
+	}
+	
+	@ViewBuilder
+	private func DeleteIconButton() -> some View {
+		
 	}
 	
 	@ViewBuilder

@@ -3,7 +3,9 @@ package org.kakapo.project.presentation.habitMenu.habits
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
-import com.kakapo.data.repository.base.HabitRepository
+import com.kakapo.common.util.todayAtMidnight
+import com.kakapo.data.repository.base.habit.HabitCheckRepository
+import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.model.habit.HabitModel
 import com.kakapo.model.habit.HabitType
 import kotlinx.coroutines.flow.update
@@ -13,7 +15,8 @@ import kotlin.native.ObjCName
 
 @ObjCName("HabitsViewModelKt")
 class HabitsViewModel(
-    private var habitRepository: HabitRepository
+    private var habitRepository: HabitRepository,
+    private var habitCheckRepository: HabitCheckRepository
 ): BaseViewModel<HabitsState, HabitsEffect, HabitsEvent>(HabitsState()) {
 
     override fun handleEvent(event: HabitsEvent) {
@@ -21,6 +24,7 @@ class HabitsViewModel(
             HabitsEvent.TapToAddHabit -> emit(HabitsEffect.TapToAddHabit)
             HabitsEvent.NavigateBack -> emit(HabitsEffect.NavigateBack)
             is HabitsEvent.TappedHabit -> onTappedHabit(event.id, event.type)
+            is HabitsEvent.CheckedGoodHabit -> onCheckedGoodHabit(event.id, event.isChecked)
         }
     }
 
@@ -37,6 +41,31 @@ class HabitsViewModel(
             onSuccess = onSuccess,
             onError = ::handleError
         )
+    }
+
+    private fun onCheckedGoodHabit(habitId: Long, isChecked: Boolean) {
+        if (isChecked) checkedGoodHabitBy(habitId)
+        else uncheckedGoodHabitBy(habitId)
+    }
+
+    private fun checkedGoodHabitBy(habitId: Long) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            loadHabitsToday()
+        }
+
+        habitCheckRepository.saveTodayCheckBy(habitId, todayAtMidnight)
+            .onSuccess(onSuccess)
+            .onFailure(::handleError)
+    }
+
+    private fun uncheckedGoodHabitBy(habitId: Long) = viewModelScope.launch {
+        val onSuccess: (Unit) -> Unit = {
+            loadHabitsToday()
+        }
+
+        habitCheckRepository.deleteTodayCheckBy(habitId, todayAtMidnight)
+            .onSuccess(onSuccess)
+            .onFailure(::handleError)
     }
 
     private fun onTappedHabit(habitId: Long, type: HabitType) {

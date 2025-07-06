@@ -1,7 +1,7 @@
 package org.kakapo.project.presentation.habitMenu.addHabit
 
 import androidx.lifecycle.viewModelScope
-import com.kakapo.data.repository.base.HabitRepository
+import com.kakapo.data.repository.base.habit.HabitRepository
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.habitMenu.habits.HabitsState

@@ -2,13 +2,14 @@ package org.kakapo.project.presentation.habitMenu.goodHabit
 
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.data.repository.base.habit.HabitRepository
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
 @ObjCName("GoodHabitViewModelKt")
 class GoodHabitViewModel(
-    private val habitRepository: com.kakapo.data.repository.base.HabitRepository
+    private val habitRepository: HabitRepository
 ) : BaseViewModel<GoodHabitState, GoodHabitEffect, GoodHabitEvent>(GoodHabitState()) {
 
     override fun handleEvent(event: GoodHabitEvent) {

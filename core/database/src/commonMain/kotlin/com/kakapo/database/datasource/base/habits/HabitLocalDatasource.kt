@@ -1,6 +1,6 @@
-package com.kakapo.database.datasource.base
+package com.kakapo.database.datasource.base.habits
 
-import com.kakapo.database.model.HabitEntity
+import com.kakapo.database.model.habit.HabitEntity
 import kotlinx.coroutines.flow.Flow
 
 interface HabitLocalDatasource {

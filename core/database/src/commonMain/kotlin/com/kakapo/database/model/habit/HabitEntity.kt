@@ -1,4 +1,4 @@
-package com.kakapo.database.model
+package com.kakapo.database.model.habit
 
 import com.kakapo.GetHabitsWithTodayCheck
 

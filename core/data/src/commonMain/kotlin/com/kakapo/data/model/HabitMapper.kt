@@ -1,7 +1,7 @@
 package com.kakapo.data.model
 
 import com.kakapo.common.util.asDayClean
-import com.kakapo.database.model.HabitEntity
+import com.kakapo.database.model.habit.HabitEntity
 import com.kakapo.model.habit.HabitModel
 import com.kakapo.model.habit.toHabitType
 

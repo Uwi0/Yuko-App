@@ -2,22 +2,26 @@ package org.kakapo.project.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.kakapo.data.repository.base.HabitRepository
+import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.data.repository.base.PomodoroSessionRepository
 import com.kakapo.data.repository.base.TodosRepository
-import com.kakapo.data.repository.impl.HabitRepositoryImpl
+import com.kakapo.data.repository.base.habit.HabitCheckRepository
+import com.kakapo.data.repository.impl.habit.HabitRepositoryImpl
 import com.kakapo.data.repository.impl.NotesRepositoryImpl
 import com.kakapo.data.repository.impl.PomodoroSessionRepositoryImpl
 import com.kakapo.data.repository.impl.TodosRepositoryImpl
-import com.kakapo.database.datasource.base.HabitLocalDatasource
+import com.kakapo.data.repository.impl.habit.HabitCheckRepositoryImpl
+import com.kakapo.database.datasource.base.habits.HabitLocalDatasource
 import com.kakapo.database.datasource.base.NotesLocalDatasource
 import com.kakapo.database.datasource.base.PomodoroSessionLocalDatasource
 import com.kakapo.database.datasource.base.TodosLocalDatasource
-import com.kakapo.database.datasource.implementation.HabitLocalDatasourceImpl
+import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
+import com.kakapo.database.datasource.implementation.habit.HabitLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.NotesLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.PomodoroSessionLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.TodosLocalDatasourceImpl
+import com.kakapo.database.datasource.implementation.habit.HabitCheckLocalDatasourceImpl
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +58,7 @@ object CommonModule {
         viewModel { TodosViewModel(get()) }
         viewModel { AddTodoViewModel(get()) }
         viewModel { TodoViewModel(get()) }
-        viewModel { HabitsViewModel(get()) }
+        viewModel { HabitsViewModel(get(), get()) }
         viewModel { AddHabitViewModel(get()) }
         viewModel { BadHabitViewModel(get()) }
         viewModel { GoodHabitViewModel(get()) }
@@ -65,6 +69,7 @@ object CommonModule {
         factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get(), get(named(IO))) }
         factory<TodosLocalDatasource> { TodosLocalDatasourceImpl(get(), get(named(IO))) }
         factory<HabitLocalDatasource> { HabitLocalDatasourceImpl(get(), get(named(IO))) }
+        factory<HabitCheckLocalDatasource> { HabitCheckLocalDatasourceImpl(get()) }
     }
 
     val preferencesModule: Module = module {
@@ -76,6 +81,7 @@ object CommonModule {
         factory<NotesRepository> { NotesRepositoryImpl(get()) }
         factory<TodosRepository> { TodosRepositoryImpl(get()) }
         factory<HabitRepository> { HabitRepositoryImpl(get()) }
+        factory<HabitCheckRepository> { HabitCheckRepositoryImpl(get()) }
     }
 
     val coroutineModule: Module = module {

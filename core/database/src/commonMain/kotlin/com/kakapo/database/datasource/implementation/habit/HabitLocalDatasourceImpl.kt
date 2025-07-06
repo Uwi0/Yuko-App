@@ -1,13 +1,13 @@
-package com.kakapo.database.datasource.implementation
+package com.kakapo.database.datasource.implementation.habit
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.common.asLong
-import com.kakapo.database.datasource.base.HabitLocalDatasource
-import com.kakapo.database.model.HabitEntity
-import com.kakapo.database.model.toHabitEntity
+import com.kakapo.database.datasource.base.habits.HabitLocalDatasource
+import com.kakapo.database.model.habit.HabitEntity
+import com.kakapo.database.model.habit.toHabitEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +17,7 @@ class HabitLocalDatasourceImpl(
     private val dispatcher: CoroutineDispatcher
 ) : HabitLocalDatasource {
 
-    private val habitQuery = Database(sqlDriver).habitTableQueries
+    private val habitQuery = Database.Companion(sqlDriver).habitTableQueries
 
     override suspend fun insertHabit(entity: HabitEntity): Result<Unit> = runCatching {
         habitQuery.insertHabit(

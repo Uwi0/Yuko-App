@@ -4,3 +4,11 @@ CREATE TABLE HabitCheckTable (
     date INTEGER NOT NULL,
     isCompleted INTEGER NOT NULL DEFAULT 1
 );
+
+insertTodayCheck:
+INSERT OR ABORT INTO HabitCheckTable(habitId, date, isCompleted)
+VALUES (?, ?, 1);
+
+deleteTodayCheck:
+DELETE FROM HabitCheckTable
+WHERE habitId = ? AND date = ?;

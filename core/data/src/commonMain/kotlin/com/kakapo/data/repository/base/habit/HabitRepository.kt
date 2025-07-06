@@ -1,4 +1,4 @@
-package com.kakapo.data.repository.base
+package com.kakapo.data.repository.base.habit
 
 import com.kakapo.data.model.HabitParam
 import com.kakapo.model.habit.HabitModel

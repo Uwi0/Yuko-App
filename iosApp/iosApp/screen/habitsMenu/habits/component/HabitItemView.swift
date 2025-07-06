@@ -29,7 +29,12 @@ struct HabitItemView: View {
 	
 	@ViewBuilder
 	private func CheckBoxView() -> some View {
-		CustomCheckBox(isSelected: Binding(get: { false }, set: { _ in }))
+		CustomCheckBox(isSelected:
+			Binding(
+				get: { habit.isCompleteToday },
+				set: { checked in onEvent(.CheckedGoodHabit(id: habit.id, isChecked: checked))}
+			)
+		)
 	}
 }
 

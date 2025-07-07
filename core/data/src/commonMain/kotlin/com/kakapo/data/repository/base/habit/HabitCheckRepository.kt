@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface HabitCheckRepository {
     suspend fun saveTodayCheckBy(habitId: Long, date: Long): Result<Unit>
     suspend fun deleteTodayCheckBy(habitId: Long, date: Long): Result<Unit>
-    fun loadTodayCheckBy(habitId: Long): Flow<List<HabitCheckModel>>
+    fun loadHabitChecksBy(habitId: Long): Flow<List<HabitCheckModel>>
 }

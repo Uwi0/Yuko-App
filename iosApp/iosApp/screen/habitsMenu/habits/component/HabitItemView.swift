@@ -3,7 +3,7 @@ import Shared
 
 struct HabitItemView: View {
 	
-	let habit: HabitModel
+	let habit: HabitItemModel
 	let onEvent: (HabitsEvent) -> Void
 	
 	var body: some View {
@@ -14,7 +14,7 @@ struct HabitItemView: View {
 		}
 		.modifier(BorderedCardModifier())
 		.onTapGesture {
-			onEvent(.TappedHabit(id: habit.id, type: habit.habitType))
+			onEvent(.TappedHabit(id: habit.habitId, type: habit.habitType))
 		}
 	}
 	
@@ -32,7 +32,7 @@ struct HabitItemView: View {
 		CustomCheckBox(isSelected:
 			Binding(
 				get: { habit.isCompleteToday },
-				set: { checked in onEvent(.CheckedGoodHabit(id: habit.id, isChecked: checked))}
+				set: { checked in onEvent(.CheckedGoodHabit(id: habit.habitId, isChecked: checked))}
 			)
 		)
 	}

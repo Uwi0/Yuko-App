@@ -22,6 +22,8 @@ import com.kakapo.database.datasource.implementation.NotesLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.PomodoroSessionLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.TodosLocalDatasourceImpl
 import com.kakapo.database.datasource.implementation.habit.HabitCheckLocalDatasourceImpl
+import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
+import com.kakapo.domain.useCase.impl.GoodHabitDetailUseCaseImpl
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +63,7 @@ object CommonModule {
         viewModel { HabitsViewModel(get(), get()) }
         viewModel { AddHabitViewModel(get()) }
         viewModel { BadHabitViewModel(get()) }
-        viewModel { GoodHabitViewModel(get()) }
+        viewModel { GoodHabitViewModel(get(), get()) }
     }
 
     val localDatasourceModule: Module = module {
@@ -84,6 +86,10 @@ object CommonModule {
         factory<HabitCheckRepository> { HabitCheckRepositoryImpl(get()) }
     }
 
+    val useCaseModule: Module = module {
+        factory<GoodHabitDetailUseCase> { GoodHabitDetailUseCaseImpl(get(), get()) }
+    }
+
     val coroutineModule: Module = module {
         single(qualifier = named(IO)) { Dispatchers.IO }
     }
@@ -95,6 +101,7 @@ fun initKoin(
     localDatasource: Module = CommonModule.localDatasourceModule,
     preference: Module = CommonModule.preferencesModule,
     repository: Module = CommonModule.repositoryModule,
+    useCase: Module = CommonModule.useCaseModule,
     coroutineModule: Module = CommonModule.coroutineModule
 ): KoinApplication = startKoin {
     modules(
@@ -103,6 +110,7 @@ fun initKoin(
         localDatasource,
         preference,
         repository,
+        useCase,
         coroutineModule,
         platformModule
     )

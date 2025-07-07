@@ -3,14 +3,21 @@ package org.kakapo.project.presentation.habitMenu.goodHabit
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kakapo.data.repository.base.habit.HabitRepository
+import com.kakapo.domain.model.goodHabitParamFactory
+import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
+import com.kakapo.model.habit.GoodHabitModel
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
 @ObjCName("GoodHabitViewModelKt")
 class GoodHabitViewModel(
-    private val habitRepository: HabitRepository
+    private val habitRepository: HabitRepository,
+    private val goodHabitDetail: GoodHabitDetailUseCase
 ) : BaseViewModel<GoodHabitState, GoodHabitEffect, GoodHabitEvent>(GoodHabitState()) {
+
+    private var habitId: Long = 0L
 
     override fun handleEvent(event: GoodHabitEvent) {
         when (event) {
@@ -19,10 +26,21 @@ class GoodHabitViewModel(
         }
     }
 
-    private var habitId: Long = 0L
+    fun initData(habitId: Long) {
+        this.habitId = habitId
+        loadGoodHabitBy(habitId)
+    }
 
-    fun initData(id: Long) {
-        habitId = id
+    private fun loadGoodHabitBy(habitId: Long) = viewModelScope.launch {
+        val param = goodHabitParamFactory(habitId)
+        val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
+            Logger.d { "goodHabit: $goodHabit" }
+            _uiState.update { it.copy(goodHabit = goodHabit) }
+        }
+
+        goodHabitDetail.execute(param)
+            .onSuccess(onSuccess)
+            .onFailure(::handleError)
     }
 
     private fun deleteHabit() = viewModelScope.launch {

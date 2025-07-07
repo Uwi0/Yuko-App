@@ -4,6 +4,7 @@ import com.kakapo.data.model.habit.HabitParam
 import com.kakapo.model.habit.HabitType
 import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays
+import kotlin.time.Clock
 
 data class AddHabitState(
     val name: String = "",
@@ -26,7 +27,8 @@ data class AddHabitState(
         return HabitParam(
             name = name,
             description = description,
-            habitType = type.toLong()
+            habitType = type.toLong(),
+            startDate = Clock.System.now().toEpochMilliseconds()
         )
     }
 

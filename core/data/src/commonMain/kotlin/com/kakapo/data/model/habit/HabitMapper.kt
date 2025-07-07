@@ -2,8 +2,8 @@ package com.kakapo.data.model.habit
 
 import com.kakapo.common.util.asDayClean
 import com.kakapo.database.model.habit.HabitEntity
-import com.kakapo.model.habit.HabitDetailModel
 import com.kakapo.model.habit.HabitModel
+import com.kakapo.model.habit.HabitItemModel
 import com.kakapo.model.habit.toHabitType
 
 data class HabitParam(
@@ -32,8 +32,8 @@ data class HabitParam(
     }
 }
 
-fun HabitEntity.toHabitModel(): HabitModel {
-    return HabitModel(
+fun HabitEntity.toHabitModel(): HabitItemModel {
+    return HabitItemModel(
         id = id,
         name = name,
         description = description,
@@ -43,8 +43,8 @@ fun HabitEntity.toHabitModel(): HabitModel {
     )
 }
 
-fun HabitEntity.toHabitDetailModel(): HabitDetailModel {
-    return HabitDetailModel(
+fun HabitEntity.toHabitDetailModel(): HabitModel {
+    return HabitModel(
         id = id,
         name = name,
         description = description,

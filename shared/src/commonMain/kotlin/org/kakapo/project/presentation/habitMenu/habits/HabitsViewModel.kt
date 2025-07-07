@@ -6,7 +6,7 @@ import com.kakapo.common.subscribe
 import com.kakapo.common.util.todayAtMidnight
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.data.repository.base.habit.HabitRepository
-import com.kakapo.model.habit.HabitModel
+import com.kakapo.model.habit.HabitItemModel
 import com.kakapo.model.habit.HabitType
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,11 +33,11 @@ class HabitsViewModel(
     }
 
     private fun loadHabitsToday() = viewModelScope.launch {
-        val onSuccess: (List<HabitModel>) -> Unit = { habits ->
+        val onSuccess: (List<HabitItemModel>) -> Unit = { habits ->
             _uiState.update { it.copy(habits = habits, loading = false) }
         }
 
-        habitRepository.loadHabitsToday().asResult().subscribe(
+        habitRepository.loadHabits(todayAtMidnight).asResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )

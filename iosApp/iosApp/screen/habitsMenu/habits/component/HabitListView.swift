@@ -3,7 +3,7 @@ import Shared
 
 struct HabitListView: View {
 	
-	let habits: [HabitModel]
+	let habits: [HabitItemModel]
 	let onEvent: (HabitsEvent) -> Void
 	
 	var body: some View {
@@ -13,7 +13,7 @@ struct HabitListView: View {
 	}
 }
 
-extension HabitModel: @retroactive Identifiable {
+extension HabitItemModel: @retroactive Identifiable {
 	public var id: Int64 { self.habitId }
 }
 

@@ -1,11 +1,11 @@
 package org.kakapo.project.presentation.habitMenu.habits
 
-import com.kakapo.model.habit.HabitModel
+import com.kakapo.model.habit.HabitItemModel
 import com.kakapo.model.habit.HabitType
 
 data class HabitsState(
     val loading: Boolean = false,
-    val habits: List<HabitModel> = emptyList(),
+    val habits: List<HabitItemModel> = emptyList(),
 ) {
     companion object {
         fun default() = HabitsState()

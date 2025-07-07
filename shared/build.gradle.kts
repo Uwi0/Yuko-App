@@ -29,6 +29,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.model)
             api(projects.core.common)
+            implementation(projects.core.domain)
             implementation(projects.core.database)
             implementation(projects.core.data)
             implementation(projects.core.preference)

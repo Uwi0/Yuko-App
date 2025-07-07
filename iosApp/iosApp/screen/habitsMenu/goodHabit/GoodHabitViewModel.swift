@@ -16,7 +16,7 @@ final class GoodHabitViewModel: ObservableObject {
 	private var effectCancellable: AnyCancellable?
 	
 	func initData(id: Int64) {
-		viewModel.doInitData(id: id)
+		viewModel.doInitData(habitId: id)
 		observeState()
 		observeEffect()
 	}

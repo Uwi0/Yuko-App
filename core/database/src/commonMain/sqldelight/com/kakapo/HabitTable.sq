@@ -62,3 +62,6 @@ ON h.id = hc_today.habitId AND hc_today.date = :today;
 deleteHabitById:
 DELETE FROM HabitTable
 WHERE id = :id;
+
+getHabitById:
+SELECT * FROM HabitTable WHERE id = :id;

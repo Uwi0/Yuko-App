@@ -1,6 +1,7 @@
 package com.kakapo.database.model.habit
 
 import com.kakapo.GetHabitsWithTodayCheck
+import com.kakapo.HabitTable
 
 data class HabitEntity(
     val id: Long = 0,
@@ -16,6 +17,21 @@ data class HabitEntity(
     val isCompletedToday: Boolean = false,
     val lastSlipDate: Long? = null
 )
+
+fun HabitTable.toHabitEntity(): HabitEntity {
+    return HabitEntity(
+        id = id,
+        name = name,
+        description = description,
+        frequency = frequency,
+        dayFrequency = dayFrequency,
+        habitType = habitType,
+        startDate = startDate,
+        isArchived = isArchived == 1L,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+}
 
 fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
     return HabitEntity(

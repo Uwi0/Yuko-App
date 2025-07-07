@@ -69,7 +69,7 @@ object CommonModule {
         factory<NotesLocalDatasource> { NotesLocalDatasourceImpl(get(), get(named(IO))) }
         factory<TodosLocalDatasource> { TodosLocalDatasourceImpl(get(), get(named(IO))) }
         factory<HabitLocalDatasource> { HabitLocalDatasourceImpl(get(), get(named(IO))) }
-        factory<HabitCheckLocalDatasource> { HabitCheckLocalDatasourceImpl(get()) }
+        factory<HabitCheckLocalDatasource> { HabitCheckLocalDatasourceImpl(get(), get(named(IO))) }
     }
 
     val preferencesModule: Module = module {

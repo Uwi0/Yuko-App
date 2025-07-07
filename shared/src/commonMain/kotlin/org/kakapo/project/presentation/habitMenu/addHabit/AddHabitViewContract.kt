@@ -1,6 +1,6 @@
 package org.kakapo.project.presentation.habitMenu.addHabit
 
-import com.kakapo.data.model.HabitParam
+import com.kakapo.data.model.habit.HabitParam
 import com.kakapo.model.habit.HabitType
 import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays

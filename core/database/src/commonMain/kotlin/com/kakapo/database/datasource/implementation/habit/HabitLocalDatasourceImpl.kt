@@ -46,4 +46,8 @@ class HabitLocalDatasourceImpl(
                 habits.map { it.toHabitEntity() }
             }
     }
+
+    override suspend fun getHabitBy(id: Long): Result<HabitEntity> = runCatching {
+        habitQuery.getHabitById(id).executeAsOne().toHabitEntity()
+    }
 }

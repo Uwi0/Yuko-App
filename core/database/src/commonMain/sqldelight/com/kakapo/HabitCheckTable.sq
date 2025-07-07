@@ -7,8 +7,11 @@ CREATE TABLE HabitCheckTable (
 
 insertTodayCheck:
 INSERT OR ABORT INTO HabitCheckTable(habitId, date, isCompleted)
-VALUES (?, ?, 1);
+VALUES (:habitId, :date, 1);
 
 deleteTodayCheck:
 DELETE FROM HabitCheckTable
-WHERE habitId = ? AND date = ?;
+WHERE habitId = :habitId AND date = :date;
+
+getHabitCheckByHabitId:
+SELECT * FROM HabitCheckTable WHERE habitId = :habitId;

@@ -1,7 +1,8 @@
-package com.kakapo.data.model
+package com.kakapo.data.model.habit
 
 import com.kakapo.common.util.asDayClean
 import com.kakapo.database.model.habit.HabitEntity
+import com.kakapo.model.habit.HabitDetailModel
 import com.kakapo.model.habit.HabitModel
 import com.kakapo.model.habit.toHabitType
 
@@ -39,5 +40,14 @@ fun HabitEntity.toHabitModel(): HabitModel {
         habitType = habitType.toHabitType(),
         isCompleteToday = isCompletedToday,
         lastSlipDate = lastSlipDate.asDayClean()
+    )
+}
+
+fun HabitEntity.toHabitDetailModel(): HabitDetailModel {
+    return HabitDetailModel(
+        id = id,
+        name = name,
+        description = description,
+        startDate = startDate
     )
 }

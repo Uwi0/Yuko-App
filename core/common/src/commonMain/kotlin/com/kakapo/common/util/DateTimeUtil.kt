@@ -2,6 +2,7 @@ package com.kakapo.common.util
 
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
@@ -50,7 +51,6 @@ fun startDateAndEndDateOfMonth(
     return Pair(startDate, daysInMonth)
 }
 
-
 fun Long?.asDayClean(): Long {
     return this?.let { lastTime ->
         val formDate = Instant.fromEpochMilliseconds(lastTime)
@@ -62,3 +62,11 @@ fun Long?.asDayClean(): Long {
         formDate.until(toDate, DateTimeUnit.DAY)
     } ?: 0
 }
+
+fun Long.toDateWith(format: String): String {
+    val instant = Instant.fromEpochMilliseconds(this)
+    val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+    return localDateTime.toFormatedString(format)
+}
+
+expect fun LocalDateTime.toFormatedString(pattern: String): String

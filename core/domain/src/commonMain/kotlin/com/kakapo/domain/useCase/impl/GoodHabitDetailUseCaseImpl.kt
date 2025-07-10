@@ -1,5 +1,6 @@
 package com.kakapo.domain.useCase.impl
 
+import com.kakapo.common.util.toDateWith
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.domain.model.GoodHabitUseCaseParam
@@ -32,7 +33,7 @@ class GoodHabitDetailUseCaseImpl(
             totalComplete = habitChecks.count { it.isCompleted },
             bestStreak = habitChecks.count(),
             completionThisMonth = thisMonth.count { it.isCompleted },
-            startDate = startDate,
+            startDate = startDate.toDateWith(format = "dd MMM yyyy"),
             calendarMap = calendarMap
         )
     }

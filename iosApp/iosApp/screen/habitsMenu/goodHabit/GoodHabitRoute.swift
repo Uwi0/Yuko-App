@@ -8,7 +8,7 @@ struct GoodHabitRoute: View {
 	@StateObject private var viewModel = GoodHabitViewModel()
 	
 	var body: some View {
-		GoodHabitScreen(onEvent: viewModel.handle(event:))
+		GoodHabitScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))
 			.navigationBarBackButtonHidden(true)
 			.task {
 				viewModel.initData(id: store.id)

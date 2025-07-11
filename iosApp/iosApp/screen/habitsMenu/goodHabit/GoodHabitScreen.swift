@@ -34,6 +34,7 @@ struct GoodHabitScreen: View {
 			TitleComponentView()
 			GoodHabitMetricsView(habit: state.goodHabit)
 			TitleDateComponentView()
+			HorizontalDateContentView()
 			Spacer()
 		}
 		.padding(.horizontal, 16)

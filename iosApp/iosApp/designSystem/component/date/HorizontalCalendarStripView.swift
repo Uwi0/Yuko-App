@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HorizontalCalendarStripView: View {
-	@StateObject var weekStore = WeekStore()
+	@StateObject var weekStore = HorizontalCalendarStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	
@@ -9,6 +9,9 @@ struct HorizontalCalendarStripView: View {
 		VStack {
 			HeaderContentView()
 			BodyCalendarView()
+		}
+		.task {
+			weekStore.initData()
 		}
 	}
 	
@@ -95,6 +98,7 @@ struct HorizontalCalendarStripView: View {
 	}
 	
 }
+
 
 #Preview {
 	HorizontalCalendarStripView()

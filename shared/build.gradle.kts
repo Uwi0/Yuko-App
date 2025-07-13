@@ -24,6 +24,10 @@ kotlin {
             xcf.add(this)
         }
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
+    }
     
     sourceSets {
         commonMain.dependencies {

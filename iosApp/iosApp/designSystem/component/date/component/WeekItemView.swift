@@ -1,13 +1,14 @@
 import SwiftUI
+import Shared
 
 struct WeekItemView: View {
 	
-	let weekValue: WeekValue
+	let weekValue: WeekModel
 	let index: Int
 	
 	var body: some View {
 		let formatter: (String) -> String = { format in
-			dateToString(date: weekValue.date[index], format: format)
+			dateToString(date: weekValue.dates[index], format: format)
 		}
 		
 		let dayFormatter = formatter("EEE")

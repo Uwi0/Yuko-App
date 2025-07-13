@@ -1,8 +1,9 @@
 import SwiftUI
+import Shared
 
 struct WeekOfDaysView: View {
 	
-	let week: WeekValue
+	let week: WeekModel
 	let onSelectedDayOfWeek: (Date) -> Void
 	
 	var body: some View {
@@ -10,7 +11,7 @@ struct WeekOfDaysView: View {
 			ForEach(0..<7) { index in
 				WeekItemView(weekValue: week, index: index)
 					.onTapGesture {
-						onSelectedDayOfWeek(week.date[index])
+						onSelectedDayOfWeek(week.dates[index])
 					}
 			}
 		}

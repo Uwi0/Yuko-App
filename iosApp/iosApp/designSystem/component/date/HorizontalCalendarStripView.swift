@@ -1,31 +1,69 @@
 import SwiftUI
 
-struct WeekHeaderView: View {
+struct HorizontalCalendarStripView: View {
 	@StateObject var weekStore = WeekStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	
 	var body: some View {
 		VStack {
-			WeakHeaderContent()
+			HeaderContentView()
+			BodyCalendarView()
 		}
 	}
 	
 	@ViewBuilder
-	func WeakHeaderContent() -> some View {
+	private func HeaderContentView() -> some View {
+		let yearAndMonth = dateToString(date: weekStore.currentMonth, format: "yyyy MMM")
+		HStack(spacing: 16) {
+			Text(yearAndMonth)
+			Spacer()
+			ButtonDateActionView(
+				image: "chevron.left",
+				onClick: { index in index + 1 }
+			)
+			ButtonDateActionView(
+				image: "chevron.right",
+				onClick: { index in index - 1}
+			)
+		}
+	}
+	
+	@ViewBuilder
+	private func ButtonDateActionView(
+		image: String,
+		onClick: @escaping (Double) -> Double
+	) -> some View {
+		Button {
+			withAnimation(.smooth) {
+				let moveIndex = onClick(snappedItem)
+				snappedItem = moveIndex
+				draggingItem = snappedItem
+				weekStore.update(index: Int(moveIndex))
+			}
+		} label: {
+			Image(systemName: image)
+				.resizable()
+				.scaledToFit()
+				.frame(width: 24, height: 24)
+				.padding(10)
+				.foregroundStyle(ColorTheme.primary)
+		}
+	}
+	
+	@ViewBuilder
+	func BodyCalendarView() -> some View {
 		ZStack {
 			ForEach(weekStore.allWeeks) { week in
 				WeekOfDaysView(
 					week: week,
 					onSelectedDayOfWeek: { date in weekStore.currentDate = date}
 				)
-					.offset(x: myXOffset(week.id), y: 0)
-					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
-					.padding(.horizontal, 20)
+				.offset(x: myXOffset(week.id), y: 0)
+				.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 			}
 		}
 		.frame(maxHeight:.infinity , alignment : .top)
-		.padding(.top,50)
 		.gesture(dragGesture())
 	}
 	
@@ -46,7 +84,6 @@ struct WeekHeaderView: View {
 				}
 			}
 	}
-
 	
 	func distance(_ item: Int) -> Double {
 		return (draggingItem - Double(item)).remainder(dividingBy: Double(weekStore.allWeeks.count))
@@ -60,5 +97,5 @@ struct WeekHeaderView: View {
 }
 
 #Preview {
-	WeekHeaderView()
+	HorizontalCalendarStripView()
 }

@@ -3,6 +3,7 @@ import Foundation
 class WeekStore : ObservableObject {
 	@Published var allWeeks : [WeekValue] = []
 	@Published var currentDate : Date = Date()
+	@Published var currentMonth : Date = Date()
 	
 	private var currentWeek: [Date] = []
 	private var nextWeek : [Date] = []
@@ -61,6 +62,7 @@ class WeekStore : ObservableObject {
 		(1...7).forEach{ day in
 			if let weekday = calendar.date(byAdding: .day, value: day, to: startOfWeek){
 				allWeeks[index].date.append(weekday)
+				currentMonth = weekday
 			}
 		}
 	}

@@ -66,7 +66,6 @@ struct HorizontalCalendarStripView: View {
 				.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 			}
 		}
-		.frame(maxHeight:.infinity , alignment : .top)
 		.gesture(dragGesture())
 	}
 	
@@ -102,4 +101,5 @@ struct HorizontalCalendarStripView: View {
 
 #Preview {
 	HorizontalCalendarStripView()
+		.frame(maxHeight: .infinity, alignment: .top)
 }

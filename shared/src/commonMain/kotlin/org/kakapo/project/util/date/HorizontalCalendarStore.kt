@@ -48,32 +48,23 @@ class HorizontalCalendarStore {
     }
 
     private fun appendAll() {
-        val newList = _allWeeks.value.toMutableList()
-        newList.add(WeekModel(0, currentWeek))
-        newList.add(WeekModel(2, nextWeek))
-        newList.add(WeekModel(1, previousWeek))
-        _allWeeks.update { newList }
+        val weeks = mutableListOf<WeekModel>()
+        weeks.add(WeekModel(0, currentWeek))
+        weeks.add(WeekModel(2, nextWeek))
+        weeks.add(WeekModel(1, previousWeek))
+        _allWeeks.update {  weeks }
     }
 
-
     fun update(index: Int) {
-        var value: Int
-        if (index < currentIndex) {
-            value = 1
-            indexToUpdate = (indexToUpdate + 1) % 3
+        val value = if (index < currentIndex) {
+            indexToUpdate = if (indexToUpdate == 2) 0 else indexToUpdate + 1
+            1
         } else {
-            value = -1
-            indexToUpdate = (indexToUpdate + 2) % 3
+            indexToUpdate = if (indexToUpdate == 0) 2 else indexToUpdate - 1
+            -1
         }
         currentIndex = index
         addWeek(indexToUpdate, value)
-    }
-
-    private fun fetchCurrentWeek() {
-        val startOfWeek = startOfWeek(currentDate.value)
-        currentWeek = (1..7).map { day ->
-            startOfWeek.plus(day, DateTimeUnit.DAY)
-        }
     }
 
     private fun addWeek(index: Int, value: Int) {
@@ -81,14 +72,25 @@ class HorizontalCalendarStore {
         _currentDate.update { today }
 
         val startOfWeek = startOfWeek(today)
-        val weekDays = (1..7).map { day ->
-            startOfWeek.plus(day, DateTimeUnit.DAY)
-                .also { _currentMonth.update { startOfWeek.plus(day, DateTimeUnit.DAY) }  }
+        val weekDays = mutableListOf<LocalDate>()
+
+        for (day in 1..7) {
+            val weekday = startOfWeek.plus(day, DateTimeUnit.DAY)
+            weekDays.add(weekday)
+            _currentMonth.update { weekday }
         }
 
         val newList = _allWeeks.value.toMutableList()
-        newList[index] = WeekModel(index, weekDays)
-        _allWeeks.update { newList }
+        val oldWeek = newList[index]
+        newList[index] = WeekModel(oldWeek.id, weekDays)
+        _allWeeks.update {  newList }
+    }
+
+    private fun fetchCurrentWeek() {
+        val startOfWeek = startOfWeek(currentDate.value)
+        currentWeek = (1..7).map { day ->
+            startOfWeek.plus(day, DateTimeUnit.DAY)
+        }
     }
 
     private fun fetchPreviousNextWeek() {

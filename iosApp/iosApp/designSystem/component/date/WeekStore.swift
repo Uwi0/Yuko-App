@@ -19,14 +19,15 @@ class WeekStore : ObservableObject {
 	}
 	
 	func appendAll() {
-		var  newWeek = WeekValue(id: 0, date: currentWeek)
+		var  newWeek = WeekValue(id: 0, dates: currentWeek)
 		allWeeks.append(newWeek)
 		
-		newWeek = WeekValue(id: 2, date: nextWeek)
+		newWeek = WeekValue(id: 2, dates: nextWeek)
 		allWeeks.append(newWeek)
 		
-		newWeek = WeekValue(id: 1, date: previousWeek)
+		newWeek = WeekValue(id: 1, dates: previousWeek)
 		allWeeks.append(newWeek)
+		print("\(allWeeks)")
 	}
 	
 	func update(index : Int) {
@@ -51,7 +52,8 @@ class WeekStore : ObservableObject {
 	}
 	
 	func addWeek(index: Int, value: Int) {
-		allWeeks[index].date.removeAll()
+		print("index: \(index), value: \(value)")
+		allWeeks[index].dates.removeAll()
 		var calendar = Calendar(identifier: .gregorian)
 		let today = Calendar.current.date(byAdding: .day, value: 7 * value , to: self.currentDate)!
 		self.currentDate = today
@@ -61,10 +63,11 @@ class WeekStore : ObservableObject {
 		
 		(1...7).forEach{ day in
 			if let weekday = calendar.date(byAdding: .day, value: day, to: startOfWeek){
-				allWeeks[index].date.append(weekday)
+				allWeeks[index].dates.append(weekday)
 				currentMonth = weekday
 			}
 		}
+		print("allWeeks \(allWeeks)")
 	}
 	
 	func isToday(date:Date)->Bool{

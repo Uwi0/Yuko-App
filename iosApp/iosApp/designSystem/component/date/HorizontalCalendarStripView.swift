@@ -6,7 +6,7 @@ struct HorizontalCalendarStripView: View {
 	@State private var draggingItem = 0.0
 	
 	var body: some View {
-		VStack {
+		VStack(alignment: .leading) {
 			HeaderContentView()
 			BodyCalendarView()
 		}
@@ -56,15 +56,18 @@ struct HorizontalCalendarStripView: View {
 	
 	@ViewBuilder
 	func BodyCalendarView() -> some View {
-		ZStack {
-			ForEach(weekStore.allWeeks) { week in
-				WeekOfDaysView(
-					week: week,
-					onSelectedDayOfWeek: { date in weekStore.currentDate = date}
-				)
-				.offset(x: myXOffset(week.id), y: 0)
-				.zIndex(1.0 - abs(distance(week.id)) * 0.1)
+		GeometryReader { geo in
+			ZStack {
+				ForEach(weekStore.allWeeks) { week in
+					WeekOfDaysView(
+						week: week,
+						onSelectedDayOfWeek: { date in weekStore.currentDate = date}
+					)
+					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.25), y: 0)
+					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
+				}
 			}
+			.frame(width: geo.size.width, height: geo.size.height, alignment: .top)
 		}
 		.gesture(dragGesture())
 	}
@@ -91,15 +94,19 @@ struct HorizontalCalendarStripView: View {
 		return (draggingItem - Double(item)).remainder(dividingBy: Double(weekStore.allWeeks.count))
 	}
 	
-	func myXOffset(_ item: Int) -> Double {
+	func myXOffset(_ item: Int, radius: Double) -> Double {
 		let angle = Double.pi * 2 / Double(weekStore.allWeeks.count) * distance(item)
-		return sin(angle) * 200
+		return sin(angle) * radius
 	}
 	
 }
 
 
 #Preview {
-	HorizontalCalendarStripView()
-		.frame(maxHeight: .infinity, alignment: .top)
+	VStack {
+		HorizontalCalendarStripView()
+			.frame(maxHeight: .infinity, alignment: .top)
+		Spacer()
+	}.padding(.horizontal, 16)
+	
 }

@@ -63,7 +63,9 @@ struct HorizontalCalendarStripView: View {
 						week: week,
 						onSelectedDayOfWeek: { date in weekStore.currentDate = date}
 					)
-					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.25), y: 0)
+					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
+					.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
+					.opacity(1.0 - abs(distance(week.id)) * 0.3)
 					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 				}
 			}

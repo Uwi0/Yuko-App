@@ -15,7 +15,7 @@ struct WeekOfDaysView: View {
 					}
 			}
 		}
-		.frame(width: UIScreen.main.bounds.width)
+		.frame(width: .infinity)
 		.background(
 			Rectangle()
 				.fill(.white)

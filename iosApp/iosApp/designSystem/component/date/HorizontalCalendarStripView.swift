@@ -88,13 +88,14 @@ struct HorizontalCalendarStripView: View {
 				draggingItem = snappedItem + value.translation.width / 1500
 			}
 			.onEnded { value in
-				withAnimation(.smooth) {
+				withAnimation(.smooth(duration: 0.3)) {
 					if value.predictedEndTranslation.width > 0 {
 						draggingItem = snappedItem + 1
 					} else {
 						draggingItem = snappedItem - 1
 					}
 					snappedItem = draggingItem
+				} completion: {
 					weekStore.handle(event: .UpdateWeekWith(index: Int32(snappedItem)))
 				}
 			}
@@ -118,7 +119,7 @@ struct HorizontalCalendarStripView: View {
 		HorizontalCalendarStripView(
 			calendarEffect: { _ in }
 		)
-			.frame(maxHeight: .infinity, alignment: .top)
+		.frame(maxHeight: .infinity, alignment: .top)
 		Spacer()
 	}.padding(.horizontal, 16)
 	

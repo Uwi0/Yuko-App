@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -111,7 +112,10 @@ class HorizontalCalendarStore(
         val oldWeek = newWeek[index]
         newWeek[index] = WeekModel(oldWeek.id, weekDays)
         _allWeeks.update {  newWeek }
-        emit(HorizontalCalendarEffect.WeekChanged(weekDays))
+        scope.launch {
+            delay(50)
+            emit(HorizontalCalendarEffect.WeekChanged(weekDays))
+        }
     }
 
     private fun fetchCurrentWeek() {

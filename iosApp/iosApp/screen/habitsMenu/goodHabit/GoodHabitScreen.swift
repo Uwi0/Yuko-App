@@ -5,14 +5,8 @@ struct GoodHabitScreen: View {
 	
 	@Binding var state: GoodHabitState
 	let onEvent: (GoodHabitEvent) -> Void
-	private let dummyData: [Double] = [
-		0.3,
-		0.6,
-		0.8,
-		0.2,
-		0.5,
-		0.7,
-		1
+	@State private var dummyData: [Double] = [
+		0.3, 0.6, 0.8, 0.2, 0.5, 0.7, 1
 	]
 	
 	var body: some View {
@@ -36,7 +30,7 @@ struct GoodHabitScreen: View {
 			onAction: { onEvent(.NavigateBack())}
 		)
 	}
-
+	
 	@ViewBuilder
 	private func ContentView() -> some View {
 		ScrollView {
@@ -79,10 +73,16 @@ struct GoodHabitScreen: View {
 	
 	private func observeCalendar(effect: HorizontalCalendarEffect) {
 		switch onEnum(of: effect) {
-		case let .weekChanged(weeks): print("do nothing for now")
+		case let .weekChanged(weeks):
+			print("week changed! generating new random data")
+			dummyData = generateRandomData()
 		}
 	}
-
+	
+	private func generateRandomData() -> [Double] {
+		(0..<7).map { _ in Double.random(in: 0.2...1.0) }
+	}
+	
 }
 
 

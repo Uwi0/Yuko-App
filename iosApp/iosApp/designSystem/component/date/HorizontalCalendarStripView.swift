@@ -9,6 +9,7 @@ struct HorizontalCalendarStripView: View {
 		VStack(alignment: .leading) {
 			HeaderContentView()
 			BodyCalendarView()
+			Spacer().frame(height: 16)
 		}
 		.task {
 			weekStore.initData()
@@ -69,7 +70,7 @@ struct HorizontalCalendarStripView: View {
 					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 				}
 			}
-			.frame(width: geo.size.width, height: geo.size.height, alignment: .top)
+			.frame(width: geo.size.width, alignment: .top)
 		}
 		.gesture(dragGesture())
 	}

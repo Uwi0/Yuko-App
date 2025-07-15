@@ -15,10 +15,7 @@ struct WeekOfDaysView: View {
 					}
 			}
 		}
-		.frame(width: .infinity)
-		.background(
-			Rectangle()
-				.fill(.white)
-		)
+		.frame(maxWidth: .infinity)
+		.background(Rectangle().fill(.white))
 	}
 }

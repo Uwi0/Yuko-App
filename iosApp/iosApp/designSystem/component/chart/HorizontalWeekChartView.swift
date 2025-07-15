@@ -8,16 +8,19 @@ struct HorizontalWeekChartView: View {
 	
 	var body: some View {
 		HStack(alignment: .bottom, spacing: 8) {
-			ChartPercentage()
-			
-			Rectangle()
-				.fill(Color.gray.opacity(0.5))
-				.frame(width: 1)
-				.frame(maxHeight: .infinity)
-			
-			ForEach(0..<7, id: \.self) { index in
-				BarItemView(index: index)
-			}
+				ChartPercentage()
+				
+				Rectangle()
+						.fill(Color.gray.opacity(0.5))
+						.frame(width: 1)
+						.frame(maxHeight: .infinity)
+				
+				HStack(alignment: .bottom, spacing: 16) {
+						ForEach(0..<7, id: \.self) { index in
+								BarItemView(index: index)
+						}
+				}
+				.frame(maxWidth: .infinity)
 		}
 		.padding()
 		.frame(maxHeight: 260)
@@ -41,7 +44,7 @@ struct HorizontalWeekChartView: View {
 		VStack {
 			Rectangle()
 				.fill(Color.pink.opacity(0.6))
-				.frame(width: 20, height: CGFloat(data[index]) * 200)
+				.frame(maxWidth: .infinity, maxHeight: CGFloat(data[index]) * 200)
 				.cornerRadius(4)
 			
 			Text(weekDays[index])

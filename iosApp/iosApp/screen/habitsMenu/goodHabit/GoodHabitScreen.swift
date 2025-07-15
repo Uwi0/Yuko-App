@@ -5,6 +5,15 @@ struct GoodHabitScreen: View {
 	
 	@Binding var state: GoodHabitState
 	let onEvent: (GoodHabitEvent) -> Void
+	private let dummyData: [Double] = [
+		0.3,
+		0.6,
+		0.8,
+		0.2,
+		0.5,
+		0.7,
+		1
+	]
 	
 	var body: some View {
 		VStack {
@@ -30,16 +39,19 @@ struct GoodHabitScreen: View {
 
 	@ViewBuilder
 	private func ContentView() -> some View {
-		VStack(alignment: .leading, spacing: 16) {
-			TitleComponentView()
-			GoodHabitMetricsView(habit: state.goodHabit)
-			TitleDateComponentView()
-			HorizontalCalendarStripView()
-			Spacer()
+		ScrollView {
+			VStack(alignment: .leading, spacing: 16) {
+				TitleComponentView()
+				GoodHabitMetricsView(habit: state.goodHabit)
+				TitleDateComponentView()
+				HorizontalCalendarStripView()
+				HorizontalWeekChartView(data: dummyData)
+			}
+			.padding(.horizontal, 16)
+			.padding(.vertical, 24)
+			.frame(maxWidth: 700, alignment: .leading)
 		}
-		.padding(.horizontal, 16)
-		.padding(.vertical, 24)
-		.frame(maxWidth: 700, alignment: .leading)
+		
 	}
 	
 	@ViewBuilder

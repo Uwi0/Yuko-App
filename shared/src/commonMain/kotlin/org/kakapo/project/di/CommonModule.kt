@@ -26,6 +26,7 @@ import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
 import com.kakapo.domain.useCase.impl.GoodHabitDetailUseCaseImpl
 import com.kakapo.preference.datasource.base.PreferenceDatasource
 import com.kakapo.preference.datasource.impl.PreferenceDatasourceImpl
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.kakapo.project.presentation.habitMenu.addHabit.AddHabitViewModel
@@ -39,6 +40,7 @@ import org.kakapo.project.presentation.pomodoroMenu.pomodoro.PomodoroViewModel
 import org.kakapo.project.presentation.todoMenu.addTodo.AddTodoViewModel
 import org.kakapo.project.presentation.todoMenu.todo.TodoViewModel
 import org.kakapo.project.presentation.todoMenu.todos.TodosViewModel
+import org.kakapo.project.util.date.HorizontalCalendarStore
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -51,6 +53,7 @@ expect val platformModule: Module
 object CommonModule {
 
     const val IO = "IO"
+    const val MAIN = "main"
 
     val viewModel: Module = module {
         viewModel { PomodoroViewModel(get()) }
@@ -77,7 +80,6 @@ object CommonModule {
     val preferencesModule: Module = module {
         factory<PreferenceDatasource> { PreferenceDatasourceImpl(get<DataStore<Preferences>>()) }
     }
-
     val repositoryModule: Module = module {
         factory<PomodoroSessionRepository> { PomodoroSessionRepositoryImpl(get(), get()) }
         factory<NotesRepository> { NotesRepositoryImpl(get()) }
@@ -90,8 +92,13 @@ object CommonModule {
         factory<GoodHabitDetailUseCase> { GoodHabitDetailUseCaseImpl(get(), get()) }
     }
 
+    val storeModule: Module = module {
+        factory { HorizontalCalendarStore(get(named(MAIN))) }
+    }
+
     val coroutineModule: Module = module {
-        single(qualifier = named(IO)) { Dispatchers.IO }
+        single<CoroutineDispatcher>(qualifier = named(IO)) { Dispatchers.IO }
+        single<CoroutineDispatcher>(qualifier = named(MAIN)) { Dispatchers.Main }
     }
 }
 
@@ -102,6 +109,7 @@ fun initKoin(
     preference: Module = CommonModule.preferencesModule,
     repository: Module = CommonModule.repositoryModule,
     useCase: Module = CommonModule.useCaseModule,
+    storeModule: Module = CommonModule.storeModule,
     coroutineModule: Module = CommonModule.coroutineModule
 ): KoinApplication = startKoin {
     modules(
@@ -111,6 +119,7 @@ fun initKoin(
         preference,
         repository,
         useCase,
+        storeModule,
         coroutineModule,
         platformModule
     )

@@ -1,7 +1,7 @@
 import SwiftUI
 import Shared
 
-struct HorizontalWeekChartView: View {
+struct WeekChartView: View {
 	let data: [Double]
 	private let weekDays: [String] = WeekDays.shared.shortNames
 	private let linePercentage: [Double] = [1.0, 0.75, 0.5, 0.25, 0.0]
@@ -63,5 +63,5 @@ struct HorizontalWeekChartView: View {
 		0.7,
 		1
 	]
-	HorizontalWeekChartView(data: dummyWeekData)
+	WeekChartView(data: dummyWeekData)
 }

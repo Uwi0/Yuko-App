@@ -1,7 +1,11 @@
 import SwiftUI
+import Shared
 
 struct HorizontalCalendarStripView: View {
-	@StateObject var weekStore = HorizontalCalendarStore()
+	
+	let calendarEffect: (HorizontalCalendarEffect) -> Void
+	
+	@StateObject private var weekStore = HorizontalCalendarStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	
@@ -13,6 +17,9 @@ struct HorizontalCalendarStripView: View {
 		}
 		.task {
 			weekStore.initData()
+		}
+		.onReceive(weekStore.effectPublsiher) { effect in
+			calendarEffect(effect)
 		}
 	}
 	
@@ -43,7 +50,7 @@ struct HorizontalCalendarStripView: View {
 				let moveIndex = onClick(snappedItem)
 				snappedItem = moveIndex
 				draggingItem = snappedItem
-				weekStore.update(index: Int(moveIndex))
+				weekStore.handle(event: .UpdateWeekWith(index: Int32(moveIndex)))
 			}
 		} label: {
 			Image(systemName: image)
@@ -88,16 +95,17 @@ struct HorizontalCalendarStripView: View {
 						draggingItem = snappedItem - 1
 					}
 					snappedItem = draggingItem
-					weekStore.update(index: Int(snappedItem))
+					weekStore.handle(event: .UpdateWeekWith(index: Int32(snappedItem)))
 				}
 			}
 	}
 	
-	func distance(_ item: Int) -> Double {
+	
+	private func distance(_ item: Int) -> Double {
 		return (draggingItem - Double(item)).remainder(dividingBy: Double(weekStore.allWeeks.count))
 	}
 	
-	func myXOffset(_ item: Int, radius: Double) -> Double {
+	private func myXOffset(_ item: Int, radius: Double) -> Double {
 		let angle = Double.pi * 2 / Double(weekStore.allWeeks.count) * distance(item)
 		return sin(angle) * radius
 	}
@@ -107,7 +115,9 @@ struct HorizontalCalendarStripView: View {
 
 #Preview {
 	VStack {
-		HorizontalCalendarStripView()
+		HorizontalCalendarStripView(
+			calendarEffect: { _ in }
+		)
 			.frame(maxHeight: .infinity, alignment: .top)
 		Spacer()
 	}.padding(.horizontal, 16)

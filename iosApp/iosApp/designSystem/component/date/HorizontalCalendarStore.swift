@@ -7,21 +7,27 @@ final class HorizontalCalendarStore: ObservableObject {
 	@Published var allWeeks: [WeekModel] = []
 	@Published var currentDate: Date = Date()
 	@Published var currentMonth: Date = Date()
+	var effectPublsiher: AnyPublisher<HorizontalCalendarEffect, Never> {
+		effectSubject.eraseToAnyPublisher()
+	}
 	
-	private let store = HorizontalCalendarStoreKt()
+	private let store: HorizontalCalendarStoreKt = Koin.shared.get()
+	private let effectSubject = PassthroughSubject<HorizontalCalendarEffect, Never>()
 	private var allWeeksCancellable: AnyCancellable?
 	private var currentDateCancellable: AnyCancellable?
 	private var currentMonthCancellable: AnyCancellable?
+	private var effectCancellable: AnyCancellable?
 	
 	func initData() {
 		store.doInitData()
 		observeAllWeeks()
 		observeCurrentDate()
 		observeCurrentMonth()
+		observerEffect()
 	}
 	
-	func update(index: Int) {
-		store.update(index: Int32(index))
+	func handle(event: HorizontalCalendarEvent){
+		store.handleEvent(event: event)
 	}
 	
 	private func observeAllWeeks() {
@@ -57,10 +63,23 @@ final class HorizontalCalendarStore: ObservableObject {
 			}
 	}
 	
+	private func observerEffect() {
+		let publisher = createPublisher(for: store.storeEffect)
+		effectCancellable = publisher
+			.receive(on: DispatchQueue.main)
+			.sink { completion in
+				print("completion \(completion)")
+			} receiveValue: { [weak self] effect in
+				self?.effectSubject.send(effect)
+			}
+	}
+	
 	deinit {
 		allWeeksCancellable?.cancel()
 		currentDateCancellable?.cancel()
 		currentMonthCancellable?.cancel()
+		effectCancellable?.cancel()
+		store.cancel()
 	}
 }
 

@@ -1,10 +1,19 @@
 package org.kakapo.project.util.date
 
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -17,7 +26,9 @@ import kotlin.native.ObjCName
 import kotlin.time.Clock
 
 @ObjCName("HorizontalCalendarStoreKt")
-class HorizontalCalendarStore {
+class HorizontalCalendarStore(
+    dispatcher: CoroutineDispatcher
+) {
 
     @NativeCoroutinesState
     val allWeeks: StateFlow<List<WeekModel>> get() = _allWeeks.asStateFlow()
@@ -35,6 +46,12 @@ class HorizontalCalendarStore {
         Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     )
 
+    @NativeCoroutines
+    val storeEffect: SharedFlow<HorizontalCalendarEffect> get() = _storeEffect.asSharedFlow()
+    private val _storeEffect = MutableSharedFlow<HorizontalCalendarEffect>()
+
+    private val scope = CoroutineScope(SupervisorJob() + dispatcher)
+
     private var currentWeek: List<LocalDate> = emptyList()
     private var nextWeek: List<LocalDate> = emptyList()
     private var previousWeek: List<LocalDate> = emptyList()
@@ -47,6 +64,16 @@ class HorizontalCalendarStore {
         appendAll()
     }
 
+    fun handleEvent(event: HorizontalCalendarEvent) {
+        when(event) {
+            is HorizontalCalendarEvent.UpdateWeekWith -> update(event.index)
+        }
+    }
+
+    fun cancel() {
+        scope.cancel()
+    }
+
     private fun appendAll() {
         val weeks = mutableListOf<WeekModel>()
         weeks.add(WeekModel(0, currentWeek))
@@ -55,7 +82,7 @@ class HorizontalCalendarStore {
         _allWeeks.update {  weeks }
     }
 
-    fun update(index: Int) {
+    private fun update(index: Int) {
         val value = if (index < currentIndex) {
             indexToUpdate = if (indexToUpdate == 2) 0 else indexToUpdate + 1
             1
@@ -80,10 +107,11 @@ class HorizontalCalendarStore {
             _currentMonth.update { weekday }
         }
 
-        val newList = _allWeeks.value.toMutableList()
-        val oldWeek = newList[index]
-        newList[index] = WeekModel(oldWeek.id, weekDays)
-        _allWeeks.update {  newList }
+        val newWeek = _allWeeks.value.toMutableList()
+        val oldWeek = newWeek[index]
+        newWeek[index] = WeekModel(oldWeek.id, weekDays)
+        _allWeeks.update {  newWeek }
+        emit(HorizontalCalendarEffect.WeekChanged(weekDays))
     }
 
     private fun fetchCurrentWeek() {
@@ -110,4 +138,7 @@ class HorizontalCalendarStore {
         return date.minus((dow % 7).toLong(), DateTimeUnit.DAY)
     }
 
+    private fun emit(effect: HorizontalCalendarEffect) = scope.launch {
+        _storeEffect.emit(effect)
+    }
 }

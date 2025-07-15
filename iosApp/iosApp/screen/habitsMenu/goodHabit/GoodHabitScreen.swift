@@ -44,8 +44,8 @@ struct GoodHabitScreen: View {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
 				TitleDateComponentView()
-				HorizontalCalendarStripView()
-				HorizontalWeekChartView(data: dummyData)
+				HorizontalCalendarStripView(calendarEffect: observeCalendar(effect:))
+				WeekChartView(data: dummyData)
 			}
 			.padding(.horizontal, 16)
 			.padding(.vertical, 24)
@@ -74,6 +74,12 @@ struct GoodHabitScreen: View {
 				.resizable()
 				.scaledToFit()
 				.frame(width: 24, height: 24)
+		}
+	}
+	
+	private func observeCalendar(effect: HorizontalCalendarEffect) {
+		switch onEnum(of: effect) {
+		case let .weekChanged(weeks): print("do nothing for now")
 		}
 	}
 

@@ -29,11 +29,7 @@ class CalendarStore {
     val currentDate: StateFlow<LocalDate> get() = _currentDate.asStateFlow()
     private val _currentDate = MutableStateFlow(today())
 
-    @NativeCoroutinesState
-    val currentMonthIndex: StateFlow<Int> get() = _currentMonthIndex.asStateFlow()
-    private var _currentMonthIndex = MutableStateFlow(0)
-
-
+    private var currentIndex: Int = 0
     private var indexToUpdate: Int = 0
 
     fun initData() {
@@ -41,18 +37,18 @@ class CalendarStore {
         val previous = generateMonth(currentDate.value.minus(1, DateTimeUnit.MONTH))
         val next = generateMonth(currentDate.value.plus(1, DateTimeUnit.MONTH))
 
-        _allMonths.update { listOf(current, previous, next) }
+        _allMonths.update { listOf(current, next, previous) }
     }
 
     fun update(index: Int) {
-        val value = if (index < _currentMonthIndex.value) {
-            indexToUpdate = (indexToUpdate + 1) % 3
-            -1
-        } else {
-            indexToUpdate = (indexToUpdate + 2) % 3
+        val value = if (index < currentIndex) {
+            indexToUpdate = if (indexToUpdate == 2) 0 else indexToUpdate + 1
             1
+        } else {
+            indexToUpdate = if (indexToUpdate == 0) 2 else indexToUpdate - 1
+            -1
         }
-        _currentMonthIndex.update { index }
+        currentIndex = index
         addMonth(indexToUpdate, value)
     }
 

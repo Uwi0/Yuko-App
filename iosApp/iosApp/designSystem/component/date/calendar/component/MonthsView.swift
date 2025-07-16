@@ -9,7 +9,7 @@ struct MonthsView: View {
 	var body: some View {
 		VStack {
 			WeekDaysHeader()
-			MonthWeeksBody()
+//			MonthWeeksBody()
 		}
 		.frame(maxWidth: .infinity)
 		.background(Rectangle().fill(.white))

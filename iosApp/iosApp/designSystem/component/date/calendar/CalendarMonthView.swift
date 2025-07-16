@@ -24,11 +24,11 @@ struct CalendarMonthView: View {
 			Spacer()
 			ButtonChangeMonthView(
 				image: "chevron.left",
-				onClick: { index in index - 1 }
+				onClick: { index in index + 1 }
 			)
 			ButtonChangeMonthView(
 				image: "chevron.right",
-				onClick: { index in index + 1 }
+				onClick: { index in index - 1 }
 			)
 		}
 	}
@@ -79,9 +79,9 @@ struct CalendarMonthView: View {
 			.onEnded { value in
 				withAnimation(.smooth(duration: 0.3)) {
 					if value.predictedEndTranslation.width > 0 {
-						draggingItem = snappedItem - 1
-					} else {
 						draggingItem = snappedItem + 1
+					} else {
+						draggingItem = snappedItem - 1
 					}
 					snappedItem = draggingItem
 				} completion: {

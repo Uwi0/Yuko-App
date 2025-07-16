@@ -7,7 +7,6 @@ final class CalendarMonthStore: ObservableObject {
 	
 	@Published var allMonths: [MonthModel] = []
 	@Published var currentDate: Date = Date()
-	@Published var currentIndex: Int = 0
 	
 	private var store = CalendarStoreKt()
 	private var allMonthsCancelable: AnyCancellable?
@@ -18,7 +17,6 @@ final class CalendarMonthStore: ObservableObject {
 		store.doInitData()
 		observeAllMonths()
 		observeCurrentDate()
-		observeCurrentIndex()
 	}
 	
 	func update(index: Int32) {
@@ -42,16 +40,6 @@ final class CalendarMonthStore: ObservableObject {
 				print("completion \(completion)")
 			} receiveValue: { [weak self] currentDate in
 				self?.currentDate = currentDate.toDate()
-			}
-	}
-	
-	private func observeCurrentIndex() {
-		let publisher = createPublisher(for: store.currentMonthIndexFlow)
-		currentIndexCancelable = publisher.receive(on: DispatchQueue.main)
-			.sink { completion in
-				print("completion \(completion)")
-			} receiveValue: { [weak self] currentIndex in
-				self?.currentIndex = Int(truncating: currentIndex)
 			}
 	}
 	

@@ -94,7 +94,6 @@ class HorizontalCalendarStore(
             -1
         }
         currentIndex = index
-        Logger.d("index: $index")
         addWeek(indexToUpdate, value)
     }
 

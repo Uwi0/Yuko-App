@@ -14,11 +14,10 @@ internal fun Project.configureKotlinMultiplatform(
     if (pluginManager.hasPlugin("com.android.library")) {
         androidTarget()
     }
-    targets {
-        iosX64()
-        iosArm64()
-        iosSimulatorArm64()
-    }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets.apply {
         commonMain.dependencies {

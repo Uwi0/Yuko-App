@@ -60,7 +60,7 @@ struct CalendarMonthView: View {
 		GeometryReader { geo in
 			ZStack {
 				ForEach(store.allMonths) { month in
-					CalendarDaysView()
+					MonthsView(month: month)
 						.offset(x: myXOffset(month.id, radius: geo.size.width * 0.1))
 						.scaleEffect(1.0 - abs(distance(month.id)) * 0.2)
 						.opacity(1.0 - abs(distance(month.id)) * 0.3)

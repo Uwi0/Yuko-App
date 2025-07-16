@@ -3,6 +3,7 @@ package org.kakapo.project.presentation.noteMenu.note
 import androidx.lifecycle.viewModelScope
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
@@ -29,7 +30,7 @@ class NoteViewModel(
 
     private fun loadNoteBy(noteId: Long) = viewModelScope.launch {
         val onSuccess: (NotesModel) -> Unit = { note ->
-            _uiState.value = _uiState.value.copy(note = note)
+            _uiState.update { it.copy(note = note) }
         }
         notesRepository.loadNoteById(noteId).fold(
             onSuccess = onSuccess,

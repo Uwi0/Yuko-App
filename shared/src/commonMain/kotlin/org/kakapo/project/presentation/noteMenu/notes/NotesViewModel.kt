@@ -5,6 +5,7 @@ import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
 import com.kakapo.data.repository.base.NotesRepository
 import com.kakapo.model.NotesModel
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
@@ -28,7 +29,7 @@ class NotesViewModel(
 
     private fun loadNotes() = viewModelScope.launch {
         val onSuccess: (List<NotesModel>) -> Unit = { notes ->
-            _uiState.value = _uiState.value.copy(notes = notes)
+            _uiState.update { it.copy(notes = notes) }
         }
         notesRepository.loadNotes().asResult().subscribe(
             onSuccess = onSuccess,

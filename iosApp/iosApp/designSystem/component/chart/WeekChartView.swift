@@ -20,7 +20,10 @@ struct WeekChartView: View {
 					BarItemView(index: index)
 				}
 			}
-			.animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.2), value: data)
+			.animation(
+					data.isEmpty ? .none : .spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.2),
+					value: data
+			)
 			.frame(maxWidth: .infinity)
 		}
 		.padding()

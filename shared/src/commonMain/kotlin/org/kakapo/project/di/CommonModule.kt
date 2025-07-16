@@ -40,7 +40,7 @@ import org.kakapo.project.presentation.pomodoroMenu.pomodoro.PomodoroViewModel
 import org.kakapo.project.presentation.todoMenu.addTodo.AddTodoViewModel
 import org.kakapo.project.presentation.todoMenu.todo.TodoViewModel
 import org.kakapo.project.presentation.todoMenu.todos.TodosViewModel
-import org.kakapo.project.util.date.HorizontalCalendarStore
+import org.kakapo.project.util.date.horizontalCalendar.HorizontalCalendarStore
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module

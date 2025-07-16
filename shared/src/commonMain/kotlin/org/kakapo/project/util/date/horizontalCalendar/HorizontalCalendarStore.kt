@@ -1,5 +1,6 @@
-package org.kakapo.project.util.date
+package org.kakapo.project.util.date.horizontalCalendar
 
+import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +24,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import org.kakapo.project.util.date.model.WeekModel
+import org.kakapo.project.util.date.util.startOfWeek
 import kotlin.native.ObjCName
 import kotlin.time.Clock
 
@@ -92,6 +94,7 @@ class HorizontalCalendarStore(
             -1
         }
         currentIndex = index
+        Logger.d("index: $index")
         addWeek(indexToUpdate, value)
     }
 
@@ -135,11 +138,6 @@ class HorizontalCalendarStore(
         previousWeek = (1..7).map { day ->
             prevStart.plus(day, DateTimeUnit.DAY)
         }
-    }
-
-    private fun startOfWeek(date: LocalDate): LocalDate {
-        val dow = date.dayOfWeek.isoDayNumber
-        return date.minus((dow % 7).toLong(), DateTimeUnit.DAY)
     }
 
     private fun emit(effect: HorizontalCalendarEffect) = scope.launch {

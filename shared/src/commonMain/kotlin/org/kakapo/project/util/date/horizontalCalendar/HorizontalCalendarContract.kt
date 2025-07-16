@@ -1,4 +1,4 @@
-package org.kakapo.project.util.date
+package org.kakapo.project.util.date.horizontalCalendar
 
 import kotlinx.datetime.LocalDate
 

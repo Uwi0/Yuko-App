@@ -1,0 +1,89 @@
+package org.kakapo.project.util.date.calendar
+
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import org.kakapo.project.util.date.model.MonthModel
+import org.kakapo.project.util.date.model.WeekModel
+import org.kakapo.project.util.date.util.startOfWeek
+import kotlin.native.ObjCName
+import kotlin.time.Clock
+
+@ObjCName("CalendarStoreKt")
+class CalendarStore {
+
+    @NativeCoroutinesState
+    val allMonths: StateFlow<List<MonthModel>> get() = _allMonths.asStateFlow()
+    private val _allMonths: MutableStateFlow<List<MonthModel>> = MutableStateFlow(emptyList())
+
+    @NativeCoroutinesState
+    val currentDate: StateFlow<LocalDate> get() = _currentDate.asStateFlow()
+    private val _currentDate = MutableStateFlow(today())
+
+    @NativeCoroutinesState
+    val currentMonthIndex: StateFlow<Int> get() = _currentMonthIndex.asStateFlow()
+    private var _currentMonthIndex = MutableStateFlow(0)
+
+
+    private var indexToUpdate: Int = 0
+
+    fun initData() {
+        val current = generateMonth(currentDate.value)
+        val previous = generateMonth(currentDate.value.minus(1, DateTimeUnit.MONTH))
+        val next = generateMonth(currentDate.value.plus(1, DateTimeUnit.MONTH))
+
+        _allMonths.update { listOf(current, previous, next) }
+    }
+
+    fun update(index: Int) {
+        val value = if (index < _currentMonthIndex.value) {
+            indexToUpdate = (indexToUpdate + 1) % 3
+            -1
+        } else {
+            indexToUpdate = (indexToUpdate + 2) % 3
+            1
+        }
+        _currentMonthIndex.update { index }
+        addMonth(indexToUpdate, value)
+    }
+
+    private fun addMonth(index: Int, value: Int) {
+        val newMonthDate = currentDate.value.plus(value, DateTimeUnit.MONTH)
+        _currentDate.update { newMonthDate }
+
+        val newMonth = generateMonth(newMonthDate)
+
+        val updatedList = _allMonths.value.toMutableList()
+        updatedList[index] = newMonth
+        _allMonths.update { updatedList }
+
+    }
+
+    private fun generateMonth(baseDate: LocalDate): MonthModel {
+        val start = LocalDate(baseDate.year, baseDate.month.number, 1)
+        val weeks = mutableListOf<WeekModel>()
+        var weekStart = startOfWeek(start)
+        var weekId = 0
+
+        while (weekStart.month.number == start.month.number) {
+            val weekDays = (1..7).map { day -> weekStart.plus(day, DateTimeUnit.DAY) }
+            weeks.add(WeekModel(weekId++, weekDays))
+            weekStart = weekStart.plus(7, DateTimeUnit.DAY)
+        }
+
+        return MonthModel(id = baseDate.month.number, weeks = weeks)
+    }
+
+    private fun today(): LocalDate = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
+}

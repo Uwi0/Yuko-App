@@ -61,3 +61,7 @@ final class CalendarMonthStore: ObservableObject {
 		currentIndexCancelable?.cancel()
 	}
 }
+
+extension MonthModel: @retroactive Identifiable {
+	public var id: Int { Int(self.monthId) }
+}

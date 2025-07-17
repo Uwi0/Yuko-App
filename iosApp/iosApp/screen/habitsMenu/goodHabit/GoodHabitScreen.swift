@@ -39,11 +39,13 @@ struct GoodHabitScreen: View {
 				GoodHabitMetricsView(habit: state.goodHabit)
 				TitleDateComponentView()
 				CalendarMonthView()
+				WeekChartView(data: dummyData)
 			}
 			.padding(.horizontal, 16)
 			.padding(.vertical, 24)
 			.frame(maxWidth: 700, alignment: .leading)
 		}
+		.scrollIndicators(.hidden)
 		
 	}
 	

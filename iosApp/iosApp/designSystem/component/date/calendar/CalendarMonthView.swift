@@ -78,6 +78,7 @@ struct CalendarMonthView: View {
 			}
 			.animation(.easeInOut(duration: 0.5), value: draggingItem)
 		}
+		.frame(height: 220)
 		.gesture(dragGesture())
 	}
 	

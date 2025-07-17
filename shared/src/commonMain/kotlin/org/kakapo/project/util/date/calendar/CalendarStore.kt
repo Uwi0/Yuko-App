@@ -12,8 +12,10 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import org.kakapo.project.util.date.model.DayState
 import org.kakapo.project.util.date.model.MonthModel
 import org.kakapo.project.util.date.model.WeekModel
+import org.kakapo.project.util.date.model.WeekOfMonthModel
 import org.kakapo.project.util.date.util.startOfWeek
 import kotlin.native.ObjCName
 import kotlin.time.Clock
@@ -66,13 +68,20 @@ class CalendarStore {
 
     private fun generateMonth(baseDate: LocalDate): MonthModel {
         val start = LocalDate(baseDate.year, baseDate.month.number, 1)
-        val weeks = mutableListOf<WeekModel>()
+        val weeks = mutableListOf<WeekOfMonthModel>()
         var weekStart = startOfWeek(start)
         var weekId = 0
 
-        while (weekStart.month.number == start.month.number) {
-            val weekDays = (1..7).map { day -> weekStart.plus(day, DateTimeUnit.DAY) }
-            weeks.add(WeekModel(weekId++, weekDays))
+        repeat(6) {
+            val weekDays = (0..6).map { day ->
+                val currentDate = weekStart.plus(day, DateTimeUnit.DAY)
+                if (currentDate.month.number == baseDate.month.number) {
+                    DayState.Day(currentDate)
+                } else {
+                    DayState.Empty
+                }
+            }
+            weeks.add(WeekOfMonthModel(weekId++, weekDays))
             weekStart = weekStart.plus(7, DateTimeUnit.DAY)
         }
 

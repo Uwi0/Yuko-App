@@ -9,7 +9,7 @@ struct MonthsView: View {
 	var body: some View {
 		VStack {
 			WeekDaysHeader()
-//			MonthWeeksBody()
+			MonthWeeksBody()
 		}
 		.frame(maxWidth: .infinity)
 		.background(Rectangle().fill(.white))
@@ -30,21 +30,31 @@ struct MonthsView: View {
 	@ViewBuilder
 	private func MonthWeeksBody() -> some View {
 		VStack {
-			ForEach(month.weeks.indices, id:\.self) { index in
-				let weeks = month.weeks[index]
+			ForEach(month.weeks) { weeks in
 				WeekDaysBody(weeks: weeks)
 			}
 		}
 	}
 	
 	@ViewBuilder
-	private func WeekDaysBody(weeks: WeekModel) -> some View {
+	private func WeekDaysBody(weeks: WeekOfMonthModel) -> some View {
 		HStack {
 			ForEach(0..<7) { index in
-				let week = weeks.weekDates[index]
-				Text(dateToString(date: week.toDate(), format: "d"))
-					.frame(maxWidth: .infinity)
+				let dayState = weeks.days[index]
+				DayView(dayState: dayState)
 			}
 		}
 	}
+	
+	@ViewBuilder
+	private func DayView(dayState: DayState) -> some View {
+		let text = switch onEnum(of: dayState) {
+		case let .day(day): dateToString(date: day.date.toDate(), format: "d")
+		case .empty: ""
+		}
+		
+		Text(text)
+			.frame(maxWidth: .infinity)
+	}
+	
 }

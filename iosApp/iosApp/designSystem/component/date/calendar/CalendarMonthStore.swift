@@ -53,3 +53,7 @@ final class CalendarMonthStore: ObservableObject {
 extension MonthModel: @retroactive Identifiable {
 	public var id: Int { Int(self.monthId) }
 }
+
+extension WeekOfMonthModel: @retroactive Identifiable {
+	public var id: Int { Int(self.weekId) }
+}

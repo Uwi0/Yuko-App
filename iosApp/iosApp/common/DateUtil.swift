@@ -16,3 +16,11 @@ extension Kotlinx_datetimeLocalDate {
 		return Calendar.current.date(from: components)!
 	}
 }
+
+extension Date {
+		static let emptyDate = Date(timeIntervalSince1970: 0)
+		
+		var isEmpty: Bool {
+				return self.timeIntervalSince1970 == 0
+		}
+}

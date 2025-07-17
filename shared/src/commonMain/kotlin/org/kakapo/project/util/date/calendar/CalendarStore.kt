@@ -1,5 +1,6 @@
 package org.kakapo.project.util.date.calendar
 
+import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +52,7 @@ class CalendarStore {
             -1
         }
         currentIndex = index
+        Logger.d("update: $indexToUpdate")
         addMonth(indexToUpdate, value)
     }
 

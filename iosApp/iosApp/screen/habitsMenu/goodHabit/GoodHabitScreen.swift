@@ -38,9 +38,7 @@ struct GoodHabitScreen: View {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
 				TitleDateComponentView()
-				HorizontalCalendarStripView(calendarEffect: observeCalendar(effect:))
 				CalendarMonthView()
-				WeekChartView(data: dummyData)
 			}
 			.padding(.horizontal, 16)
 			.padding(.vertical, 24)

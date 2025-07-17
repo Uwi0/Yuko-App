@@ -39,12 +39,14 @@ struct CalendarMonthView: View {
 		onClick: @escaping (Double) -> Double
 	) -> some View {
 		Button {
-			withAnimation(.smooth) {
-				let moveIndex = onClick(snappedItem)
-				snappedItem = moveIndex
-				draggingItem = snappedItem
+			
+			let moveIndex = onClick(snappedItem)
+			snappedItem = moveIndex
+			draggingItem = snappedItem
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
 				store.update(index: Int32(moveIndex))
 			}
+			
 		} label : {
 			Image(systemName: image)
 				.resizable()
@@ -59,14 +61,15 @@ struct CalendarMonthView: View {
 	private func BodyContentView() -> some View {
 		GeometryReader { geo in
 			ZStack {
-				ForEach(store.allMonths) { month in
+				ForEach(Array(store.allMonths.enumerated()), id: \.offset) { index, month in
 					MonthsView(month: month)
-						.offset(x: myXOffset(month.id, radius: geo.size.width * 0.1))
-						.scaleEffect(1.0 - abs(distance(month.id)) * 0.2)
-						.opacity(1.0 - abs(distance(month.id)) * 0.3)
-						.zIndex(1.0 - abs(distance(month.id)) * 0.1)
+						.offset(x: myXOffset(index, radius: geo.size.width * 0.1))
+						.scaleEffect(1.0 - abs(distance(index)) * 0.2)
+						.opacity(1.0 - abs(distance(index)) * 0.3)
+						.zIndex(1.0 - abs(distance(index)) * 0.1)
 				}
 			}
+			.animation(.easeInOut(duration: 0.5), value: draggingItem)
 		}
 		.gesture(dragGesture())
 	}

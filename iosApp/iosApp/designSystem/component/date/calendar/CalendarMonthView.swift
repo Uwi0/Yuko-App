@@ -5,6 +5,7 @@ struct CalendarMonthView: View {
 	@StateObject private var store = CalendarMonthStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
+	@State private var isUpdating = false
 	
 	var body: some View {
 		VStack {
@@ -24,11 +25,17 @@ struct CalendarMonthView: View {
 			Spacer()
 			ButtonChangeMonthView(
 				image: "chevron.left",
-				onClick: { index in index + 1 }
+				onClick: { index in
+					let newIndex = normalizeIndex(index + 1)
+					return Double(newIndex)
+				}
 			)
 			ButtonChangeMonthView(
 				image: "chevron.right",
-				onClick: { index in index - 1 }
+				onClick: { index in
+					let newIndex = normalizeIndex(index - 1)
+					return Double(newIndex)
+				}
 			)
 		}
 	}
@@ -36,16 +43,15 @@ struct CalendarMonthView: View {
 	@ViewBuilder
 	private func ButtonChangeMonthView(
 		image: String,
-		onClick: @escaping (Double) -> Double
+		onClick: @escaping (Int) -> Double
 	) -> some View {
 		Button {
+			guard !isUpdating else { return }
 			
-			let moveIndex = onClick(snappedItem)
-			snappedItem = moveIndex
-			draggingItem = snappedItem
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-				store.update(index: Int32(moveIndex))
-			}
+			let currentIndex = Int(snappedItem)
+			let moveIndex = onClick(currentIndex)
+			
+			updateCalendar(to: moveIndex)
 			
 		} label : {
 			Image(systemName: image)
@@ -55,6 +61,7 @@ struct CalendarMonthView: View {
 				.padding(10)
 				.foregroundStyle(ColorTheme.primary)
 		}
+		.disabled(isUpdating)
 	}
 	
 	@ViewBuilder
@@ -77,24 +84,55 @@ struct CalendarMonthView: View {
 	private func dragGesture() -> some Gesture {
 		DragGesture()
 			.onChanged { value in
+				guard !isUpdating else { return }
 				draggingItem = snappedItem + value.translation.width / 1500
 			}
 			.onEnded { value in
-				withAnimation(.smooth(duration: 0.3)) {
-					if value.predictedEndTranslation.width > 0 {
-						draggingItem = snappedItem + 1
-					} else {
-						draggingItem = snappedItem - 1
-					}
-					snappedItem = draggingItem
-				} completion: {
-					store.update(index: Int32(snappedItem))
+				guard !isUpdating else { return }
+				
+				let predictedIndex = if value.predictedEndTranslation.width > 0 {
+					normalizeIndex(Int(snappedItem) + 1)
+				} else {
+					normalizeIndex(Int(snappedItem) - 1)
 				}
+				
+				updateCalendar(to: Double(predictedIndex))
 			}
 	}
 	
+	private func updateCalendar(to newIndex: Double) {
+		isUpdating = true
+		
+		withAnimation(.smooth(duration: 0.3)) {
+			draggingItem = newIndex
+			snappedItem = newIndex
+		} completion: {
+
+			store.update(index: Int32(newIndex))
+			
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+				isUpdating = false
+			}
+		}
+	}
+	
+	private func normalizeIndex(_ index: Int) -> Int {
+		let count = 3
+		let normalized = index % count
+		return normalized < 0 ? normalized + count : normalized
+	}
+	
 	private func distance(_ item: Int) -> Double {
-		return (draggingItem - Double(item)).remainder(dividingBy: Double(store.allMonths.count))
+		let rawDistance = draggingItem - Double(item)
+		let count = Double(store.allMonths.count)
+		let normalizedDistance = rawDistance.remainder(dividingBy: count)
+		
+		if normalizedDistance > count / 2 {
+			return normalizedDistance - count
+		} else if normalizedDistance < -count / 2 {
+			return normalizedDistance + count
+		}
+		return normalizedDistance
 	}
 	
 	private func myXOffset(_ item: Int, radius: Double) -> Double {

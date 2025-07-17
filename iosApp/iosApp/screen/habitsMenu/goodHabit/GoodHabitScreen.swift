@@ -38,7 +38,6 @@ struct GoodHabitScreen: View {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
 				TitleDateComponentView()
-				HorizontalCalendarStripView(calendarEffect: observeCalendar(effect:))
 				CalendarMonthView()
 				WeekChartView(data: dummyData)
 			}
@@ -46,6 +45,7 @@ struct GoodHabitScreen: View {
 			.padding(.vertical, 24)
 			.frame(maxWidth: 700, alignment: .leading)
 		}
+		.scrollIndicators(.hidden)
 		
 	}
 	

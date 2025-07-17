@@ -1,5 +1,6 @@
 package org.kakapo.project.util.date.calendar
 
+import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,38 +33,83 @@ class CalendarStore {
     private val _currentDate = MutableStateFlow(today())
 
     private var currentIndex: Int = 0
-    private var indexToUpdate: Int = 0
+    private var currentMonthOffset: Int = 0
+    private val initialDate = today()
 
     fun initData() {
-        val current = generateMonth(currentDate.value)
-        val previous = generateMonth(currentDate.value.minus(1, DateTimeUnit.MONTH))
-        val next = generateMonth(currentDate.value.plus(1, DateTimeUnit.MONTH))
+        currentIndex = 0
+        currentMonthOffset = 0
+        _currentDate.update { initialDate }
+
+        val current = generateMonth(initialDate)
+        val next = generateMonth(initialDate.plus(1, DateTimeUnit.MONTH))
+        val previous = generateMonth(initialDate.minus(1, DateTimeUnit.MONTH))
 
         _allMonths.update { listOf(current, next, previous) }
     }
 
     fun update(index: Int) {
-        val value = if (index < currentIndex) {
-            indexToUpdate = if (indexToUpdate == 2) 0 else indexToUpdate + 1
-            1
-        } else {
-            indexToUpdate = if (indexToUpdate == 0) 2 else indexToUpdate - 1
-            -1
-        }
+        val direction = getScrollDirection(currentIndex, index)
         currentIndex = index
-        addMonth(indexToUpdate, value)
+
+        Logger.d("update: currentIndex=$currentIndex, direction=$direction, monthOffset=$currentMonthOffset")
+
+        when (direction) {
+            ScrollDirection.FORWARD -> {
+                currentMonthOffset++
+                updateMonthAt(getPreviousIndex(index), currentMonthOffset + 1)
+            }
+
+            ScrollDirection.BACKWARD -> {
+                currentMonthOffset--
+                updateMonthAt(getNextIndex(index), currentMonthOffset - 1)
+            }
+
+            ScrollDirection.NONE -> {
+                return
+            }
+        }
+
+        val newCurrentDate = initialDate.plus(currentMonthOffset, DateTimeUnit.MONTH)
+        _currentDate.update { newCurrentDate }
     }
 
-    private fun addMonth(index: Int, value: Int) {
-        val newMonthDate = currentDate.value.plus(value, DateTimeUnit.MONTH)
-        _currentDate.update { newMonthDate }
+    private fun getScrollDirection(from: Int, to: Int): ScrollDirection {
+        return when {
+            from == to -> ScrollDirection.NONE
+            (from == 0 && to == 1) || (from == 1 && to == 2) || (from == 2 && to == 0) -> ScrollDirection.BACKWARD
+            (from == 1 && to == 0) || (from == 2 && to == 1) || (from == 0 && to == 2) -> ScrollDirection.FORWARD
+            else -> ScrollDirection.NONE
+        }
+    }
 
+    private fun getPreviousIndex(currentIndex: Int): Int {
+        return when (currentIndex) {
+            0 -> 2
+            1 -> 0
+            2 -> 1
+            else -> 0
+        }
+    }
+
+    private fun getNextIndex(currentIndex: Int): Int {
+        return when (currentIndex) {
+            0 -> 1
+            1 -> 2
+            2 -> 0
+            else -> 0
+        }
+    }
+
+    private fun updateMonthAt(index: Int, monthOffset: Int) {
+        val newMonthDate = initialDate.plus(monthOffset, DateTimeUnit.MONTH)
         val newMonth = generateMonth(newMonthDate)
 
         val updatedList = _allMonths.value.toMutableList()
         updatedList[index] = newMonth
         _allMonths.update { updatedList }
 
+        Logger.d("updateMonthAt: index=$index, monthOffset=$monthOffset, date=${newMonthDate.month}")
     }
 
     private fun generateMonth(baseDate: LocalDate): MonthModel {
@@ -91,4 +137,8 @@ class CalendarStore {
     private fun today(): LocalDate = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .date
+
+    private enum class ScrollDirection {
+        FORWARD, BACKWARD, NONE
+    }
 }

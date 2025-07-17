@@ -26,6 +26,7 @@ final class CalendarMonthStore: ObservableObject {
 	private func observeAllMonths() {
 		let publisher = createPublisher(for: store.allMonthsFlow)
 		allMonthsCancelable = publisher.receive(on: DispatchQueue.main)
+			.debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
 			.sink { completion in
 				print("completion \(completion)")
 			} receiveValue: { [weak self] allMonths in

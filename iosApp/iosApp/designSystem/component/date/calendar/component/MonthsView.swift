@@ -6,6 +6,11 @@ struct MonthsView: View {
 	let month: MonthModel
 	private let weekDays: [String] = WeekDays.shared.shortNames
 	
+	private var totalCalendarHeight: CGFloat { 240 }
+	private var weekHeight: CGFloat {
+			totalCalendarHeight / 6
+	}
+	
 	var body: some View {
 		VStack {
 			WeekDaysHeader()
@@ -24,17 +29,20 @@ struct MonthsView: View {
 					.frame(maxWidth: .infinity)
 			}
 		}
-		
 	}
 	
 	@ViewBuilder
 	private func MonthWeeksBody() -> some View {
-		VStack {
+		VStack(spacing: 0) {
 			ForEach(month.weeks) { weeks in
 				WeekDaysBody(weeks: weeks)
+					.frame(height: weekHeight)
+					.animation(.easeInOut(duration: 0.3), value: month.weeks.count)
 			}
 		}
+		.frame(height: totalCalendarHeight)
 	}
+	
 	
 	@ViewBuilder
 	private func WeekDaysBody(weeks: WeekOfMonthModel) -> some View {

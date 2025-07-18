@@ -13,10 +13,9 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import org.kakapo.project.util.date.model.DayState
-import org.kakapo.project.util.date.model.MonthModel
-import org.kakapo.project.util.date.model.WeekModel
-import org.kakapo.project.util.date.model.WeekOfMonthModel
+import com.kakapo.model.date.DayState
+import com.kakapo.model.date.MonthModel
+import com.kakapo.model.date.WeekOfMonthModel
 import org.kakapo.project.util.date.util.startOfWeek
 import kotlin.native.ObjCName
 import kotlin.time.Clock

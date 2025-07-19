@@ -9,3 +9,12 @@ extension CompletionDayModel {
 		Int(self.levelKt)
 	}
 }
+
+extension MonthInfoModel {
+	public var monthIndex: Int {
+		Int(self.monthIndexKt)
+	}
+	public var width: CGFloat {
+		CGFloat(self.widthKt)
+	}
+}

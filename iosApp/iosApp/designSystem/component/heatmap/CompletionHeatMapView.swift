@@ -31,19 +31,19 @@ struct CompletionHeatMapView: View {
 	
 	@ViewBuilder
 	private func HeatMapGridView() -> some View {
-			ScrollView(.horizontal, showsIndicators: false) {
+		ScrollView(.horizontal, showsIndicators: false) {
+			HStack(alignment: .center, spacing: 4) {
+				WeekDayLabelsView()
 				VStack(alignment: .leading, spacing: 0) {
 					CompletionMonthLabel(
 						completionYear: completionYear,
 						daySize: daySize,
 						daySpacing: daySpacing
 					)
-					HStack(alignment: .top, spacing: 0) {
-						WeekDayLabelsView()
-						CompletionGridView()
-					}
+					CompletionGridView()
 				}
 			}
+		}
 	}
 	
 	@ViewBuilder
@@ -54,9 +54,10 @@ struct CompletionHeatMapView: View {
 				Text(label)
 					.font(Typography.titleSmall)
 					.foregroundStyle(ColorTheme.outline)
-					.frame(width: 18, height: daySize, alignment: .trailing)
+					.frame(width: 36, height: daySize, alignment: .trailing)
 			}
 		}
+		.padding(.top, daySize)
 	}
 	
 	@ViewBuilder
@@ -82,7 +83,7 @@ struct CompletionHeatMapView: View {
 		)
 	}
 	
-
+	
 	
 	private func calculateMonthWidthBy(index: Int) -> CGFloat {
 		let weekInMonth: CGFloat = 4.3

@@ -1,6 +1,5 @@
 package org.kakapo.project.util.date.horizontalCalendar
 
-import co.touchlab.kermit.Logger
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,11 +18,10 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import org.kakapo.project.util.date.model.WeekModel
+import com.kakapo.model.date.WeekModel
 import org.kakapo.project.util.date.util.startOfWeek
 import kotlin.native.ObjCName
 import kotlin.time.Clock

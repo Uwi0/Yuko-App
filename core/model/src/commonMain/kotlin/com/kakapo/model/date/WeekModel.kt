@@ -1,4 +1,4 @@
-package org.kakapo.project.util.date.model
+package com.kakapo.model.date
 
 import kotlinx.datetime.LocalDate
 import kotlin.native.ObjCName

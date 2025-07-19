@@ -8,6 +8,8 @@ struct GoodHabitScreen: View {
 	@State private var dummyData: [Double] = [
 		0.3, 0.6, 0.8, 0.2, 0.5, 0.7, 1
 	]
+	private let dummyCompletionYear = CompletionYearStore()
+	
 	
 	var body: some View {
 		VStack {
@@ -33,12 +35,13 @@ struct GoodHabitScreen: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
+		let data = dummyCompletionYear.generateCompletionYear(year: 2025, completionData: [:])
 		ScrollView {
 			VStack(alignment: .leading, spacing: 16) {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
 				TitleDateComponentView()
-				CalendarMonthView()
+				CompletionHeatMapView(completionYear: data)
 				WeekChartView(data: dummyData)
 			}
 			.padding(.horizontal, 16)

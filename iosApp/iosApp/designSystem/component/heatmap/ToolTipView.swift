@@ -2,16 +2,16 @@ import SwiftUI
 import Shared
 
 struct ToolTipView: View {
-	let day: CompletionDayModel?
+	let day: CompletionDayModel
 	let isVisible: Bool
 	
 	var body: some View {
-		if isVisible, let day = day {
+		if isVisible {
 			VStack(alignment: .leading, spacing: 4) {
-				Text(formatDate(day.date))
+				Text(date)
 					.font(Typography.titleMedium)
 				
-				Text("\(day.count) completed")
+				Text("\(count) completed")
 					.font(Typography.bodyMedium)
 					.foregroundColor(ColorTheme.outline)
 			}
@@ -21,6 +21,20 @@ struct ToolTipView: View {
 			.foregroundColor(.white)
 			.cornerRadius(6)
 			.transition(.opacity)
+		}
+	}
+	
+	private var date: String {
+		switch onEnum(of: day) {
+		case let .day(date): return formatDate(date.date)
+		case .empty: return "No data"
+		}
+	}
+	
+	private var count: String {
+		switch onEnum(of: day) {
+		case let .day(day): return"\(day.count)"
+		case .empty: return "0"
 		}
 	}
 	

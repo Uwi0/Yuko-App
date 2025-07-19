@@ -1,7 +1,7 @@
 import Foundation
 import Shared
 
-extension CompletionDayModel {
+extension CompletionDayModel.Day {
 	public var date: Date {
 		self.dateKt.toDate()
 	}

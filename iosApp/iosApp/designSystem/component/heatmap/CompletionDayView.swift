@@ -9,12 +9,27 @@ struct CompletionDayView: View {
 	
 	var body: some View {
 		Rectangle()
-			.fill(color(day.level))
+			.fill(fillColor)
 			.frame(width: size, height: size)
 			.cornerRadius(2)
 			.onTapGesture {
-				onTap()
+				handleTap()
 			}
+	}
+	
+	private var fillColor: Color {
+		switch onEnum(of: day) {
+		case let .day(day): color(day.level)
+		case .empty: Color.clear
+		}
+	}
+	
+	private func handleTap() {
+		switch onEnum(of: day) {
+		case .day: onTap()
+		case .empty: print("do nothing")
+			
+		}
 	}
 	
 	private func color(_ level: Int) -> Color {

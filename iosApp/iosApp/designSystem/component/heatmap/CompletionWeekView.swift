@@ -10,11 +10,11 @@ struct CompletionWeekView: View {
 	
 	var body: some View {
 		VStack(spacing: daySpacing) {
-			ForEach(week.days, id: \.date) { day in
+			ForEach(Array(week.days.enumerated()), id: \.offset) { _, completionDay in
 				CompletionDayView(
-					day: day,
+					day: completionDay,
 					size: daySize,
-					onTap: { onTapDay(day) }
+					onTap: { onTapDay(completionDay) }
 				)
 			}
 		}

@@ -3,7 +3,7 @@ import Shared
 
 struct CompletionHeatMapView: View {
 	let completionYear: CompletionYearModel
-	@State private var selectedDay: CompletionDayModel?
+	@State private var selectedDay: CompletionDayModel = .Empty()
 	@State private var showTollTip: Bool = false
 	
 	private let daySize: CGFloat = 16
@@ -93,6 +93,6 @@ struct CompletionHeatMapView: View {
 
 #Preview {
 	let dummyCompletion = CompletionYearStore()
-	let dummyData = dummyCompletion.generateCompletionYear(year: 2022, completionData: [:])
+	let dummyData = dummyCompletion.generateCompletionYear(year: 2021, completionData: [:])
 	CompletionHeatMapView(completionYear: dummyData)
 }

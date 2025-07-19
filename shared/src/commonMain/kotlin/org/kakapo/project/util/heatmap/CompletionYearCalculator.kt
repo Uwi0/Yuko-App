@@ -1,7 +1,9 @@
 package org.kakapo.project.util.heatmap
 
+import com.kakapo.model.heatmap.CompletionDayModel
 import com.kakapo.model.heatmap.CompletionYearModel
 import com.kakapo.model.heatmap.MonthInfoModel
+import kotlinx.datetime.number
 
 fun CompletionYearModel.calculateMonthPositions(
     daySize: Float,
@@ -24,8 +26,9 @@ fun calculateMonthTransitions(
         .withIndex()
         .mapNotNull { (weekIndex, week) ->
             week.days
+                .filterIsInstance<CompletionDayModel.Day>()
                 .firstOrNull { it.date.year == completionYear.year }
-                ?.let { day -> weekIndex to (day.date.monthNumber - 1) }
+                ?.let { day -> weekIndex to (day.date.month.number - 1) }
         }
         .distinctBy { it.second }
         .map { (weekIndex, month) -> Triple(weekIndex, month, month) }

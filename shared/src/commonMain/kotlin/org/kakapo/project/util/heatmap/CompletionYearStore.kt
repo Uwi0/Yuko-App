@@ -18,7 +18,7 @@ class CompletionYearStore {
         val startDate = getYearStartDate(year)
         val endDate = getYearEndDate(year)
 
-        val weeks = generateWeeks(startDate, endDate, completionData)
+        val weeks = generateWeeks(startDate, endDate, year, completionData)
         val totalCompletions = completionData.values.sum()
 
         return CompletionYearModel(
@@ -31,32 +31,39 @@ class CompletionYearStore {
     private fun generateWeeks(
         startDate: LocalDate,
         endDate: LocalDate,
+        targetYear: Int,
         completionData: Map<LocalDate, Int>
     ): List<CompletionWeekModel> {
         return generateSequence(startDate) { currentDate ->
             currentDate.plus(7, DateTimeUnit.DAY).takeIf { it <= endDate }
         }.map { weekStart ->
-            val weekDays = generateWeekDays(weekStart, endDate, completionData)
-            CompletionWeekModel(days = weekDays)
+            val weekDates = generateWeekDates(weekStart, endDate, targetYear, completionData)
+            CompletionWeekModel(days = weekDates)
         }.toList()
     }
 
-    private fun generateWeekDays(
+    private fun generateWeekDates(
         weekStart: LocalDate,
         yearEnd: LocalDate,
+        targetYear: Int,
         completionData: Map<LocalDate, Int>
     ): List<CompletionDayModel> {
-        return (0..6)
-            .map { dayOffset -> weekStart.plus(dayOffset, DateTimeUnit.DAY) }
-            .filter { currentDate -> currentDate <= yearEnd }
-            .map { currentDate ->
-                val count = completionData[currentDate] ?: 0
-                CompletionDayModel(
-                    date = currentDate,
-                    count = count,
-                    level = calculateLevel(count)
-                )
+        return (0..6).map { dayOffset ->
+            val currentDate = weekStart.plus(dayOffset, DateTimeUnit.DAY)
+
+            when {
+                currentDate > yearEnd -> CompletionDayModel.Empty
+                currentDate.year != targetYear -> CompletionDayModel.Empty
+                else -> {
+                    val count = completionData[currentDate] ?: 0
+                    CompletionDayModel.Day(
+                        date = currentDate,
+                        count = count,
+                        level = calculateLevel(count)
+                    )
+                }
             }
+        }
     }
 
     private fun getYearStartDate(year: Int): LocalDate {

@@ -18,3 +18,12 @@ extension MonthInfoModel {
 		CGFloat(self.widthKt)
 	}
 }
+
+extension CompletionYearModel {
+	public var year: String {
+		self.yearKt.removeThousandSeparator()
+	}
+	public var totalCompletions: String {
+		self.totalCompletionsKt.removeThousandSeparator()
+	}
+}

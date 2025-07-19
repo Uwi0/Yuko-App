@@ -11,7 +11,6 @@ struct HorizontalCalendarStripView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			Text("\(weekStore.allWeeks.count)")
 			HeaderContentView()
 			BodyCalendarView()
 			Spacer().frame(height: 16)
@@ -80,6 +79,7 @@ struct HorizontalCalendarStripView: View {
 			}
 			.frame(width: geo.size.width, alignment: .top)
 		}
+		.frame(height: 60)
 		.gesture(dragGesture())
 	}
 	

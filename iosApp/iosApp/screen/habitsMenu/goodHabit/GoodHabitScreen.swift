@@ -40,9 +40,7 @@ struct GoodHabitScreen: View {
 			VStack(alignment: .leading, spacing: 16) {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
-				TitleDateComponentView()
-				CompletionHeatMapView(completionYear: data)
-				WeekChartView(data: dummyData)
+				CompletionView(state: $state, onEvent: onEvent)
 			}
 			.padding(.horizontal, 16)
 			.padding(.vertical, 24)
@@ -62,18 +60,6 @@ struct GoodHabitScreen: View {
 		}
 	}
 	
-	@ViewBuilder
-	private func TitleDateComponentView() -> some View {
-		HStack(alignment: .center, spacing: 8) {
-			Text("Start Date: \(state.goodHabit.startDate)")
-				.font(Typography.titleMedium)
-			Spacer()
-			Image(AssetIconApp.displayDateWeekly)
-				.resizable()
-				.scaledToFit()
-				.frame(width: 24, height: 24)
-		}
-	}
 	
 	private func observeCalendar(effect: HorizontalCalendarEffect) {
 		switch onEnum(of: effect) {
@@ -93,6 +79,7 @@ struct GoodHabitScreen: View {
 #Preview {
 	let state = GoodHabitState(
 		loading: false,
+		completionViewMode: .weekly,
 		goodHabit:  dummyGoodHabit
 	)
 	GoodHabitScreen(

@@ -8,6 +8,7 @@ import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
 import com.kakapo.model.habit.GoodHabitModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.kakapo.project.presentation.habitMenu.model.nextMode
 import org.kakapo.project.presentation.util.BaseViewModel
 import kotlin.native.ObjCName
 
@@ -21,6 +22,7 @@ class GoodHabitViewModel(
 
     override fun handleEvent(event: GoodHabitEvent) {
         when (event) {
+            is GoodHabitEvent.ChangeCompletionMode -> _uiState.update { it.updateNext(event.mode) }
             GoodHabitEvent.DeleteHabit -> deleteHabit()
             GoodHabitEvent.NavigateBack -> emit(GoodHabitEffect.NavigateBack)
         }

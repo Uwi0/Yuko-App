@@ -12,11 +12,21 @@ struct CompletionView: View {
 	var body: some View {
 		VStack {
 			TitleDateComponentView()
-			switch state.completionViewMode {
-			case .weekly: CompletionWeeklyView()
-			case .monthly: CompletionMonthlyView()
-			case .yearly: CompletionYearlyView()
+			ZStack {
+				Group {
+					switch state.completionViewMode {
+					case .weekly: CompletionWeeklyView()
+					case .monthly: CompletionMonthlyView()
+					case .yearly: CompletionYearlyView()
+					}
+				}
+				.transition(
+					.opacity
+						.combined(with: .scale(scale: 0.95))
+						.combined(with: .offset(y: 10))
+				)
 			}
+			.animation(.easeInOut(duration: 0.35), value: state.completionViewMode)
 		}
 	}
 	
@@ -33,12 +43,21 @@ struct CompletionView: View {
 			Spacer()
 			
 			Button {
-				onEvent(.ChangeCompletionMode(mode: state.completionViewMode))
+				withAnimation(.easeInOut(duration: 0.35)) {
+					onEvent(.ChangeCompletionMode(mode: state.completionViewMode))
+				}
 			} label : {
 				Image(icon)
 					.resizable()
 					.scaledToFit()
 					.frame(width: 24, height: 24)
+					.scaleEffect(state.completionViewMode == .yearly ? 1.1 : 1.0)
+					.animation(
+						.spring(
+							response: 0.4,
+							dampingFraction: 0.7),
+						value: state.completionViewMode
+					)
 			}
 		}
 		

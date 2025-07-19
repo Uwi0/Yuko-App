@@ -6,9 +6,9 @@ struct CompletionHeatMapView: View {
 	@State private var selectedDay: CompletionDayModel?
 	@State private var showTollTip: Bool = false
 	
-	private let daySize: CGFloat = 12
-	private let daySpacing: CGFloat = 2
-	private let monthLabels = MonthLabels.shared.labels
+	private let daySize: CGFloat = 16
+	private let daySpacing: CGFloat = 3
+	
 	private let weekDayLabels = WeekDays.shared.shortNames
 	
 	var body: some View {
@@ -31,37 +31,19 @@ struct CompletionHeatMapView: View {
 	
 	@ViewBuilder
 	private func HeatMapGridView() -> some View {
-		VStack(alignment: .leading, spacing: 0) {
-			MonthLabelsView()
-			ScrollView {
-				HStack(alignment: .top, spacing: 0) {
-					WeekDayLabelsView()
-					CompletionGridView()
+			ScrollView(.horizontal, showsIndicators: false) {
+				VStack(alignment: .leading, spacing: 0) {
+					CompletionMonthLabel(
+						completionYear: completionYear,
+						daySize: daySize,
+						daySpacing: daySpacing
+					)
+					HStack(alignment: .top, spacing: 0) {
+						WeekDayLabelsView()
+						CompletionGridView()
+					}
 				}
 			}
-			
-		}
-	}
-	
-	
-	@ViewBuilder
-	private func MonthLabelsView() -> some View {
-		HStack {
-			Rectangle()
-				.fill(ColorTheme.primary)
-				.frame(width: 20, height: 16)
-			
-			ForEach(0..<12, id: \.self) { index in
-				let monthWidth = calculateMonthWidthBy(index: index)
-				
-				if monthWidth > 0 {
-					Text(monthLabels[index])
-						.font(Typography.titleMedium)
-						.foregroundStyle(ColorTheme.outline)
-						.frame(width: monthWidth, alignment: .leading)
-				}
-			}
-		}
 	}
 	
 	@ViewBuilder
@@ -99,6 +81,8 @@ struct CompletionHeatMapView: View {
 				}
 		)
 	}
+	
+
 	
 	private func calculateMonthWidthBy(index: Int) -> CGFloat {
 		let weekInMonth: CGFloat = 4.3

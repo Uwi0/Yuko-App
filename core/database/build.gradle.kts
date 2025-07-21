@@ -22,6 +22,27 @@ kotlin {
             implementation(libs.sqldelight.navtive.driver)
         }
     }
+
+    sourceSets.commonTest {
+        dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.turbine)
+            implementation(libs.kotlin.coroutines.test)
+            implementation(libs.kotest.assertions.core)
+        }
+    }
+
+    sourceSets.iosTest {
+        dependencies {
+            implementation(libs.sqldelight.navtive.driver)
+        }
+    }
+
+    sourceSets.androidUnitTest {
+        dependencies {
+            implementation(libs.sqldelight.native.jvm)
+        }
+    }
 }
 
 sqldelight {

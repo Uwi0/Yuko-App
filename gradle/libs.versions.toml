@@ -11,10 +11,12 @@ androidx-espresso = "3.6.1"
 androidx-lifecycle = "2.9.1"
 androidx-testExt = "1.2.1"
 composeMultiplatform = "1.8.2"
+core = "1.6.1"
 dependency-analys = "2.19.0"
 datastore = "1.1.7"
 junit = "4.13.2"
 kermit = "2.0.6"
+kotest = "5.9.1"
 koin-bom = "4.1.0"
 kotlin = "2.2.0"
 kotlin-coroutines = "1.10.2"
@@ -26,7 +28,7 @@ kmp-nativecoroutines = "1.0.0-ALPHA-45"
 sqldelight = "2.1.0"
 sekie = "0.10.4"
 runner = "1.6.2"
-core = "1.6.1"
+turbine = "1.2.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -52,12 +54,16 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-androidx-com
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-navtive-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-native-jvm = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 #Dependencies of the included build logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

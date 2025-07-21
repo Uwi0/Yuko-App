@@ -15,6 +15,7 @@ import kotlinx.datetime.until
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toEpochDays()
 val todayAtMidnight: Long
     get() = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())

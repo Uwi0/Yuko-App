@@ -7,7 +7,7 @@ data class GoodHabitUseCaseParam(
     val habitId: Long,
     val currentDay: Long,
     val startOfMonth: Long,
-    val endOfMonth: Long,
+    val endOfMonth: Long = 0,
 )
 
 fun goodHabitParamFactory(habitId: Long): GoodHabitUseCaseParam {

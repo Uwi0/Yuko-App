@@ -5,11 +5,12 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import platform.Foundation.NSDate
 import platform.Foundation.NSDateFormatter
+import platform.Foundation.dateWithTimeIntervalSince1970
 
 actual fun LocalDateTime.toFormatedString(pattern: String): String {
     val dateFormatter = NSDateFormatter()
     dateFormatter.dateFormat = pattern
-    val timeInterval = this.toInstant(TimeZone.currentSystemDefault()).epochSeconds.toDouble()
-    val date = NSDate(timeIntervalSinceReferenceDate = timeInterval)
+    val epochMillis = this.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    val date = NSDate.dateWithTimeIntervalSince1970(epochMillis / 1000.0)
     return dateFormatter.stringFromDate(date)
 }

@@ -1,6 +1,5 @@
 package com.kakapo.domain.useCase.logic
 
-import co.touchlab.kermit.Logger
 import com.kakapo.common.util.dayToDateWith
 import com.kakapo.domain.model.GoodHabitUseCaseParam
 import com.kakapo.model.habit.GoodHabitModel
@@ -37,7 +36,6 @@ internal object GoodHabitDetailLogic {
             checkedDates,
             habitModel.startDate
         )
-        Logger.d("habitModel: $habitModel,habitChecks: $habitChecks param: $param")
         return GoodHabitModel(
             name = habitModel.name,
             description = habitModel.description,

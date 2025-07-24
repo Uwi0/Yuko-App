@@ -1,8 +1,12 @@
 import SwiftUI
+import Shared
 
 struct CalendarMonthView: View {
 	
-	@StateObject private var store = CalendarMonthStore()
+	var currentDate: Date
+	var months: [MonthModel]
+	let onUpdatedIndex: (Int32) -> Void
+	
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	@State private var isUpdating = false
@@ -12,14 +16,11 @@ struct CalendarMonthView: View {
 			HeaderContentView()
 			BodyContentView()
 		}
-		.task {
-			store.initData()
-		}
 	}
 	
 	@ViewBuilder
 	private func HeaderContentView() -> some View {
-		let yearAndMonth = dateToString(date: store.currentDate, format: "yyyy MMM")
+		let yearAndMonth = dateToString(date: currentDate, format: "yyyy MMM")
 		HStack(spacing: 16) {
 			Text(yearAndMonth)
 			Spacer()
@@ -68,7 +69,7 @@ struct CalendarMonthView: View {
 	private func BodyContentView() -> some View {
 		GeometryReader { geo in
 			ZStack {
-				ForEach(Array(store.allMonths.enumerated()), id: \.offset) { index, month in
+				ForEach(Array(months.enumerated()), id: \.offset) { index, month in
 					MonthsView(month: month)
 						.offset(x: myXOffset(index, radius: geo.size.width * 0.1))
 						.scaleEffect(1.0 - abs(distance(index)) * 0.2)
@@ -109,7 +110,7 @@ struct CalendarMonthView: View {
 			snappedItem = newIndex
 		} completion: {
 
-			store.update(index: Int32(newIndex))
+			onUpdatedIndex(Int32(newIndex))
 			
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
 				isUpdating = false
@@ -125,7 +126,7 @@ struct CalendarMonthView: View {
 	
 	private func distance(_ item: Int) -> Double {
 		let rawDistance = draggingItem - Double(item)
-		let count = Double(store.allMonths.count)
+		let count = Double(months.count)
 		let normalizedDistance = rawDistance.remainder(dividingBy: count)
 		
 		if normalizedDistance > count / 2 {
@@ -137,13 +138,7 @@ struct CalendarMonthView: View {
 	}
 	
 	private func myXOffset(_ item: Int, radius: Double) -> Double {
-		let angle = Double.pi * 2 / Double(store.allMonths.count) * distance(item)
+		let angle = Double.pi * 2 / Double(months.count) * distance(item)
 		return sin(angle) * radius
 	}
-}
-
-#Preview {
-	CalendarMonthView()
-		.padding(16)
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 }

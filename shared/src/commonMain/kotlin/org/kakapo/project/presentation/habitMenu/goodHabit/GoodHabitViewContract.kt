@@ -1,6 +1,7 @@
 package org.kakapo.project.presentation.habitMenu.goodHabit
 
 import com.kakapo.common.util.currentLocalDate
+import com.kakapo.model.date.MonthModel
 import com.kakapo.model.date.WeekModel
 import com.kakapo.model.habit.GoodHabitModel
 import kotlinx.datetime.LocalDate
@@ -13,7 +14,8 @@ data class GoodHabitState(
     val completionViewMode: CompletionViewMode = CompletionViewMode.WEEKLY,
     val goodHabit: GoodHabitModel = GoodHabitModel(),
     val currentDate: LocalDate = currentLocalDate,
-    val allWeeks: List<WeekModel> = emptyList()
+    val allWeeks: List<WeekModel> = emptyList(),
+    val allMonths: List<MonthModel> = emptyList()
 ) {
 
     fun updateNext(mode: CompletionViewMode) = copy(completionViewMode = mode.nextMode())
@@ -33,4 +35,5 @@ sealed class GoodHabitEvent {
     data object NavigateBack : GoodHabitEvent()
     data class ChangeCompletionMode(val mode: CompletionViewMode) : GoodHabitEvent()
     data class UpdateWeek(val index: Int): GoodHabitEvent()
+    data class UpdateMonth(val index: Int): GoodHabitEvent()
 }

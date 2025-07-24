@@ -77,7 +77,11 @@ struct CompletionView: View {
 	
 	@ViewBuilder
 	private func CompletionMonthlyView() -> some View {
-		CalendarMonthView()
+		CalendarMonthView(
+			currentDate: state.formattedDate,
+			months: state.allMonths,
+			onUpdatedIndex: { index in onEvent(.UpdateMonth(index: index)) }
+		)
 	}
 	
 	@ViewBuilder

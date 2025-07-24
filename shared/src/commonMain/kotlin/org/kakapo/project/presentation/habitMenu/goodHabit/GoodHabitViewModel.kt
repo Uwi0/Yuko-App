@@ -36,6 +36,7 @@ class GoodHabitViewModel(
     private fun loadGoodHabitBy(habitId: Long) = viewModelScope.launch {
         val param = goodHabitParamFactory(habitId)
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
+            Logger.d("goodHabit: $goodHabit")
             _uiState.update { it.copy(goodHabit = goodHabit) }
         }
 

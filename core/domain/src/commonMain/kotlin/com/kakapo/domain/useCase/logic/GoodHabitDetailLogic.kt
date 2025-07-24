@@ -37,7 +37,7 @@ internal object GoodHabitDetailLogic {
             checkedDates,
             habitModel.startDate
         )
-
+        Logger.d("habitModel: $habitModel,habitChecks: $habitChecks param: $param")
         return GoodHabitModel(
             name = habitModel.name,
             description = habitModel.description,

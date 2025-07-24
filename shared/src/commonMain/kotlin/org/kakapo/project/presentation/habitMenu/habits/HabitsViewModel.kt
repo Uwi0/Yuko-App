@@ -3,6 +3,7 @@ package org.kakapo.project.presentation.habitMenu.habits
 import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
+import com.kakapo.common.util.currentDay
 import com.kakapo.common.util.todayAtMidnight
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.data.repository.base.habit.HabitRepository
@@ -37,7 +38,7 @@ class HabitsViewModel(
             _uiState.update { it.copy(habits = habits, loading = false) }
         }
 
-        habitRepository.loadHabits(todayAtMidnight).asResult().subscribe(
+        habitRepository.loadHabits(currentDay).asResult().subscribe(
             onSuccess = onSuccess,
             onError = ::handleError
         )
@@ -53,7 +54,7 @@ class HabitsViewModel(
             loadHabitsToday()
         }
 
-        habitCheckRepository.saveTodayCheckBy(habitId, todayAtMidnight)
+        habitCheckRepository.saveTodayCheckBy(habitId, currentDay)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
     }
@@ -63,7 +64,7 @@ class HabitsViewModel(
             loadHabitsToday()
         }
 
-        habitCheckRepository.deleteTodayCheckBy(habitId, todayAtMidnight)
+        habitCheckRepository.deleteTodayCheckBy(habitId, currentDay)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
     }

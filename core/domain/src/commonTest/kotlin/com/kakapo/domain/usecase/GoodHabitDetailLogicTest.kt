@@ -1,5 +1,6 @@
 package com.kakapo.domain.usecase
 
+import com.kakapo.common.util.currentDay
 import com.kakapo.domain.model.GoodHabitTestData
 import com.kakapo.domain.model.GoodHabitUseCaseParam
 import com.kakapo.domain.useCase.logic.GoodHabitDetailLogic
@@ -67,6 +68,22 @@ class GoodHabitDetailLogicTest {
         )
 
         bestStreak shouldBe 3
+    }
+
+    @Test
+    fun `calculate best streak at first day should return at least one best steak`() {
+        val checks = listOf(HabitCheckModel(
+            id = 1,
+            date = currentDay,
+            isCompleted = true
+        ))
+        val bestStreak = GoodHabitDetailLogic.calculateBestStreak(
+            checks,
+            20293,
+            20293
+        )
+
+        bestStreak shouldBe 1
     }
 
     @Test

@@ -35,7 +35,6 @@ struct GoodHabitScreen: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
-		let data = dummyCompletionYear.generateCompletionYear(year: 2025, completionData: [:])
 		ScrollView {
 			VStack(alignment: .leading, spacing: 16) {
 				TitleComponentView()
@@ -60,30 +59,9 @@ struct GoodHabitScreen: View {
 		}
 	}
 	
-	
-	private func observeCalendar(effect: HorizontalCalendarEffect) {
-		switch onEnum(of: effect) {
-		case let .weekChanged(weeks):
-			print("week changed! generating new random data")
-			dummyData = generateRandomData()
-		}
-	}
-	
 	private func generateRandomData() -> [Double] {
 		(0..<7).map { _ in Double.random(in: 0.2...1.0) }
 	}
 	
 }
 
-
-#Preview {
-	let state = GoodHabitState(
-		loading: false,
-		completionViewMode: .weekly,
-		goodHabit:  dummyGoodHabit
-	)
-	GoodHabitScreen(
-		state: .constant(state),
-		onEvent: { _ in }
-	)
-}

@@ -3,9 +3,10 @@ import Shared
 
 struct HorizontalCalendarStripView: View {
 	
-	let calendarEffect: (HorizontalCalendarEffect) -> Void
+	var currentDate: Date
+	var weeks: [WeekModel]
+	let onUpdatedIndex: (Int32) -> Void
 	
-	@StateObject private var weekStore = HorizontalCalendarStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	
@@ -15,17 +16,11 @@ struct HorizontalCalendarStripView: View {
 			BodyCalendarView()
 			Spacer().frame(height: 16)
 		}
-		.task {
-			weekStore.initData()
-		}
-		.onReceive(weekStore.effectPublsiher) { effect in
-			calendarEffect(effect)
-		}
 	}
 	
 	@ViewBuilder
 	private func HeaderContentView() -> some View {
-		let yearAndMonth = dateToString(date: weekStore.currentMonth, format: "yyyy MMM")
+		let yearAndMonth = dateToString(date: currentDate, format: "yyyy MMM")
 		HStack(spacing: 16) {
 			Text(yearAndMonth)
 			Spacer()
@@ -50,7 +45,7 @@ struct HorizontalCalendarStripView: View {
 				let moveIndex = onClick(snappedItem)
 				snappedItem = moveIndex
 				draggingItem = snappedItem
-				weekStore.handle(event: .UpdateWeekWith(index: Int32(moveIndex)))
+				onUpdatedIndex(Int32(moveIndex))
 			}
 		} label: {
 			Image(systemName: image)
@@ -66,11 +61,8 @@ struct HorizontalCalendarStripView: View {
 	func BodyCalendarView() -> some View {
 		GeometryReader { geo in
 			ZStack {
-				ForEach(weekStore.allWeeks) { week in
-					WeekOfDaysView(
-						week: week,
-						onSelectedDayOfWeek: { date in weekStore.currentDate = date}
-					)
+				ForEach(weeks) { week in
+					WeekOfDaysView(week: week)
 					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
 					.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
 					.opacity(1.0 - abs(distance(week.id)) * 0.3)
@@ -97,31 +89,20 @@ struct HorizontalCalendarStripView: View {
 					}
 					snappedItem = draggingItem
 				} completion: {
-					weekStore.handle(event: .UpdateWeekWith(index: Int32(snappedItem)))
+					onUpdatedIndex(Int32(snappedItem))
 				}
 			}
 	}
 	
 	
 	private func distance(_ item: Int) -> Double {
-		return (draggingItem - Double(item)).remainder(dividingBy: Double(weekStore.allWeeks.count))
+		return (draggingItem - Double(item)).remainder(dividingBy: Double(weeks.count))
 	}
 	
 	private func myXOffset(_ item: Int, radius: Double) -> Double {
-		let angle = Double.pi * 2 / Double(weekStore.allWeeks.count) * distance(item)
+		let angle = Double.pi * 2 / Double(weeks.count) * distance(item)
 		return sin(angle) * radius
 	}
 	
 }
 
-
-#Preview {
-	VStack {
-		HorizontalCalendarStripView(
-			calendarEffect: { _ in }
-		)
-		.frame(maxHeight: .infinity, alignment: .top)
-		Spacer()
-	}.padding(.horizontal, 16)
-	
-}

@@ -3,9 +3,10 @@ import Shared
 import Combine
 import KMPNativeCoroutinesCombine
 
-final class GoodHabitViewModel: ObservableObject {
+@Observable
+final class GoodHabitViewModel {
 	
-	@Published var state: GoodHabitState = .companion.default()
+	var state: GoodHabitState = .companion.default()
 	var efectPublihser: AnyPublisher<GoodHabitEffect, Never> {
 		effectSubject.eraseToAnyPublisher()
 	}
@@ -54,4 +55,8 @@ final class GoodHabitViewModel: ObservableObject {
 		stateCancellable?.cancel()
 		effectCancellable?.cancel()
 	}
+}
+
+extension GoodHabitState {
+	public var formattedDate: Date { self.currentDate.toDate() }
 }

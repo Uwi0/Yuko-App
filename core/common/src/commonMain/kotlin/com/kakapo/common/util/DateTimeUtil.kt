@@ -15,16 +15,17 @@ import kotlinx.datetime.until
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-val currentTime = Clock.System.now().toEpochMilliseconds()
+val currentTime: Long get() = Clock.System.now().toEpochMilliseconds()
 
-val currentDay = Clock.System.now()
-    .toLocalDateTime(TimeZone.currentSystemDefault())
-    .date.toEpochDays()
-
-val todayAtMidnight: Long
+val currentLocalDate: LocalDate
     get() = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .date
+val currentDay: Long
+    get() = currentLocalDate.toEpochDays()
+
+val todayAtMidnight: Long
+    get() = currentLocalDate
         .atStartOfDayIn(TimeZone.currentSystemDefault())
         .toEpochMilliseconds()
 
@@ -34,7 +35,8 @@ fun getEndOfMonthUnixTime(): Long {
     val firstDayOfNextMonth = LocalDate(nextMonth.year, nextMonth.month, 1)
     val lastDayOfCurrentMonth = firstDayOfNextMonth.minus(1, DateTimeUnit.DAY)
     val endOfMonthDateTime = lastDayOfCurrentMonth.atTime(23, 59, 59)
-    val unixTime = endOfMonthDateTime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    val unixTime = endOfMonthDateTime.toInstant(TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
     return unixTime
 }
 
@@ -60,7 +62,7 @@ fun startDateAndEndDateOfMonthEpochMillis(
 fun startDateAndEndDateOfMonthEpochDays(
     month: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).month.number,
     currentYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
-) : Pair<Long, Long> {
+): Pair<Long, Long> {
     val startDate = LocalDate(currentYear, month, 1).toEpochDays()
     val daysInMonth = LocalDate(currentYear, month, 1)
         .plus(1, DateTimeUnit.MONTH)

@@ -66,7 +66,11 @@ struct CompletionView: View {
 	@ViewBuilder
 	private func CompletionWeeklyView() -> some View {
 		VStack {
-			HorizontalCalendarStripView(calendarEffect: { _ in })
+			HorizontalCalendarStripView(
+				currentDate: state.formattedDate,
+				weeks: state.allWeeks,
+				onUpdatedIndex: { index in onEvent(.UpdateWeek(index: index)) }
+			)
 			WeekChartView(data: dummyData)
 		}
 	}

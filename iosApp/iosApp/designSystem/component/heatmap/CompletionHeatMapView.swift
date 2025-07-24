@@ -83,10 +83,6 @@ struct CompletionHeatMapView: View {
 		)
 	}
 	
-	private func calculateMonthWidthBy(index: Int) -> CGFloat {
-		let weekInMonth: CGFloat = 4.3
-		return weekInMonth * (daySize + daySpacing)
-	}
 }
 
 #Preview {

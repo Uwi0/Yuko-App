@@ -36,7 +36,6 @@ class GoodHabitViewModel(
     private fun loadGoodHabitBy(habitId: Long) = viewModelScope.launch {
         val param = goodHabitParamFactory(habitId)
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
-            Logger.d { "goodHabit: $goodHabit" }
             _uiState.update { it.copy(goodHabit = goodHabit) }
         }
 
@@ -56,6 +55,8 @@ class GoodHabitViewModel(
     }
 
     private fun handleError(error: Throwable) {
+        val message = error.message ?: "An error occurred"
         emit(GoodHabitEffect.ShowError(error.message ?: "An error occurred"))
+        Logger.e(message, error)
     }
 }

@@ -23,13 +23,13 @@ class GoodHabitDetailLogicTest {
         result.size shouldBe 7
 
         val expected = mapOf(
-            GoodHabitTestData.epochDayToMillis(1) to true,
-            GoodHabitTestData.epochDayToMillis(2) to true,
-            GoodHabitTestData.epochDayToMillis(3) to false,
-            GoodHabitTestData.epochDayToMillis(4) to true,
-            GoodHabitTestData.epochDayToMillis(5) to false,
-            GoodHabitTestData.epochDayToMillis(6) to true,
-            GoodHabitTestData.epochDayToMillis(7) to false,
+            GoodHabitTestData.epochDay(1) to true,
+            GoodHabitTestData.epochDay(2) to true,
+            GoodHabitTestData.epochDay(3) to false,
+            GoodHabitTestData.epochDay(4) to true,
+            GoodHabitTestData.epochDay(5) to false,
+            GoodHabitTestData.epochDay(6) to true,
+            GoodHabitTestData.epochDay(7) to false,
         )
 
         result shouldContainAll expected
@@ -37,16 +37,16 @@ class GoodHabitDetailLogicTest {
 
     @Test
     fun `generatedDaysInRange should return all days inclusive between start and end`() {
-        val startDate = GoodHabitTestData.epochDayToMillis(1)
-        val endDate = GoodHabitTestData.epochDayToMillis(3)
+        val startDate = GoodHabitTestData.epochDay(1)
+        val endDate = GoodHabitTestData.epochDay(3)
 
         val result = GoodHabitDetailLogic.generateDaysInRange(startDate, endDate)
 
         result.size shouldBe 3
         result shouldBe listOf(
-            GoodHabitTestData.epochDayToMillis(1),
-            GoodHabitTestData.epochDayToMillis(2),
-            GoodHabitTestData.epochDayToMillis(3),
+            GoodHabitTestData.epochDay(1),
+            GoodHabitTestData.epochDay(2),
+            GoodHabitTestData.epochDay(3),
         )
     }
 
@@ -55,15 +55,15 @@ class GoodHabitDetailLogicTest {
         val checks = listOf(1, 2, 4, 5, 6).mapIndexed { index, day ->
             HabitCheckModel(
                 id = index.toLong(),
-                date = GoodHabitTestData.epochDayToMillis(day),
+                date = GoodHabitTestData.epochDay(day),
                 isCompleted = true
             )
         }
 
         val bestStreak = GoodHabitDetailLogic.calculateBestStreak(
             checks,
-            GoodHabitTestData.epochDayToMillis(1),
-            GoodHabitTestData.epochDayToMillis(7)
+            GoodHabitTestData.epochDay(1),
+            GoodHabitTestData.epochDay(7)
         )
 
         bestStreak shouldBe 3
@@ -71,16 +71,16 @@ class GoodHabitDetailLogicTest {
 
     @Test
     fun `asCurrentStreak should count how many days streak up to today`() {
-        val today = GoodHabitTestData.epochDayToMillis(7)
+        val today = GoodHabitTestData.epochDay(7)
         val map = mapOf(
-            GoodHabitTestData.epochDayToMillis(7) to true,
-            GoodHabitTestData.epochDayToMillis(6) to true,
-            GoodHabitTestData.epochDayToMillis(5) to false,
-            GoodHabitTestData.epochDayToMillis(4) to true
+            GoodHabitTestData.epochDay(7) to true,
+            GoodHabitTestData.epochDay(6) to true,
+            GoodHabitTestData.epochDay(5) to false,
+            GoodHabitTestData.epochDay(4) to true
         )
 
         val currentStreak = with(GoodHabitDetailLogic) {
-            map.latestStreakUpTo(today)
+            map.countStreakUp()
         }
 
         currentStreak shouldBe 2
@@ -88,7 +88,7 @@ class GoodHabitDetailLogicTest {
 
     @Test
     fun `calculateMissedCount should return correct number of missed days`() {
-        val epoch: (Int) -> Long = { day -> GoodHabitTestData.epochDayToMillis(day) }
+        val epoch: (Int) -> Long = { day -> GoodHabitTestData.epochDay(day) }
         val all = listOf(epoch(1), epoch(2), epoch(3), epoch(4), epoch(5))
         val checked = setOf(epoch(1), epoch(3))
         val startDate = epoch(1)
@@ -111,10 +111,10 @@ class GoodHabitDetailLogicTest {
             startDate = GoodHabitTestData.habitStartDateEpoch
         )
 
-        val checks = listOf(1, 2, 4, 6).mapIndexed { index, day ->
+        val checks = listOf(1, 2, 4, 7).mapIndexed { index, day ->
             HabitCheckModel(
                 id = index.toLong(),
-                date = GoodHabitTestData.epochDayToMillis(day),
+                date = GoodHabitTestData.epochDay(day),
                 isCompleted = true
             )
         }

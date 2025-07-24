@@ -15,7 +15,12 @@ import kotlinx.datetime.until
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toEpochDays()
+val currentTime = Clock.System.now().toEpochMilliseconds()
+
+val currentDay = Clock.System.now()
+    .toLocalDateTime(TimeZone.currentSystemDefault())
+    .date.toEpochDays()
+
 val todayAtMidnight: Long
     get() = Clock.System.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
@@ -33,7 +38,7 @@ fun getEndOfMonthUnixTime(): Long {
     return unixTime
 }
 
-fun startDateAndEndDateOfMonth(
+fun startDateAndEndDateOfMonthEpochMillis(
     month: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).month.number,
     currentYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
 ): Pair<Long, Long> {
@@ -52,6 +57,19 @@ fun startDateAndEndDateOfMonth(
     return Pair(startDate, daysInMonth)
 }
 
+fun startDateAndEndDateOfMonthEpochDays(
+    month: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).month.number,
+    currentYear: Int = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
+) : Pair<Long, Long> {
+    val startDate = LocalDate(currentYear, month, 1).toEpochDays()
+    val daysInMonth = LocalDate(currentYear, month, 1)
+        .plus(1, DateTimeUnit.MONTH)
+        .minus(1, DateTimeUnit.DAY)
+        .toEpochDays()
+
+    return startDate to daysInMonth
+}
+
 fun Long?.asDayClean(): Long {
     return this?.let { lastTime ->
         val formDate = Instant.fromEpochMilliseconds(lastTime)
@@ -64,10 +82,17 @@ fun Long?.asDayClean(): Long {
     } ?: 0
 }
 
-fun Long.toDateWith(format: String): String {
+fun Long.millisToDateWith(format: String): String {
     val instant = Instant.fromEpochMilliseconds(this)
     val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-    return localDateTime.toFormatedString(format)
+    return localDateTime.fromEpochMillsToFormatedString(format)
 }
 
-expect fun LocalDateTime.toFormatedString(pattern: String): String
+fun Long.dayToDateWith(format: String): String {
+    val localDate = LocalDate.fromEpochDays(this.toInt())
+    return localDate.fromEpochDayToFormattedString(format)
+}
+
+expect fun LocalDateTime.fromEpochMillsToFormatedString(pattern: String): String
+
+expect fun LocalDate.fromEpochDayToFormattedString(pattern: String): String

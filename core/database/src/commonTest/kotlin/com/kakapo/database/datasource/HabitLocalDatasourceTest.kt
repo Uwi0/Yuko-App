@@ -2,7 +2,7 @@ package com.kakapo.database.datasource
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.turbine.test
-import com.kakapo.common.util.today
+import com.kakapo.common.util.currentTime
 import com.kakapo.database.createInMemoryDatabase
 import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
 import com.kakapo.database.datasource.base.habits.HabitLocalDatasource
@@ -54,8 +54,8 @@ class HabitLocalDatasourceTest {
     fun `get habit today must return at least some complete today`() = runTest(testDispatcher) {
         habitDatasource.insertHabit(dummyHabit)
         habitDatasource.insertHabit(dummyHabit2)
-        habitCheckLocalDatasource.insertTodayCheck(dummyHabit.id, today)
-        habitDatasource.getHabits(today).test {
+        habitCheckLocalDatasource.insertTodayCheck(dummyHabit.id, currentTime)
+        habitDatasource.getHabits(currentTime).test {
             val result = awaitItem()
             result.size shouldBe 2
             println(result)

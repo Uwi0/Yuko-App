@@ -1,6 +1,8 @@
 package com.kakapo.domain.model
 
-import com.kakapo.common.util.startDateAndEndDateOfMonth
+import com.kakapo.common.util.currentDay
+import com.kakapo.common.util.startDateAndEndDateOfMonthEpochDays
+import com.kakapo.common.util.startDateAndEndDateOfMonthEpochMillis
 import com.kakapo.common.util.todayAtMidnight
 
 data class GoodHabitUseCaseParam(
@@ -11,8 +13,7 @@ data class GoodHabitUseCaseParam(
 )
 
 fun goodHabitParamFactory(habitId: Long): GoodHabitUseCaseParam {
-    val currentDay = todayAtMidnight
-    val (starOfMonth, endOfMonth) = startDateAndEndDateOfMonth()
+    val (starOfMonth, endOfMonth) = startDateAndEndDateOfMonthEpochDays()
 
     return GoodHabitUseCaseParam(
         habitId = habitId,

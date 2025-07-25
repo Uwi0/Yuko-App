@@ -5,11 +5,6 @@ struct GoodHabitScreen: View {
 	
 	@Binding var state: GoodHabitState
 	let onEvent: (GoodHabitEvent) -> Void
-	@State private var dummyData: [Double] = [
-		0.3, 0.6, 0.8, 0.2, 0.5, 0.7, 1
-	]
-	private let dummyCompletionYear = CompletionYearStore()
-	
 	
 	var body: some View {
 		VStack {
@@ -57,10 +52,6 @@ struct GoodHabitScreen: View {
 			Text(state.goodHabit.description_)
 				.font(Typography.bodyMedium)
 		}
-	}
-	
-	private func generateRandomData() -> [Double] {
-		(0..<7).map { _ in Double.random(in: 0.2...1.0) }
 	}
 	
 }

@@ -79,8 +79,8 @@ class GoodHabitDetailLogicTest {
         ))
         val bestStreak = GoodHabitDetailLogic.calculateBestStreak(
             checks,
-            20293,
-            20293
+            currentDay,
+            currentDay
         )
 
         bestStreak shouldBe 1
@@ -148,7 +148,7 @@ class GoodHabitDetailLogicTest {
         result.totalComplete shouldBe 4
         result.bestStreak shouldBe 2
         result.completionThisMonth shouldBe 4
-        result.startDate shouldBe "01 Jul 2025"
+        result.formattedStartDate shouldBe "01 Jul 2025"
         result.calendarMap.size shouldBe 7
     }
 }

@@ -1,5 +1,6 @@
 package com.kakapo.model.habit
 
+import com.kakapo.common.util.dayToDateWith
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -16,9 +17,13 @@ data class GoodHabitModel(
     val totalComplete: Int = 0,
     val bestStreak: Int = 0,
     val completionThisMonth: Int = 0,
-    val startDate: String = "",
+    val startDate: Long = 0,
     val calendarMap: Map<Long, Boolean> = emptyMap(),
-)
+) {
+    val formattedStartDate: String get () {
+        return startDate.dayToDateWith(format = "dd MMM yyyy")
+    }
+}
 
 val dummyGoodHabit: GoodHabitModel get() {
     val timeZone = TimeZone.currentSystemDefault()
@@ -43,7 +48,7 @@ val dummyGoodHabit: GoodHabitModel get() {
         totalComplete = 96,
         bestStreak = 21,
         completionThisMonth = 18,
-        startDate = "10 Jun 2025",
+        startDate = 0,
         calendarMap = calendarMap
     )
 }

@@ -84,6 +84,16 @@ fun Long?.asDayClean(): Long {
     } ?: 0
 }
 
+fun Long.asLocalDate(): LocalDate {
+    val epochStart = LocalDate(1970, 1, 1)
+    return epochStart.plus(this, DateTimeUnit.DAY)
+}
+
+fun LocalDate.asEpochDays(): Long {
+    val epochStart = LocalDate(1970, 1, 1)
+    return this.until(epochStart, DateTimeUnit.DAY)
+}
+
 fun Long.millisToDateWith(format: String): String {
     val instant = Instant.fromEpochMilliseconds(this)
     val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())

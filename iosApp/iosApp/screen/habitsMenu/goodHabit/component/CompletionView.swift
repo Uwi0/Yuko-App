@@ -37,7 +37,7 @@ struct CompletionView: View {
 	@ViewBuilder
 	private func TitleDateComponentView() -> some View {
 		HStack(alignment: .center, spacing: 8) {
-			Text("Start Date: \(state.goodHabit.startDate)")
+			Text("Start Date: \(state.goodHabit.formattedStartDate)")
 				.font(Typography.titleMedium)
 			
 			Spacer()

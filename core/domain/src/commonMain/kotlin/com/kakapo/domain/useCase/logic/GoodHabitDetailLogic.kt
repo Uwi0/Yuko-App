@@ -44,7 +44,7 @@ internal object GoodHabitDetailLogic {
             totalComplete = habitChecks.size,
             bestStreak = calculateBestStreak(habitChecks, habitModel.startDate, param.currentDay),
             completionThisMonth = checksThisMonthUntilToday.size,
-            startDate = habitModel.startDate.dayToDateWith(format = "dd MMM yyyy"),
+            startDate = habitModel.startDate,
             calendarMap = calendarMap
         )
     }

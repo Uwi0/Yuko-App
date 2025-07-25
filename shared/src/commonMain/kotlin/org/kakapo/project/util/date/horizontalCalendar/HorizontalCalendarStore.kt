@@ -7,7 +7,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import com.kakapo.model.date.WeekModel
 import org.kakapo.project.util.date.util.startOfWeek
-import kotlin.native.ObjCName
 
 class HorizontalCalendarStore {
 

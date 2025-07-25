@@ -45,6 +45,7 @@ struct HorizontalCalendarStripView: View {
 		disabled: Bool,
 		onClick: @escaping (Double) -> Double
 	) -> some View {
+		let color = disabled ? ColorTheme.outline : ColorTheme.primary
 		Button {
 			withAnimation(.smooth) {
 				let moveIndex = onClick(snappedItem)
@@ -58,7 +59,7 @@ struct HorizontalCalendarStripView: View {
 				.scaledToFit()
 				.frame(width: 24, height: 24)
 				.padding(10)
-				.foregroundStyle(ColorTheme.primary)
+				.foregroundStyle(color)
 		}
 		.disabled(disabled)
 	}
@@ -69,10 +70,10 @@ struct HorizontalCalendarStripView: View {
 			ZStack {
 				ForEach(weeks) { week in
 					WeekOfDaysView(week: week)
-					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
-					.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
-					.opacity(1.0 - abs(distance(week.id)) * 0.3)
-					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
+						.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
+						.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
+						.opacity(1.0 - abs(distance(week.id)) * 0.3)
+						.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 				}
 			}
 			.frame(width: geo.size.width, alignment: .top)

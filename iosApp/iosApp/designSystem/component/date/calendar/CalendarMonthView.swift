@@ -5,6 +5,8 @@ struct CalendarMonthView: View {
 	
 	var currentDate: Date
 	var months: [MonthModel]
+	var canScrolledRight: Bool
+	var canScrolledLeft: Bool
 	let onUpdatedIndex: (Int32) -> Void
 	
 	@State private var snappedItem = 0.0
@@ -26,6 +28,7 @@ struct CalendarMonthView: View {
 			Spacer()
 			ButtonChangeMonthView(
 				image: "chevron.left",
+				disabled: !canScrolledLeft,
 				onClick: { index in
 					let newIndex = normalizeIndex(index + 1)
 					return Double(newIndex)
@@ -33,6 +36,7 @@ struct CalendarMonthView: View {
 			)
 			ButtonChangeMonthView(
 				image: "chevron.right",
+				disabled: !canScrolledRight,
 				onClick: { index in
 					let newIndex = normalizeIndex(index - 1)
 					return Double(newIndex)
@@ -44,8 +48,12 @@ struct CalendarMonthView: View {
 	@ViewBuilder
 	private func ButtonChangeMonthView(
 		image: String,
+		disabled: Bool,
 		onClick: @escaping (Int) -> Double
 	) -> some View {
+		
+		let color = disabled ? ColorTheme.outline : ColorTheme.primary
+		
 		Button {
 			guard !isUpdating else { return }
 			
@@ -60,9 +68,9 @@ struct CalendarMonthView: View {
 				.scaledToFit()
 				.frame(width: 24, height: 24)
 				.padding(10)
-				.foregroundStyle(ColorTheme.primary)
+				.foregroundStyle(color)
 		}
-		.disabled(isUpdating)
+		.disabled(isUpdating || disabled)
 	}
 	
 	@ViewBuilder
@@ -87,16 +95,28 @@ struct CalendarMonthView: View {
 		DragGesture()
 			.onChanged { value in
 				guard !isUpdating else { return }
-				draggingItem = snappedItem + value.translation.width / 1500
+				
+				let translation = value.translation.width
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					return
+				}
+				
+				draggingItem = snappedItem + translation / 1500
 			}
 			.onEnded { value in
 				guard !isUpdating else { return }
 				
-				let predictedIndex = if value.predictedEndTranslation.width > 0 {
-					normalizeIndex(Int(snappedItem) + 1)
-				} else {
-					normalizeIndex(Int(snappedItem) - 1)
+				let translation = value.predictedEndTranslation.width
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					withAnimation(.smooth(duration: 0.2)) {
+						draggingItem = snappedItem
+					}
+					return
 				}
+				
+				let predictedIndex = translation > 0
+				? normalizeIndex(Int(snappedItem) + 1)
+				: normalizeIndex(Int(snappedItem) - 1)
 				
 				updateCalendar(to: Double(predictedIndex))
 			}
@@ -109,7 +129,7 @@ struct CalendarMonthView: View {
 			draggingItem = newIndex
 			snappedItem = newIndex
 		} completion: {
-
+			
 			onUpdatedIndex(Int32(newIndex))
 			
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {

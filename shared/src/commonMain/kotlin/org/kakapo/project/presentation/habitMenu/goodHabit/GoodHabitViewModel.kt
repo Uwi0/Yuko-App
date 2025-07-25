@@ -38,16 +38,14 @@ class GoodHabitViewModel(
         this.habitId = habitId
         loadGoodHabitBy(habitId)
         observeStore()
-
-        monthsStore.initData()
     }
 
     private fun observeStore() {
         weeksStore.onCalendarUpdate = { args ->
             _uiState.update { it.copy(args) }
         }
-        monthsStore.onCalendarUpdate = { months, date ->
-            _uiState.update { it.copy(allMonths = months, currentDate = date) }
+        monthsStore.onCalendarUpdate = { args ->
+            _uiState.update { it.copy(args = args) }
         }
     }
 
@@ -56,6 +54,7 @@ class GoodHabitViewModel(
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
             _uiState.update { it.copy(goodHabit = goodHabit) }
             weeksStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
+            monthsStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
         }
 
         goodHabitDetail.execute(param)

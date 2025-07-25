@@ -1,18 +1,23 @@
 package org.kakapo.project.util.date.horizontalCalendar
 
+import co.touchlab.kermit.Logger
+import com.kakapo.common.util.asLocalDate
+import com.kakapo.common.util.currentDay
 import com.kakapo.common.util.currentLocalDate
+import com.kakapo.model.date.HorizontalCalendarArgs
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import com.kakapo.model.date.WeekModel
+import org.kakapo.project.util.date.util.lastDayOfLastWeekInCurrentMonth
 import org.kakapo.project.util.date.util.startOfWeek
 
 class HorizontalCalendarStore {
 
     var allWeeks: List<WeekModel> = emptyList()
     var currentDate: LocalDate = currentLocalDate
-    var onCalendarUpdate: ((List<WeekModel>, LocalDate) -> Unit)? = null
+    var onCalendarUpdate: ((HorizontalCalendarArgs) -> Unit)? = null
 
     private var currentWeek: List<LocalDate> = emptyList()
     private var nextWeek: List<LocalDate> = emptyList()
@@ -20,8 +25,14 @@ class HorizontalCalendarStore {
     private var currentIndex: Int = 0
     private var indexToUpdate: Int = 0
 
+    private var startDateOfWeek: LocalDate = currentLocalDate
+    private var lastDateOfWeek: LocalDate = currentLocalDate
 
-    fun initData() {
+    fun initData(startEpochDay: Long, currentEpochDay: Long = currentDay) {
+        startDateOfWeek = startOfWeek(startEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
+        lastDateOfWeek = lastDayOfLastWeekInCurrentMonth(currentEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
+
+        Logger.d("initData: ${startDateOfWeek.day}: ${startDateOfWeek.dayOfWeek.name}, ${lastDateOfWeek.day}: ${lastDateOfWeek.dayOfWeek.name}")
         fetchCurrentWeek()
         fetchPreviousNextWeek()
         appendAll()
@@ -29,13 +40,26 @@ class HorizontalCalendarStore {
 
     fun update(index: Int) {
         val value = if (index < currentIndex) {
-            indexToUpdate = if (indexToUpdate == 2) 0 else indexToUpdate + 1
             1
         } else {
-            indexToUpdate = if (indexToUpdate == 0) 2 else indexToUpdate - 1
             -1
         }
+
+        val proposedDate = currentDate.plus(value * 7, DateTimeUnit.DAY)
+
+        if (proposedDate < startDateOfWeek || proposedDate > lastDateOfWeek) {
+            Logger.d("Blocked scroll: proposedDate=$proposedDate is outside [$startDateOfWeek - $lastDateOfWeek]")
+            return
+        }
+
+        indexToUpdate = if (value == 1) {
+            (indexToUpdate + 1) % 3
+        } else {
+            (indexToUpdate + 2) % 3
+        }
+
         currentIndex = index
+        Logger.d("update: $value, index: $index, indexToUpdate: $indexToUpdate")
         addWeek(indexToUpdate, value)
     }
 
@@ -87,7 +111,15 @@ class HorizontalCalendarStore {
     }
 
     private fun notifyChange() {
-        onCalendarUpdate?.invoke(allWeeks, currentDate)
+        val canScrollLeft = currentDate.minus(7, DateTimeUnit.DAY) >= startDateOfWeek
+        val canScrollRight = currentDate.plus(7, DateTimeUnit.DAY) <= lastDateOfWeek
+        val args = HorizontalCalendarArgs(
+            currentDay = currentDate,
+            weeks = allWeeks,
+            canScrollRight = canScrollRight,
+            canScrollLeft = canScrollLeft
+        )
+        onCalendarUpdate?.invoke(args)
     }
 
 }

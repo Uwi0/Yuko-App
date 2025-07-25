@@ -5,6 +5,8 @@ struct HorizontalCalendarStripView: View {
 	
 	var currentDate: Date
 	var weeks: [WeekModel]
+	var canScrolledRight: Bool
+	var canScrolledLeft: Bool
 	let onUpdatedIndex: (Int32) -> Void
 	
 	@State private var snappedItem = 0.0
@@ -26,10 +28,12 @@ struct HorizontalCalendarStripView: View {
 			Spacer()
 			ButtonDateActionView(
 				image: "chevron.left",
+				disabled: !canScrolledLeft,
 				onClick: { index in index + 1 }
 			)
 			ButtonDateActionView(
 				image: "chevron.right",
+				disabled: !canScrolledRight,
 				onClick: { index in index - 1}
 			)
 		}
@@ -38,6 +42,7 @@ struct HorizontalCalendarStripView: View {
 	@ViewBuilder
 	private func ButtonDateActionView(
 		image: String,
+		disabled: Bool,
 		onClick: @escaping (Double) -> Double
 	) -> some View {
 		Button {
@@ -55,6 +60,7 @@ struct HorizontalCalendarStripView: View {
 				.padding(10)
 				.foregroundStyle(ColorTheme.primary)
 		}
+		.disabled(disabled)
 	}
 	
 	@ViewBuilder
@@ -78,11 +84,26 @@ struct HorizontalCalendarStripView: View {
 	private func dragGesture() -> some Gesture {
 		DragGesture()
 			.onChanged { value in
-				draggingItem = snappedItem + value.translation.width / 1500
+				let translation = value.translation.width
+				
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					return
+				}
+				
+				draggingItem = snappedItem + translation / 1500
 			}
 			.onEnded { value in
+				let translation = value.predictedEndTranslation.width
+				
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					withAnimation(.smooth(duration: 0.2)) {
+						draggingItem = snappedItem
+					}
+					return
+				}
+				
 				withAnimation(.smooth(duration: 0.3)) {
-					if value.predictedEndTranslation.width > 0 {
+					if translation > 0 {
 						draggingItem = snappedItem + 1
 					} else {
 						draggingItem = snappedItem - 1
@@ -93,7 +114,6 @@ struct HorizontalCalendarStripView: View {
 				}
 			}
 	}
-	
 	
 	private func distance(_ item: Int) -> Double {
 		return (draggingItem - Double(item)).remainder(dividingBy: Double(weeks.count))

@@ -69,6 +69,8 @@ struct CompletionView: View {
 			HorizontalCalendarStripView(
 				currentDate: state.formattedDate,
 				weeks: state.allWeeks,
+				canScrolledRight: state.canScrolledRightHorizontalDate,
+				canScrolledLeft: state.canScrolledLeftHorizontalDate,
 				onUpdatedIndex: { index in onEvent(.UpdateWeek(index: index)) }
 			)
 			WeekChartView(data: dummyData)

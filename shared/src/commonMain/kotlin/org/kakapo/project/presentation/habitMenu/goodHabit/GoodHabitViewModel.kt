@@ -2,6 +2,7 @@ package org.kakapo.project.presentation.habitMenu.goodHabit
 
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.common.util.currentDay
 import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.domain.model.goodHabitParamFactory
 import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
@@ -37,13 +38,13 @@ class GoodHabitViewModel(
         this.habitId = habitId
         loadGoodHabitBy(habitId)
         observeStore()
-        weeksStore.initData()
+
         monthsStore.initData()
     }
 
     private fun observeStore() {
-        weeksStore.onCalendarUpdate = { weeks, date ->
-            _uiState.update { it.copy(allWeeks = weeks, currentDate = date) }
+        weeksStore.onCalendarUpdate = { args ->
+            _uiState.update { it.copy(args) }
         }
         monthsStore.onCalendarUpdate = { months, date ->
             _uiState.update { it.copy(allMonths = months, currentDate = date) }
@@ -54,6 +55,7 @@ class GoodHabitViewModel(
         val param = goodHabitParamFactory(habitId)
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
             _uiState.update { it.copy(goodHabit = goodHabit) }
+            weeksStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
         }
 
         goodHabitDetail.execute(param)

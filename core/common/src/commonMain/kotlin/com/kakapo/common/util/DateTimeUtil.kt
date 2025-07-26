@@ -6,6 +6,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
+import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
@@ -82,6 +83,20 @@ fun Long?.asDayClean(): Long {
             .date
         formDate.until(toDate, DateTimeUnit.DAY)
     } ?: 0
+}
+
+fun startOfWeek(date: LocalDate): LocalDate {
+    val dow = date.dayOfWeek.isoDayNumber
+    return date.minus((dow % 7).toLong(), DateTimeUnit.DAY)
+}
+
+fun lastDayOfLastWeekInCurrentMonth(currentDate: LocalDate): LocalDate {
+    val lastDayOfMonth = currentDate
+        .plus(1, DateTimeUnit.MONTH)
+        .minus(currentDate.day, DateTimeUnit.DAY)
+
+    val startOfLastWeek = startOfWeek(lastDayOfMonth)
+    return startOfLastWeek.plus(6, DateTimeUnit.DAY)
 }
 
 fun Long.asLocalDate(): LocalDate {

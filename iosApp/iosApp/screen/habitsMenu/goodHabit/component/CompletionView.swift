@@ -73,7 +73,7 @@ struct CompletionView: View {
 				canScrolledLeft: state.canScrolledLeftHorizontalDate,
 				onUpdatedIndex: { index in onEvent(.UpdateWeek(index: index)) }
 			)
-			WeekChartView(data: dummyData)
+			WeekChartView(data: state.weeksValue)
 		}
 	}
 	

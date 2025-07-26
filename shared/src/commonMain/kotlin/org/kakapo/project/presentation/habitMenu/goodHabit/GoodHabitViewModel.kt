@@ -45,7 +45,7 @@ class GoodHabitViewModel(
             _uiState.update { it.copy(args) }
         }
         monthsStore.onCalendarUpdate = { args ->
-            _uiState.update { it.copy(args = args) }
+            _uiState.update { it.copy(args) }
         }
     }
 

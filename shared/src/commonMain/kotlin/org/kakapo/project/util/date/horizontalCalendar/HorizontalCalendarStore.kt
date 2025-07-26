@@ -1,17 +1,16 @@
 package org.kakapo.project.util.date.horizontalCalendar
 
-import co.touchlab.kermit.Logger
 import com.kakapo.common.util.asLocalDate
 import com.kakapo.common.util.currentDay
 import com.kakapo.common.util.currentLocalDate
+import com.kakapo.common.util.lastDayOfLastWeekInCurrentMonth
+import com.kakapo.common.util.startOfWeek
 import com.kakapo.model.date.HorizontalCalendarArgs
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import com.kakapo.model.date.WeekModel
-import org.kakapo.project.util.date.util.lastDayOfLastWeekInCurrentMonth
-import org.kakapo.project.util.date.util.startOfWeek
 
 class HorizontalCalendarStore {
 
@@ -32,7 +31,6 @@ class HorizontalCalendarStore {
         startDateOfWeek = startOfWeek(startEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
         lastDateOfWeek = lastDayOfLastWeekInCurrentMonth(currentEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
 
-        Logger.d("initData: ${startDateOfWeek.day}: ${startDateOfWeek.dayOfWeek.name}, ${lastDateOfWeek.day}: ${lastDateOfWeek.dayOfWeek.name}")
         fetchCurrentWeek()
         fetchPreviousNextWeek()
         appendAll()
@@ -48,7 +46,6 @@ class HorizontalCalendarStore {
         val proposedDate = currentDate.plus(value * 7, DateTimeUnit.DAY)
 
         if (proposedDate < startDateOfWeek || proposedDate > lastDateOfWeek) {
-            Logger.d("Blocked scroll: proposedDate=$proposedDate is outside [$startDateOfWeek - $lastDateOfWeek]")
             return
         }
 
@@ -59,7 +56,6 @@ class HorizontalCalendarStore {
         }
 
         currentIndex = index
-        Logger.d("update: $value, index: $index, indexToUpdate: $indexToUpdate")
         addWeek(indexToUpdate, value)
     }
 
@@ -115,7 +111,8 @@ class HorizontalCalendarStore {
         val canScrollRight = currentDate.plus(7, DateTimeUnit.DAY) <= lastDateOfWeek
         val args = HorizontalCalendarArgs(
             currentDay = currentDate,
-            weeks = allWeeks,
+            allWeeks = allWeeks,
+            week = allWeeks[indexToUpdate],
             canScrollRight = canScrollRight,
             canScrollLeft = canScrollLeft
         )

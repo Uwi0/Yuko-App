@@ -1,6 +1,7 @@
 package org.kakapo.project.presentation.habitMenu.goodHabit
 
 import com.kakapo.common.util.currentLocalDate
+import com.kakapo.domain.useCase.logic.asCompletionValue
 import com.kakapo.model.date.CalendarArgs
 import com.kakapo.model.date.HorizontalCalendarArgs
 import com.kakapo.model.date.MonthModel
@@ -17,6 +18,7 @@ data class GoodHabitState(
     val currentDate: LocalDate = currentLocalDate,
     val allWeeks: List<WeekModel> = emptyList(),
     val allMonths: List<MonthModel> = emptyList(),
+    val completionWeeks: List<Double> = emptyList(),
     val canScrolledRightHorizontalDate: Boolean = false,
     val canScrolledLeftHorizontalDate: Boolean = false,
     val canScrolledRightCalendar: Boolean = false,
@@ -25,8 +27,9 @@ data class GoodHabitState(
 
     fun copy(args: HorizontalCalendarArgs): GoodHabitState {
         return copy(
-            allWeeks = args.weeks,
+            allWeeks = args.allWeeks,
             currentDate = args.currentDay,
+            completionWeeks = args.week.asCompletionValue(goodHabit.calendarMap),
             canScrolledRightHorizontalDate = args.canScrollRight,
             canScrolledLeftHorizontalDate = args.canScrollLeft
         )

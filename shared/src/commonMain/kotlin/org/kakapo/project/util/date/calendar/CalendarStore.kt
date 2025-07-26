@@ -2,6 +2,7 @@ package org.kakapo.project.util.date.calendar
 
 import com.kakapo.common.util.asLocalDate
 import com.kakapo.common.util.currentLocalDate
+import com.kakapo.common.util.startOfWeek
 import com.kakapo.model.date.CalendarArgs
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -11,7 +12,6 @@ import kotlinx.datetime.plus
 import com.kakapo.model.date.DayState
 import com.kakapo.model.date.MonthModel
 import com.kakapo.model.date.WeekOfMonthModel
-import org.kakapo.project.util.date.util.startOfWeek
 
 class CalendarStore {
 

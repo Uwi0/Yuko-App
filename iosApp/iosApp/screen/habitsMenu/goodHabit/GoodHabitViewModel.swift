@@ -59,4 +59,5 @@ final class GoodHabitViewModel {
 
 extension GoodHabitState {
 	public var formattedDate: Date { self.currentDate.toDate() }
+	public var weeksValue: [Double] { self.completionWeeks.map{ Double(truncating: $0)} }
 }

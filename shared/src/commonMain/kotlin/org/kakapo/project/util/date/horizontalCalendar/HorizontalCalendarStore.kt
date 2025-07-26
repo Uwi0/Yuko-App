@@ -28,9 +28,8 @@ class HorizontalCalendarStore {
     private var lastDateOfWeek: LocalDate = currentLocalDate
 
     fun initData(startEpochDay: Long, currentEpochDay: Long = currentDay) {
-        startDateOfWeek = startOfWeek(startEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
-        lastDateOfWeek = lastDayOfLastWeekInCurrentMonth(currentEpochDay.asLocalDate()).plus(1, DateTimeUnit.DAY)
-
+        startDateOfWeek = startOfWeek(startEpochDay.asLocalDate())
+        lastDateOfWeek = lastDayOfLastWeekInCurrentMonth(currentEpochDay.asLocalDate())
         fetchCurrentWeek()
         fetchPreviousNextWeek()
         appendAll()

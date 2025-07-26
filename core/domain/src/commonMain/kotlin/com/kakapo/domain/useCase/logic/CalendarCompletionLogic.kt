@@ -1,6 +1,5 @@
 package com.kakapo.domain.useCase.logic
 
-import co.touchlab.kermit.Logger
 import com.kakapo.common.util.asEpochDays
 import com.kakapo.model.date.DayState
 import com.kakapo.model.date.DayValue

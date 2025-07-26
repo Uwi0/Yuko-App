@@ -3,39 +3,37 @@ import Shared
 
 struct HorizontalCalendarStripView: View {
 	
-	let calendarEffect: (HorizontalCalendarEffect) -> Void
+	var currentDate: Date
+	var weeks: [WeekModel]
+	var canScrolledRight: Bool
+	var canScrolledLeft: Bool
+	let onUpdatedIndex: (Int32) -> Void
 	
-	@StateObject private var weekStore = HorizontalCalendarStore()
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			Text("\(weekStore.allWeeks.count)")
 			HeaderContentView()
 			BodyCalendarView()
 			Spacer().frame(height: 16)
-		}
-		.task {
-			weekStore.initData()
-		}
-		.onReceive(weekStore.effectPublsiher) { effect in
-			calendarEffect(effect)
 		}
 	}
 	
 	@ViewBuilder
 	private func HeaderContentView() -> some View {
-		let yearAndMonth = dateToString(date: weekStore.currentMonth, format: "yyyy MMM")
+		let yearAndMonth = dateToString(date: currentDate, format: "yyyy MMM")
 		HStack(spacing: 16) {
 			Text(yearAndMonth)
 			Spacer()
 			ButtonDateActionView(
 				image: "chevron.left",
+				disabled: !canScrolledLeft,
 				onClick: { index in index + 1 }
 			)
 			ButtonDateActionView(
 				image: "chevron.right",
+				disabled: !canScrolledRight,
 				onClick: { index in index - 1}
 			)
 		}
@@ -44,14 +42,16 @@ struct HorizontalCalendarStripView: View {
 	@ViewBuilder
 	private func ButtonDateActionView(
 		image: String,
+		disabled: Bool,
 		onClick: @escaping (Double) -> Double
 	) -> some View {
+		let color = disabled ? ColorTheme.outline : ColorTheme.primary
 		Button {
 			withAnimation(.smooth) {
 				let moveIndex = onClick(snappedItem)
 				snappedItem = moveIndex
 				draggingItem = snappedItem
-				weekStore.handle(event: .UpdateWeekWith(index: Int32(moveIndex)))
+				onUpdatedIndex(Int32(moveIndex))
 			}
 		} label: {
 			Image(systemName: image)
@@ -59,69 +59,71 @@ struct HorizontalCalendarStripView: View {
 				.scaledToFit()
 				.frame(width: 24, height: 24)
 				.padding(10)
-				.foregroundStyle(ColorTheme.primary)
+				.foregroundStyle(color)
 		}
+		.disabled(disabled)
 	}
 	
 	@ViewBuilder
 	func BodyCalendarView() -> some View {
 		GeometryReader { geo in
 			ZStack {
-				ForEach(weekStore.allWeeks) { week in
-					WeekOfDaysView(
-						week: week,
-						onSelectedDayOfWeek: { date in weekStore.currentDate = date}
-					)
-					.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
-					.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
-					.opacity(1.0 - abs(distance(week.id)) * 0.3)
-					.zIndex(1.0 - abs(distance(week.id)) * 0.1)
+				ForEach(weeks) { week in
+					WeekOfDaysView(week: week)
+						.offset(x: myXOffset(week.id, radius: geo.size.width * 0.1))
+						.scaleEffect(1.0 - abs(distance(week.id)) * 0.2)
+						.opacity(1.0 - abs(distance(week.id)) * 0.3)
+						.zIndex(1.0 - abs(distance(week.id)) * 0.1)
 				}
 			}
 			.frame(width: geo.size.width, alignment: .top)
 		}
+		.frame(height: 60)
 		.gesture(dragGesture())
 	}
 	
 	private func dragGesture() -> some Gesture {
 		DragGesture()
 			.onChanged { value in
-				draggingItem = snappedItem + value.translation.width / 1500
+				let translation = value.translation.width
+				
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					return
+				}
+				
+				draggingItem = snappedItem + translation / 1500
 			}
 			.onEnded { value in
+				let translation = value.predictedEndTranslation.width
+				
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					withAnimation(.smooth(duration: 0.2)) {
+						draggingItem = snappedItem
+					}
+					return
+				}
+				
 				withAnimation(.smooth(duration: 0.3)) {
-					if value.predictedEndTranslation.width > 0 {
+					if translation > 0 {
 						draggingItem = snappedItem + 1
 					} else {
 						draggingItem = snappedItem - 1
 					}
 					snappedItem = draggingItem
 				} completion: {
-					weekStore.handle(event: .UpdateWeekWith(index: Int32(snappedItem)))
+					onUpdatedIndex(Int32(snappedItem))
 				}
 			}
 	}
 	
-	
 	private func distance(_ item: Int) -> Double {
-		return (draggingItem - Double(item)).remainder(dividingBy: Double(weekStore.allWeeks.count))
+		return (draggingItem - Double(item)).remainder(dividingBy: Double(weeks.count))
 	}
 	
 	private func myXOffset(_ item: Int, radius: Double) -> Double {
-		let angle = Double.pi * 2 / Double(weekStore.allWeeks.count) * distance(item)
+		let angle = Double.pi * 2 / Double(weeks.count) * distance(item)
 		return sin(angle) * radius
 	}
 	
 }
 
-
-#Preview {
-	VStack {
-		HorizontalCalendarStripView(
-			calendarEffect: { _ in }
-		)
-		.frame(maxHeight: .infinity, alignment: .top)
-		Spacer()
-	}.padding(.horizontal, 16)
-	
-}

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 
 class HabitCheckLocalDatasourceImpl(
     sqlDriver: SqlDriver,
-    private val context: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher
 ): HabitCheckLocalDatasource {
 
     private val habitCheckQuery = Database.Companion(sqlDriver).habitCheckTableQueries
@@ -36,7 +36,7 @@ class HabitCheckLocalDatasourceImpl(
         return habitCheckQuery
             .getHabitCheckByHabitId(habitId)
             .asFlow()
-            .mapToList(context)
+            .mapToList(dispatcher)
             .map { habitChecks -> habitChecks.map { it.toHabitCheckEntity() } }
     }
 }

@@ -5,11 +5,6 @@ struct GoodHabitScreen: View {
 	
 	@Binding var state: GoodHabitState
 	let onEvent: (GoodHabitEvent) -> Void
-	@State private var dummyData: [Double] = [
-		0.3, 0.6, 0.8, 0.2, 0.5, 0.7, 1
-	]
-	private let dummyCompletionYear = CompletionYearStore()
-	
 	
 	var body: some View {
 		VStack {
@@ -35,14 +30,11 @@ struct GoodHabitScreen: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
-		let data = dummyCompletionYear.generateCompletionYear(year: 2025, completionData: [:])
 		ScrollView {
 			VStack(alignment: .leading, spacing: 16) {
 				TitleComponentView()
 				GoodHabitMetricsView(habit: state.goodHabit)
-				TitleDateComponentView()
-				CompletionHeatMapView(completionYear: data)
-				WeekChartView(data: dummyData)
+				CompletionView(state: $state, onEvent: onEvent)
 			}
 			.padding(.horizontal, 16)
 			.padding(.vertical, 24)
@@ -62,41 +54,5 @@ struct GoodHabitScreen: View {
 		}
 	}
 	
-	@ViewBuilder
-	private func TitleDateComponentView() -> some View {
-		HStack(alignment: .center, spacing: 8) {
-			Text("Start Date: \(state.goodHabit.startDate)")
-				.font(Typography.titleMedium)
-			Spacer()
-			Image(AssetIconApp.displayDateWeekly)
-				.resizable()
-				.scaledToFit()
-				.frame(width: 24, height: 24)
-		}
-	}
-	
-	private func observeCalendar(effect: HorizontalCalendarEffect) {
-		switch onEnum(of: effect) {
-		case let .weekChanged(weeks):
-			print("week changed! generating new random data")
-			dummyData = generateRandomData()
-		}
-	}
-	
-	private func generateRandomData() -> [Double] {
-		(0..<7).map { _ in Double.random(in: 0.2...1.0) }
-	}
-	
 }
 
-
-#Preview {
-	let state = GoodHabitState(
-		loading: false,
-		goodHabit:  dummyGoodHabit
-	)
-	GoodHabitScreen(
-		state: .constant(state),
-		onEvent: { _ in }
-	)
-}

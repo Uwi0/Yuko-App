@@ -5,7 +5,7 @@ import Shared
 struct GoodHabitRoute: View {
 	
 	@Bindable var store: StoreOf<GoodHabitFeature>
-	@StateObject private var viewModel = GoodHabitViewModel()
+	@State private var viewModel = GoodHabitViewModel()
 	
 	var body: some View {
 		GoodHabitScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))

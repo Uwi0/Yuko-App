@@ -1,11 +1,55 @@
 package org.kakapo.project.presentation.habitMenu.goodHabit
 
+import co.touchlab.kermit.Logger
+import com.kakapo.common.util.currentLocalDate
+import com.kakapo.domain.useCase.logic.asCompletionValue
+import com.kakapo.model.date.CalendarArgs
+import com.kakapo.model.date.DayValue
+import com.kakapo.model.date.HorizontalCalendarArgs
+import com.kakapo.model.date.MonthModel
+import com.kakapo.model.date.WeekModel
 import com.kakapo.model.habit.GoodHabitModel
+import kotlinx.datetime.LocalDate
+import org.kakapo.project.presentation.habitMenu.model.CompletionViewMode
+import org.kakapo.project.presentation.habitMenu.model.nextMode
 
 data class GoodHabitState(
     val loading: Boolean = false,
-    val goodHabit: GoodHabitModel = GoodHabitModel()
+    val completionViewMode: CompletionViewMode = CompletionViewMode.WEEKLY,
+    val goodHabit: GoodHabitModel = GoodHabitModel(),
+    val currentDate: LocalDate = currentLocalDate,
+    val allWeeks: List<WeekModel> = emptyList(),
+    val allMonths: List<MonthModel> = emptyList(),
+    val completionWeeks: List<Double> = emptyList(),
+    val completionMonths: List<List<DayValue>> = emptyList(),
+    val canScrolledRightHorizontalDate: Boolean = false,
+    val canScrolledLeftHorizontalDate: Boolean = false,
+    val canScrolledRightCalendar: Boolean = false,
+    val canScrolledLeftCalendar: Boolean = false,
 ) {
+
+    fun copy(args: HorizontalCalendarArgs): GoodHabitState {
+        return copy(
+            allWeeks = args.allWeeks,
+            currentDate = args.currentDay,
+            completionWeeks = args.week.asCompletionValue(goodHabit.calendarMap),
+            canScrolledRightHorizontalDate = args.canScrollRight,
+            canScrolledLeftHorizontalDate = args.canScrollLeft
+        )
+    }
+
+    fun copy(args: CalendarArgs): GoodHabitState {
+        return copy(
+            allMonths = args.months,
+            currentDate = args.currentDate,
+            completionMonths = args.completionMonths.asCompletionValue(goodHabit.calendarMap),
+            canScrolledRightCalendar = args.canScrollRight,
+            canScrolledLeftCalendar = args.canScrollLeft
+        )
+    }
+
+    fun updateNext(mode: CompletionViewMode) = copy(completionViewMode = mode.nextMode())
+
     companion object {
         fun default() = GoodHabitState()
     }
@@ -19,4 +63,7 @@ sealed class GoodHabitEffect {
 sealed class GoodHabitEvent {
     data object DeleteHabit : GoodHabitEvent()
     data object NavigateBack : GoodHabitEvent()
+    data class ChangeCompletionMode(val mode: CompletionViewMode) : GoodHabitEvent()
+    data class UpdateWeek(val index: Int): GoodHabitEvent()
+    data class UpdateMonth(val index: Int): GoodHabitEvent()
 }

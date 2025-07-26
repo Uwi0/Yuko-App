@@ -3,9 +3,10 @@ import Shared
 import Combine
 import KMPNativeCoroutinesCombine
 
-final class HabitsViewModel: ObservableObject {
+@Observable
+final class HabitsViewModel {
 	
-	@Published var state: HabitsState = .companion.default()
+	var state: HabitsState = .companion.default()
 	var effectPublisher: AnyPublisher<HabitsEffect, Never> {
 		effectSubject.eraseToAnyPublisher()
 	}

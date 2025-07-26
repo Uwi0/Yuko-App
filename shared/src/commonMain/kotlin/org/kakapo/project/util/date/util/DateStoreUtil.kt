@@ -4,8 +4,5 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
-fun startOfWeek(date: LocalDate): LocalDate {
-    val dow = date.dayOfWeek.isoDayNumber
-    return date.minus((dow % 7).toLong(), DateTimeUnit.DAY)
-}

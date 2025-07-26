@@ -93,7 +93,7 @@ object CommonModule {
     }
 
     val storeModule: Module = module {
-        factory { HorizontalCalendarStore(get(named(MAIN))) }
+        factory { HorizontalCalendarStore() }
     }
 
     val coroutineModule: Module = module {

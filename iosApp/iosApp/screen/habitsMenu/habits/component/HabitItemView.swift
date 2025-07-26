@@ -32,7 +32,9 @@ struct HabitItemView: View {
 		CustomCheckBox(isSelected:
 			Binding(
 				get: { habit.isCompleteToday },
-				set: { checked in onEvent(.CheckedGoodHabit(id: habit.habitId, isChecked: checked))}
+				set: { checked in
+					onEvent(.CheckedGoodHabit(id: habit.habitId, isChecked: checked))
+				}
 			)
 		)
 	}

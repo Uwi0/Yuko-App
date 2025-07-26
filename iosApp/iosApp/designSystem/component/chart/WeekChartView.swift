@@ -16,13 +16,13 @@ struct WeekChartView: View {
 				.frame(maxHeight: .infinity)
 			
 			HStack(alignment: .bottom, spacing: 16) {
-				ForEach(0..<7, id: \.self) { index in
-					BarItemView(index: index)
+				ForEach(Array(data.enumerated()), id: \.offset) { index, value in
+					BarItemView(index: index, value: value)
 				}
 			}
 			.animation(
-					data.isEmpty ? .none : .spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.2),
-					value: data
+				data.isEmpty ? .none : .spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.2),
+				value: data
 			)
 			.frame(maxWidth: .infinity)
 		}
@@ -44,12 +44,19 @@ struct WeekChartView: View {
 	}
 	
 	@ViewBuilder
-	private func BarItemView(index: Int) -> some View {
-		VStack {
-			Rectangle()
-				.fill(Color.pink.opacity(0.6))
-				.frame(maxWidth: .infinity, maxHeight: CGFloat(data[index]) * 200)
-				.cornerRadius(4)
+	private func BarItemView(index: Int, value: Double) -> some View {
+		VStack(spacing: 8) {
+			ZStack(alignment: .bottom) {
+				Rectangle()
+					.fill(Color.clear)
+					.frame(maxWidth: .infinity, maxHeight: 220)
+				
+				Rectangle()
+					.fill(Color.pink.opacity(0.6))
+					.frame(maxWidth: .infinity, maxHeight: max(CGFloat(value) * 200, 1))
+					.cornerRadius(4)
+			}
+			.clipped()
 			
 			Text(weekDays[index])
 				.font(Typography.bodySmall)

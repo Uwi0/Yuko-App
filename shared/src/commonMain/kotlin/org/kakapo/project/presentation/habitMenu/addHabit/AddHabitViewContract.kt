@@ -1,10 +1,11 @@
 package org.kakapo.project.presentation.habitMenu.addHabit
 
+import com.kakapo.common.util.currentDay
+import com.kakapo.common.util.currentTime
 import com.kakapo.data.model.habit.HabitParam
 import com.kakapo.model.habit.HabitType
 import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays
-import kotlin.time.Clock
 
 data class AddHabitState(
     val name: String = "",
@@ -28,7 +29,8 @@ data class AddHabitState(
             name = name,
             description = description,
             habitType = type.toLong(),
-            startDate = Clock.System.now().toEpochMilliseconds()
+            startDate = currentDay,
+            createdAt = currentDay
         )
     }
 

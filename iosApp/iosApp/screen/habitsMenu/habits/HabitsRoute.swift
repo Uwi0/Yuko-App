@@ -5,7 +5,7 @@ import ComposableArchitecture
 struct HabitsRoute: View {
 	
 	@Bindable var store: StoreOf<HabitsFeature>
-	@StateObject private var viewModel = HabitsViewModel()
+	@State private var viewModel = HabitsViewModel()
 	
 	var body: some View {
 		HabitsScreen(state: $viewModel.state, onEvent: viewModel.handle(event:))

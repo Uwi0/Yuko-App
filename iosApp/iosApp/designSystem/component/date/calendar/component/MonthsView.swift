@@ -4,6 +4,7 @@ import Shared
 struct MonthsView: View {
 	
 	let month: MonthModel
+	let completionMonths: [[DayValue]]
 	private let weekDays: [String] = WeekDays.shared.shortNames
 	
 	private var totalCalendarHeight: CGFloat { 240 }
@@ -34,8 +35,9 @@ struct MonthsView: View {
 	@ViewBuilder
 	private func MonthWeeksBody() -> some View {
 		VStack(spacing: 0) {
-			ForEach(month.weeks) { weeks in
-				WeekDaysBody(weeks: weeks)
+			ForEach(Array(month.weeks.enumerated()), id: \.offset) { index, weeks in
+				let weekCompletions = completionMonths[index]
+				WeekDaysBody(weeks: weeks, weekCompletions: weekCompletions)
 					.frame(height: weekHeight)
 					.animation(.easeInOut(duration: 0.3), value: month.weeks.count)
 			}
@@ -45,24 +47,31 @@ struct MonthsView: View {
 	
 	
 	@ViewBuilder
-	private func WeekDaysBody(weeks: WeekOfMonthModel) -> some View {
+	private func WeekDaysBody(weeks: WeekOfMonthModel, weekCompletions: [DayValue]) -> some View {
 		HStack {
 			ForEach(0..<7) { index in
 				let dayState = weeks.days[index]
-				DayView(dayState: dayState)
+				let dayValue = weekCompletions[index]
+				DayView(dayState: dayState, dayValue: dayValue)
 			}
 		}
 	}
 	
 	@ViewBuilder
-	private func DayView(dayState: DayState) -> some View {
+	private func DayView(dayState: DayState, dayValue: DayValue) -> some View {
 		let text = switch onEnum(of: dayState) {
 		case let .day(day): dateToString(date: day.date.toDate(), format: "d")
 		case .empty: ""
 		}
 		
+		let color = switch onEnum(of: dayValue) {
+		case .day: Color.yellow.opacity(0.5)
+		case .empty: Color.white
+		}
+		
 		Text(text)
 			.frame(maxWidth: .infinity)
+			.background(color)
 	}
 	
 }

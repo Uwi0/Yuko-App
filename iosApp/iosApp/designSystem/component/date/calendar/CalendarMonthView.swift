@@ -1,8 +1,15 @@
 import SwiftUI
+import Shared
 
 struct CalendarMonthView: View {
 	
-	@StateObject private var store = CalendarMonthStore()
+	var currentDate: Date
+	var months: [MonthModel]
+	var completionMonths: [[DayValue]]
+	var canScrolledRight: Bool
+	var canScrolledLeft: Bool
+	let onUpdatedIndex: (Int32) -> Void
+	
 	@State private var snappedItem = 0.0
 	@State private var draggingItem = 0.0
 	@State private var isUpdating = false
@@ -12,19 +19,17 @@ struct CalendarMonthView: View {
 			HeaderContentView()
 			BodyContentView()
 		}
-		.task {
-			store.initData()
-		}
 	}
 	
 	@ViewBuilder
 	private func HeaderContentView() -> some View {
-		let yearAndMonth = dateToString(date: store.currentDate, format: "yyyy MMM")
+		let yearAndMonth = dateToString(date: currentDate, format: "yyyy MMM")
 		HStack(spacing: 16) {
 			Text(yearAndMonth)
 			Spacer()
 			ButtonChangeMonthView(
 				image: "chevron.left",
+				disabled: !canScrolledLeft,
 				onClick: { index in
 					let newIndex = normalizeIndex(index + 1)
 					return Double(newIndex)
@@ -32,6 +37,7 @@ struct CalendarMonthView: View {
 			)
 			ButtonChangeMonthView(
 				image: "chevron.right",
+				disabled: !canScrolledRight,
 				onClick: { index in
 					let newIndex = normalizeIndex(index - 1)
 					return Double(newIndex)
@@ -43,8 +49,12 @@ struct CalendarMonthView: View {
 	@ViewBuilder
 	private func ButtonChangeMonthView(
 		image: String,
+		disabled: Bool,
 		onClick: @escaping (Int) -> Double
 	) -> some View {
+		
+		let color = disabled ? ColorTheme.outline : ColorTheme.primary
+		
 		Button {
 			guard !isUpdating else { return }
 			
@@ -59,17 +69,17 @@ struct CalendarMonthView: View {
 				.scaledToFit()
 				.frame(width: 24, height: 24)
 				.padding(10)
-				.foregroundStyle(ColorTheme.primary)
+				.foregroundStyle(color)
 		}
-		.disabled(isUpdating)
+		.disabled(isUpdating || disabled)
 	}
 	
 	@ViewBuilder
 	private func BodyContentView() -> some View {
 		GeometryReader { geo in
 			ZStack {
-				ForEach(Array(store.allMonths.enumerated()), id: \.offset) { index, month in
-					MonthsView(month: month)
+				ForEach(Array(months.enumerated()), id: \.offset) { index, month in
+					MonthsView(month: month, completionMonths: completionMonths)
 						.offset(x: myXOffset(index, radius: geo.size.width * 0.1))
 						.scaleEffect(1.0 - abs(distance(index)) * 0.2)
 						.opacity(1.0 - abs(distance(index)) * 0.3)
@@ -86,16 +96,28 @@ struct CalendarMonthView: View {
 		DragGesture()
 			.onChanged { value in
 				guard !isUpdating else { return }
-				draggingItem = snappedItem + value.translation.width / 1500
+				
+				let translation = value.translation.width
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					return
+				}
+				
+				draggingItem = snappedItem + translation / 1500
 			}
 			.onEnded { value in
 				guard !isUpdating else { return }
 				
-				let predictedIndex = if value.predictedEndTranslation.width > 0 {
-					normalizeIndex(Int(snappedItem) + 1)
-				} else {
-					normalizeIndex(Int(snappedItem) - 1)
+				let translation = value.predictedEndTranslation.width
+				if (translation > 0 && !canScrolledLeft) || (translation < 0 && !canScrolledRight) {
+					withAnimation(.smooth(duration: 0.2)) {
+						draggingItem = snappedItem
+					}
+					return
 				}
+				
+				let predictedIndex = translation > 0
+				? normalizeIndex(Int(snappedItem) + 1)
+				: normalizeIndex(Int(snappedItem) - 1)
 				
 				updateCalendar(to: Double(predictedIndex))
 			}
@@ -108,8 +130,8 @@ struct CalendarMonthView: View {
 			draggingItem = newIndex
 			snappedItem = newIndex
 		} completion: {
-
-			store.update(index: Int32(newIndex))
+			
+			onUpdatedIndex(Int32(newIndex))
 			
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
 				isUpdating = false
@@ -125,7 +147,7 @@ struct CalendarMonthView: View {
 	
 	private func distance(_ item: Int) -> Double {
 		let rawDistance = draggingItem - Double(item)
-		let count = Double(store.allMonths.count)
+		let count = Double(months.count)
 		let normalizedDistance = rawDistance.remainder(dividingBy: count)
 		
 		if normalizedDistance > count / 2 {
@@ -137,13 +159,7 @@ struct CalendarMonthView: View {
 	}
 	
 	private func myXOffset(_ item: Int, radius: Double) -> Double {
-		let angle = Double.pi * 2 / Double(store.allMonths.count) * distance(item)
+		let angle = Double.pi * 2 / Double(months.count) * distance(item)
 		return sin(angle) * radius
 	}
-}
-
-#Preview {
-	CalendarMonthView()
-		.padding(16)
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 }

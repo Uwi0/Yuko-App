@@ -15,8 +15,8 @@ class PomodoroSessionRepositoryImpl (
     private val preference: PreferenceDatasource
 ) : PomodoroSessionRepository {
 
-    override suspend fun saveSessionSettings(settings: SessionSettingsModel): Result<Unit> {
-        return preference.saveSessionSettings(settings.toSessionSettingsPref())
+    override suspend fun saveSessionSettings(sessionSettings: SessionSettingsModel): Result<Unit> {
+        return preference.saveSessionSettings(sessionSettings.toSessionSettingsPref())
     }
 
     override suspend fun loadSessionSettings(): Result<SessionSettingsModel> {

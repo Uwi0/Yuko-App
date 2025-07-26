@@ -1,57 +1,45 @@
 package org.kakapo.project.util.date.calendar
 
-import co.touchlab.kermit.Logger
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.kakapo.common.util.asLocalDate
+import com.kakapo.common.util.currentLocalDate
+import com.kakapo.common.util.startOfWeek
+import com.kakapo.model.date.CalendarArgs
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.number
 import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
 import com.kakapo.model.date.DayState
 import com.kakapo.model.date.MonthModel
 import com.kakapo.model.date.WeekOfMonthModel
-import org.kakapo.project.util.date.util.startOfWeek
-import kotlin.native.ObjCName
-import kotlin.time.Clock
 
-@ObjCName("CalendarStoreKt")
 class CalendarStore {
 
-    @NativeCoroutinesState
-    val allMonths: StateFlow<List<MonthModel>> get() = _allMonths.asStateFlow()
-    private val _allMonths: MutableStateFlow<List<MonthModel>> = MutableStateFlow(emptyList())
+    var allMonths: List<MonthModel> = emptyList()
+    var currentDate = currentLocalDate
+    var onCalendarUpdate: ((CalendarArgs) -> Unit)? = null
 
-    @NativeCoroutinesState
-    val currentDate: StateFlow<LocalDate> get() = _currentDate.asStateFlow()
-    private val _currentDate = MutableStateFlow(today())
-
+    private var startDateOfMonth: LocalDate = currentLocalDate
+    private var endDateOfMonth: LocalDate = currentLocalDate
     private var currentIndex: Int = 0
     private var currentMonthOffset: Int = 0
-    private val initialDate = today()
+    private val initialDate = currentLocalDate
 
-    fun initData() {
-        currentIndex = 0
-        currentMonthOffset = 0
-        _currentDate.update { initialDate }
-
+    fun initData(startEpochDay: Long, currentEpochDay: Long) {
         val current = generateMonth(initialDate)
         val next = generateMonth(initialDate.plus(1, DateTimeUnit.MONTH))
         val previous = generateMonth(initialDate.minus(1, DateTimeUnit.MONTH))
 
-        _allMonths.update { listOf(current, next, previous) }
+        startDateOfMonth = startEpochDay.asLocalDate()
+        endDateOfMonth = currentEpochDay.asLocalDate()
+
+        allMonths = listOf(current, next, previous)
+        notifyChanged()
     }
 
     fun update(index: Int) {
         val direction = getScrollDirection(currentIndex, index)
         currentIndex = index
-
-        Logger.d("update: currentIndex=$currentIndex, direction=$direction, monthOffset=$currentMonthOffset")
 
         when (direction) {
             ScrollDirection.FORWARD -> {
@@ -70,7 +58,8 @@ class CalendarStore {
         }
 
         val newCurrentDate = initialDate.plus(currentMonthOffset, DateTimeUnit.MONTH)
-        _currentDate.update { newCurrentDate }
+        currentDate = newCurrentDate
+        notifyChanged()
     }
 
     private fun getScrollDirection(from: Int, to: Int): ScrollDirection {
@@ -104,11 +93,10 @@ class CalendarStore {
         val newMonthDate = initialDate.plus(monthOffset, DateTimeUnit.MONTH)
         val newMonth = generateMonth(newMonthDate)
 
-        val updatedList = _allMonths.value.toMutableList()
+        val updatedList = allMonths.toMutableList()
         updatedList[index] = newMonth
-        _allMonths.update { updatedList }
+        allMonths = updatedList
 
-        Logger.d("updateMonthAt: index=$index, monthOffset=$monthOffset, date=${newMonthDate.month}")
     }
 
     private fun generateMonth(baseDate: LocalDate): MonthModel {
@@ -133,9 +121,19 @@ class CalendarStore {
         return MonthModel(id = baseDate.month.number, weeks = weeks)
     }
 
-    private fun today(): LocalDate = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
+    private fun notifyChanged() {
+        val canScrollLeft = currentDate > startDateOfMonth
+        val canScrollRight = currentDate < endDateOfMonth
+
+        val calendarArgs = CalendarArgs(
+            currentDate = currentDate,
+            months = allMonths,
+            completionMonths = allMonths[currentMonthOffset],
+            canScrollRight = canScrollRight,
+            canScrollLeft = canScrollLeft
+        )
+        onCalendarUpdate?.invoke(calendarArgs)
+    }
 
     private enum class ScrollDirection {
         FORWARD, BACKWARD, NONE

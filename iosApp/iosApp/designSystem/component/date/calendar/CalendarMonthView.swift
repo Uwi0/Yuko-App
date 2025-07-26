@@ -5,6 +5,7 @@ struct CalendarMonthView: View {
 	
 	var currentDate: Date
 	var months: [MonthModel]
+	var completionMonths: [[DayValue]]
 	var canScrolledRight: Bool
 	var canScrolledLeft: Bool
 	let onUpdatedIndex: (Int32) -> Void
@@ -78,7 +79,7 @@ struct CalendarMonthView: View {
 		GeometryReader { geo in
 			ZStack {
 				ForEach(Array(months.enumerated()), id: \.offset) { index, month in
-					MonthsView(month: month)
+					MonthsView(month: month, completionMonths: completionMonths)
 						.offset(x: myXOffset(index, radius: geo.size.width * 0.1))
 						.scaleEffect(1.0 - abs(distance(index)) * 0.2)
 						.opacity(1.0 - abs(distance(index)) * 0.3)

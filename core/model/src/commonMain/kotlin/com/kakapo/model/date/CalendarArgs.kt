@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDate
 data class CalendarArgs(
     val currentDate: LocalDate,
     val months: List<MonthModel>,
+    val completionMonths: MonthModel,
     val canScrollRight: Boolean,
     val canScrollLeft: Boolean
 )

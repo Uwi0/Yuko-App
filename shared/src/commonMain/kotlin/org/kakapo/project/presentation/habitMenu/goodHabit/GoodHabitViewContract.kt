@@ -1,8 +1,10 @@
 package org.kakapo.project.presentation.habitMenu.goodHabit
 
+import co.touchlab.kermit.Logger
 import com.kakapo.common.util.currentLocalDate
 import com.kakapo.domain.useCase.logic.asCompletionValue
 import com.kakapo.model.date.CalendarArgs
+import com.kakapo.model.date.DayValue
 import com.kakapo.model.date.HorizontalCalendarArgs
 import com.kakapo.model.date.MonthModel
 import com.kakapo.model.date.WeekModel
@@ -19,6 +21,7 @@ data class GoodHabitState(
     val allWeeks: List<WeekModel> = emptyList(),
     val allMonths: List<MonthModel> = emptyList(),
     val completionWeeks: List<Double> = emptyList(),
+    val completionMonths: List<List<DayValue>> = emptyList(),
     val canScrolledRightHorizontalDate: Boolean = false,
     val canScrolledLeftHorizontalDate: Boolean = false,
     val canScrolledRightCalendar: Boolean = false,
@@ -39,6 +42,7 @@ data class GoodHabitState(
         return copy(
             allMonths = args.months,
             currentDate = args.currentDate,
+            completionMonths = args.completionMonths.asCompletionValue(goodHabit.calendarMap),
             canScrolledRightCalendar = args.canScrollRight,
             canScrolledLeftCalendar = args.canScrollLeft
         )

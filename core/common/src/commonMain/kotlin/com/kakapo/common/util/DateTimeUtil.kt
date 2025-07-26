@@ -106,7 +106,7 @@ fun Long.asLocalDate(): LocalDate {
 
 fun LocalDate.asEpochDays(): Long {
     val epochStart = LocalDate(1970, 1, 1)
-    return this.until(epochStart, DateTimeUnit.DAY)
+    return epochStart.until(this, DateTimeUnit.DAY)
 }
 
 fun Long.millisToDateWith(format: String): String {

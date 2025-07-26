@@ -128,6 +128,7 @@ class CalendarStore {
         val calendarArgs = CalendarArgs(
             currentDate = currentDate,
             months = allMonths,
+            completionMonths = allMonths[currentMonthOffset],
             canScrollRight = canScrollRight,
             canScrollLeft = canScrollLeft
         )

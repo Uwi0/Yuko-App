@@ -82,6 +82,7 @@ struct CompletionView: View {
 		CalendarMonthView(
 			currentDate: state.formattedDate,
 			months: state.allMonths,
+			completionMonths: state.completionMonths,
 			canScrolledRight: state.canScrolledRightCalendar,
 			canScrolledLeft: state.canScrolledLeftHorizontalDate,
 			onUpdatedIndex: { index in onEvent(.UpdateMonth(index: index)) }

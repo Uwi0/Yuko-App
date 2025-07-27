@@ -17,7 +17,7 @@ class AddHabitViewModel(
         when(event) {
             is AddHabitEvent.DescriptionChanged -> _uiState.update { it.copy(description = event.description) }
             is AddHabitEvent.NameChanged -> _uiState.update { it.copy(name = event.name) }
-            is AddHabitEvent.QuantityChanged -> _uiState.update { it.copy(targetQuantity = event.quantity) }
+            is AddHabitEvent.QuantityChanged -> _uiState.update { it.copy(targetFrequency = event.frequency) }
             AddHabitEvent.NavigateBack -> emit(AddHabitEffect.NavigateBack)
             AddHabitEvent.ToggleType -> _uiState.update { it.toggleType() }
             AddHabitEvent.SaveHabit -> saveHabit()

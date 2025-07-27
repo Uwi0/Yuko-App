@@ -8,7 +8,7 @@ struct HabitItemView: View {
 	
 	var body: some View {
 		HStack {
-			Text(habit.name)
+			Text(habit.completionType.name)
 			Spacer()
 			TrailingContentView()
 		}

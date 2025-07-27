@@ -57,5 +57,5 @@ final class AddHabitViewModel {
 }
 
 extension AddHabitState {
-	public var targetQuantity: Int { Int(self.targetQuantityKt)}
+	public var targetFrequency: Int { Int(self.targetFrequencyKt)}
 }

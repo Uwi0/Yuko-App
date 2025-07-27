@@ -7,8 +7,8 @@ CREATE TABLE HabitTable (
     isArchived INTEGER NOT NULL DEFAULT 0,
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL,
-    habitType INTEGER NOT NULL DEFAULT 1,
-    dayFrequency TEXT NOT NULL DEFAULT 0
+    habitType TEXT NOT NULL DEFAULT "",
+    completionType TEXT NOT NULL DEFAULT ""
 );
 
 insertHabit:
@@ -21,7 +21,7 @@ INSERT OR ABORT INTO HabitTable(
     createdAt,
     updatedAt,
     habitType,
-    dayFrequency
+    completionType
 ) VALUES (
     ?,
     ?,
@@ -45,7 +45,7 @@ SELECT
     h.createdAt,
     h.updatedAt,
     h.habitType,
-    h.dayFrequency,
+    h.completionType,
     CASE
         WHEN hc_today.id IS NOT NULL THEN 1
         ELSE 0

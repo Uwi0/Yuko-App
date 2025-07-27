@@ -9,6 +9,7 @@ data class HabitItemModel(
     val description: String = "",
     val habitType: HabitType = HabitType.GOOD,
     val isCompleteToday: Boolean = false,
+    val completionType: CompletionType = CompletionType.Single,
     val lastSlipDate: Long = 0,
 ) {
     val isGoodHabit: Boolean

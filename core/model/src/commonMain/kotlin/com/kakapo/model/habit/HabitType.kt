@@ -11,10 +11,10 @@ fun HabitType.toLong(): Long {
     }
 }
 
-fun Long.toHabitType(): HabitType {
+fun String.toHabitType(): HabitType {
     return when (this) {
-        1L -> HabitType.GOOD
-        0L -> HabitType.BAD
+        HabitType.GOOD.name -> HabitType.GOOD
+        HabitType.BAD.name -> HabitType.BAD
         else -> throw IllegalArgumentException("Invalid HabitType value: $this")
     }
 }

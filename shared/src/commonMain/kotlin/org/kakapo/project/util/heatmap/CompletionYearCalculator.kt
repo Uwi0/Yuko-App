@@ -8,9 +8,9 @@ import kotlinx.datetime.number
 fun CompletionYearModel.calculateMonthPositions(
     daySize: Float,
     daySpacing: Float
-): List<MonthInfoModel> = calculateMonthPositions(this, daySize, daySpacing)
+): List<MonthInfoModel> = calculateMonthPositionsValue(this, daySize, daySpacing)
 
-fun calculateMonthPositions(
+fun calculateMonthPositionsValue(
     completionYear: CompletionYearModel,
     daySize: Float,
     daySpacing: Float

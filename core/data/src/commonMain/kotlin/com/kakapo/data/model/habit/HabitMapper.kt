@@ -2,8 +2,11 @@ package com.kakapo.data.model.habit
 
 import com.kakapo.common.util.asDayClean
 import com.kakapo.database.model.habit.HabitEntity
+import com.kakapo.model.habit.CompletionType
 import com.kakapo.model.habit.HabitModel
 import com.kakapo.model.habit.HabitItemModel
+import com.kakapo.model.habit.HabitType
+import com.kakapo.model.habit.toCompletionType
 import com.kakapo.model.habit.toHabitType
 
 data class HabitParam(
@@ -15,7 +18,8 @@ data class HabitParam(
     val isArchived: Boolean = false,
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
-    val habitType: Long = 1,
+    val habitType: String = HabitType.GOOD.name,
+    val completionType: CompletionType = CompletionType.Single
 ) {
     fun toEntity(): HabitEntity {
         return HabitEntity(
@@ -27,7 +31,8 @@ data class HabitParam(
             isArchived = isArchived,
             createdAt = createdAt,
             updatedAt = updatedAt,
-            habitType = habitType
+            habitType = habitType,
+            completionType = completionType.name
         )
     }
 }
@@ -39,6 +44,7 @@ fun HabitEntity.toHabitModel(): HabitItemModel {
         description = description,
         habitType = habitType.toHabitType(),
         isCompleteToday = isCompletedToday,
+        completionType = completionType.toCompletionType(),
         lastSlipDate = lastSlipDate.asDayClean()
     )
 }

@@ -21,19 +21,19 @@ struct ButtonQuantityView: View {
 			} label: {
 				Image(systemName: "minus")
 					.resizable()
-					.frame(width: 24, height: 3)
+					.frame(width: 16, height: 3)
 					.foregroundStyle(ColorTheme.primary)
 			}
 			
 			Text("\(formattedQuantity)")
-				.font(Typography.titleLarge)
+				.font(Typography.titleMedium)
 			
 			Button {
 				quantity += 1
 			} label: {
 				Image(systemName: "plus")
 					.resizable()
-					.frame(width: 24, height: 24)
+					.frame(width: 16, height: 16)
 					.scaledToFit()
 					.foregroundStyle(ColorTheme.primary)
 			}

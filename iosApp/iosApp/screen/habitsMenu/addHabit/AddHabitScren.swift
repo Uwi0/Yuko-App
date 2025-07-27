@@ -50,12 +50,12 @@ struct AddHabitScren: View {
 	
 	@ViewBuilder
 	private func TargetQuantityView() -> some View {
-		HStack {
+		HStack(alignment: .center) {
 			Text("Daily Goal")
 			Spacer()
 			ButtonQuantityView(quantity: Binding(
-				get: { state.targetQuantity },
-				set: { onEvent(.QuantityChanged(quantity: Int32($0)))}
+				get: { state.targetFrequency },
+				set: { onEvent(.QuantityChanged(frequency: Int32($0)))}
 			))
 		}
 	}

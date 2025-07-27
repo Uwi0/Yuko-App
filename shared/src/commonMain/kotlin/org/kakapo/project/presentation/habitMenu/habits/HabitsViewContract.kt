@@ -24,5 +24,6 @@ sealed class HabitsEvent {
     data object NavigateBack: HabitsEvent()
     data object TapToAddHabit: HabitsEvent()
     data class TappedHabit(val id: Long, val type: HabitType): HabitsEvent()
+    data class TrackCompletion(val model: HabitItemModel): HabitsEvent()
     data class CheckedGoodHabit(val id: Long, val isChecked: Boolean): HabitsEvent()
 }

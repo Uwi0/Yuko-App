@@ -46,7 +46,8 @@ fun HabitEntity.toHabitModel(): HabitItemModel {
         isCompleteToday = isCompletedToday,
         completionType = completionType.toCompletionType(),
         targetFrequency = frequency,
-        lastSlipDate = lastSlipDate.asDayClean()
+        lastSlipDate = lastSlipDate.asDayClean(),
+        completionCount = completionCount
     )
 }
 

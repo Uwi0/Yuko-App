@@ -3,6 +3,7 @@ import SwiftUI
 struct CircularProgressButton: View {
 	@Binding var progress: Int
 	let target: Int
+	let onIncrementValue: () -> Void
 	
 	private var percentage: Double {
 		Double(progress) / Double(target)
@@ -22,6 +23,7 @@ struct CircularProgressButton: View {
 		.onTapGesture {
 			if !isComplete {
 				progress += 1
+				onIncrementValue()
 			}
 		}
 		.contentShape(Circle())
@@ -62,5 +64,7 @@ struct CircularProgressButton: View {
 #Preview {
 	@Previewable @State var progress = 0
 	let target = 5
-	CircularProgressButton(progress: $progress, target: target)
+	CircularProgressButton(progress: $progress, target: target) {
+		
+	}
 }

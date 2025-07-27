@@ -3,8 +3,15 @@ import Shared
 
 struct HabitItemView: View {
 	
-	let habit: HabitItemModel
-	let onEvent: (HabitsEvent) -> Void
+	private let habit: HabitItemModel
+	private let onEvent: (HabitsEvent) -> Void
+	@State private var completionCount: Int = 0
+	
+	init(habit: HabitItemModel, onEvent: @escaping (HabitsEvent) -> Void) {
+		self.habit = habit
+		self.onEvent = onEvent
+		_completionCount = State(initialValue: habit.completionCount)
+	}
 	
 	var body: some View {
 		HStack {
@@ -36,7 +43,11 @@ struct HabitItemView: View {
 				}
 			))
 		} else {
-			Text("\(habit.targetFrequency)")
+			CircularProgressButton(
+				progress: $completionCount,
+				target: habit.targetFrequency,
+				onIncrementValue: { onEvent(.TrackCompletion(model: habit)) }
+			)
 		}
 	}
 }

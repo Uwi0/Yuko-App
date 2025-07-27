@@ -3,9 +3,10 @@ import Shared
 import Combine
 import KMPNativeCoroutinesCombine
 
-final class AddHabitViewModel: ObservableObject {
+@Observable
+final class AddHabitViewModel {
 	
-	@Published var state: AddHabitState = .companion.default()
+	var state: AddHabitState = .companion.default()
 	var effectPublihser: AnyPublisher<AddHabitEffect, Never> {
 		effectSubject.eraseToAnyPublisher()
 	}
@@ -53,4 +54,8 @@ final class AddHabitViewModel: ObservableObject {
 		stateCancellable?.cancel()
 		effectCancellable?.cancel()
 	}
+}
+
+extension AddHabitState {
+	public var targetQuantity: Int { Int(self.targetQuantityKt)}
 }

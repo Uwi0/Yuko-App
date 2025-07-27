@@ -6,6 +6,7 @@ import com.kakapo.data.model.habit.HabitParam
 import com.kakapo.model.habit.HabitType
 import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays
+import kotlin.native.ObjCName
 
 data class AddHabitState(
     val name: String = "",
@@ -13,6 +14,8 @@ data class AddHabitState(
     val type: HabitType = HabitType.GOOD,
     val setReminder: Boolean = false,
     val selectedDays: List<ReminderDays> = emptyList(),
+    @ObjCName("targetQuantityKt")
+    val targetQuantity: Int = 0,
 ) {
     val isToggleOn: Boolean
         get() = type == HabitType.GOOD
@@ -50,6 +53,7 @@ sealed class AddHabitEvent {
     data class DescriptionChanged(val description: String): AddHabitEvent()
     data object ToggleType: AddHabitEvent()
     data object SaveHabit: AddHabitEvent()
+    data class QuantityChanged(val quantity: Int): AddHabitEvent()
 }
 
 

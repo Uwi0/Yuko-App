@@ -61,7 +61,11 @@ final class HabitsViewModel {
 	}
 }
 
-extension HabitItemModel {
+
+extension HabitItemModel: @retroactive Identifiable {
+	
+	public var id: Int64 { self.habitId }
+	
 	public var targetFrequency: Int {
 		Int(self.targetFrequencyKt)
 	}

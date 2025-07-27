@@ -1,5 +1,6 @@
 package com.kakapo.data.repository.impl.habit
 
+import com.kakapo.data.model.habit.HabitCheckParam
 import com.kakapo.data.model.habit.toHabitCheckModel
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
@@ -12,11 +13,9 @@ class HabitCheckRepositoryImpl(
     private val habitCheckLocalDatasource: HabitCheckLocalDatasource
 ) : HabitCheckRepository {
 
-    override suspend fun saveTodayCheckBy(
-        habitId: Long,
-        date: Long,
-    ): Result<Unit> {
-        return habitCheckLocalDatasource.insertTodayCheck(habitId, date)
+    override suspend fun saveHabitCheck(param: HabitCheckParam): Result<Unit> {
+        val entity = param.toHabitCheckEntity()
+        return habitCheckLocalDatasource.insertTodayCheck(entity)
     }
 
     override suspend fun deleteTodayCheckBy(

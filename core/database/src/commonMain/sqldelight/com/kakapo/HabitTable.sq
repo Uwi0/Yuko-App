@@ -54,7 +54,8 @@ SELECT
         SELECT MAX(hc_all.date)
         FROM HabitCheckTable hc_all
         WHERE hc_all.habitId = h.id
-    ) AS lastSlipDate
+    ) AS lastSlipDate,
+    hc_today.completionCount
 FROM HabitTable h
 LEFT JOIN HabitCheckTable hc_today
 ON h.id = hc_today.habitId AND hc_today.date = :today;

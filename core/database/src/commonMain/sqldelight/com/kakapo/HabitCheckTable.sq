@@ -2,12 +2,27 @@ CREATE TABLE HabitCheckTable (
     id INTEGER NOT NULL PRIMARY KEY,
     habitId INTEGER NOT NULL REFERENCES HabitTable(id) ON DELETE CASCADE,
     date INTEGER NOT NULL,
+    timeStamp INTEGER NOT NULL,
+    completionCount INTEGER NOT NULL DEFAULT 0,
     isCompleted INTEGER NOT NULL DEFAULT 1
 );
 
 insertTodayCheck:
-INSERT OR ABORT INTO HabitCheckTable(habitId, date, isCompleted)
-VALUES (:habitId, :date, 1);
+INSERT OR ABORT INTO HabitCheckTable(
+habitId,
+date,
+timeStamp,
+completionCount,
+isCompleted
+)
+VALUES (
+:habitId,
+:date,
+:timeStamp,
+1,
+:isComplete
+);
+
 
 deleteTodayCheck:
 DELETE FROM HabitCheckTable

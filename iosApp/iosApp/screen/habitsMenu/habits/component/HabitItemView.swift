@@ -8,7 +8,7 @@ struct HabitItemView: View {
 	
 	var body: some View {
 		HStack {
-			Text(habit.completionType.name)
+			Text(habit.name)
 			Spacer()
 			TrailingContentView()
 		}
@@ -21,22 +21,23 @@ struct HabitItemView: View {
 	@ViewBuilder
 	private func TrailingContentView() -> some View {
 		if habit.isGoodHabit {
-			CheckBoxView()
+			CompletionCheckBoxView()
 		} else {
 			Text("\(habit.lastSlipDate) days clean")
 		}
 	}
 	
 	@ViewBuilder
-	private func CheckBoxView() -> some View {
-		CustomCheckBox(isSelected:
-			Binding(
+	private func CompletionCheckBoxView() -> some View {
+		if habit.completionType == .single {
+			CustomCheckBox(isSelected: Binding(
 				get: { habit.isCompleteToday },
-				set: { checked in
-					onEvent(.CheckedGoodHabit(id: habit.habitId, isChecked: checked))
+				set: { checked in onEvent(.CheckedGoodHabit(id: habit.habitId, isChecked: checked))
 				}
-			)
-		)
+			))
+		} else {
+			Text("\(habit.targetFrequency)")
+		}
 	}
 }
 

@@ -15,7 +15,8 @@ data class HabitEntity(
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
     val isCompletedToday: Boolean = false,
-    val lastSlipDate: Long? = null
+    val lastSlipDate: Long? = null,
+    val completionCount: Long = 0
 )
 
 fun HabitTable.toHabitEntity(): HabitEntity {
@@ -46,6 +47,7 @@ fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
         createdAt = createdAt,
         updatedAt = updatedAt,
         isCompletedToday = isCompletedToday == 1L,
-        lastSlipDate = lastSlipDate
+        lastSlipDate = lastSlipDate,
+        completionCount = completionCount ?: 0
     )
 }

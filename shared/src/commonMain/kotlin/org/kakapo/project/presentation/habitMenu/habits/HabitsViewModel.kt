@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
 import com.kakapo.common.util.currentDay
-import com.kakapo.common.util.todayAtMidnight
+import com.kakapo.data.model.habit.HabitCheckParam
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.model.habit.HabitItemModel
@@ -50,11 +50,12 @@ class HabitsViewModel(
     }
 
     private fun checkedGoodHabitBy(habitId: Long) = viewModelScope.launch {
+        val param = HabitCheckParam(habitId = habitId)
         val onSuccess: (Unit) -> Unit = {
             loadHabitsToday()
         }
 
-        habitCheckRepository.saveTodayCheckBy(habitId, currentDay)
+        habitCheckRepository.saveHabitCheck(param)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
     }

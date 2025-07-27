@@ -33,13 +33,16 @@ data class AddHabitState(
     }
 
     fun asHabitParam(): HabitParam{
+        val frequency = if (targetFrequency == 0 || targetFrequency == 1) 1
+        else targetFrequency.toLong()
         return HabitParam(
             name = name,
             description = description,
             habitType = type.name,
             startDate = currentDay,
             createdAt = currentDay,
-            completionType = completionType
+            completionType = completionType,
+            frequency = frequency
         )
     }
 

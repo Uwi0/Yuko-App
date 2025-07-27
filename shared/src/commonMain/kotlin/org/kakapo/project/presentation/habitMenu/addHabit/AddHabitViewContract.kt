@@ -1,11 +1,12 @@
 package org.kakapo.project.presentation.habitMenu.addHabit
 
 import com.kakapo.common.util.currentDay
-import com.kakapo.common.util.currentTime
 import com.kakapo.data.model.habit.HabitParam
+import com.kakapo.model.habit.CompletionType
 import com.kakapo.model.habit.HabitType
 import com.kakapo.model.habit.toLong
 import com.kakapo.model.reminder.ReminderDays
+import kotlin.native.ObjCName
 
 data class AddHabitState(
     val name: String = "",
@@ -13,9 +14,16 @@ data class AddHabitState(
     val type: HabitType = HabitType.GOOD,
     val setReminder: Boolean = false,
     val selectedDays: List<ReminderDays> = emptyList(),
+    @ObjCName("targetFrequencyKt")
+    val targetFrequency: Int = 0,
 ) {
     val isToggleOn: Boolean
         get() = type == HabitType.GOOD
+
+    val completionType: CompletionType get() {
+        return if (targetFrequency == 0 || targetFrequency == 1) CompletionType.Single
+        else CompletionType.Frequency
+    }
 
     fun toggleType(): AddHabitState {
         return when (type) {
@@ -25,12 +33,16 @@ data class AddHabitState(
     }
 
     fun asHabitParam(): HabitParam{
+        val frequency = if (targetFrequency == 0 || targetFrequency == 1) 1
+        else targetFrequency.toLong()
         return HabitParam(
             name = name,
             description = description,
-            habitType = type.toLong(),
+            habitType = type.name,
             startDate = currentDay,
-            createdAt = currentDay
+            createdAt = currentDay,
+            completionType = completionType,
+            frequency = frequency
         )
     }
 
@@ -50,6 +62,7 @@ sealed class AddHabitEvent {
     data class DescriptionChanged(val description: String): AddHabitEvent()
     data object ToggleType: AddHabitEvent()
     data object SaveHabit: AddHabitEvent()
+    data class QuantityChanged(val frequency: Int): AddHabitEvent()
 }
 
 

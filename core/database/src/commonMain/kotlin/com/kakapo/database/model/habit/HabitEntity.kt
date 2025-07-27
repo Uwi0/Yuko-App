@@ -8,14 +8,15 @@ data class HabitEntity(
     val name: String = "",
     val description: String = "",
     val frequency: Long = 0,
-    val dayFrequency: String = "",
-    val habitType: Long = 1,
+    val completionType: String = "",
+    val habitType: String = "",
     val startDate: Long = 0,
     val isArchived: Boolean = false,
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
     val isCompletedToday: Boolean = false,
-    val lastSlipDate: Long? = null
+    val lastSlipDate: Long? = null,
+    val completionCount: Long = 0
 )
 
 fun HabitTable.toHabitEntity(): HabitEntity {
@@ -24,7 +25,7 @@ fun HabitTable.toHabitEntity(): HabitEntity {
         name = name,
         description = description,
         frequency = frequency,
-        dayFrequency = dayFrequency,
+        completionType = completionType,
         habitType = habitType,
         startDate = startDate,
         isArchived = isArchived == 1L,
@@ -39,13 +40,14 @@ fun GetHabitsWithTodayCheck.toHabitEntity(): HabitEntity {
         name = name,
         description = description,
         frequency = frequency,
-        dayFrequency = dayFrequency,
+        completionType = completionType,
         habitType = habitType,
         startDate = startDate,
         isArchived = isArchived == 1L,
         createdAt = createdAt,
         updatedAt = updatedAt,
         isCompletedToday = isCompletedToday == 1L,
-        lastSlipDate = lastSlipDate
+        lastSlipDate = lastSlipDate,
+        completionCount = completionCount ?: 0
     )
 }

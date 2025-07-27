@@ -4,6 +4,8 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.common.asLong
+import com.kakapo.common.util.currentTime
 import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
 import com.kakapo.database.model.habit.HabitCheckEntity
 import com.kakapo.database.model.habit.toHabitCheckEntity
@@ -18,11 +20,13 @@ class HabitCheckLocalDatasourceImpl(
 
     private val habitCheckQuery = Database.Companion(sqlDriver).habitCheckTableQueries
 
-    override suspend fun insertTodayCheck(
-        habitId: Long,
-        date: Long
-    ): Result<Unit> = runCatching {
-        habitCheckQuery.insertTodayCheck(habitId, date)
+    override suspend fun insertTodayCheck(entity: HabitCheckEntity): Result<Unit> = runCatching {
+        habitCheckQuery.insertTodayCheck(
+            habitId = entity.habitId,
+            date = entity.date,
+            timeStamp = entity.timeStamp,
+            isComplete = entity.isCompleted.asLong()
+        )
     }
 
     override suspend fun deleteTodayCheck(

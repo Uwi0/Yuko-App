@@ -29,7 +29,7 @@ class HabitLocalDatasourceImpl(
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt,
             habitType = entity.habitType,
-            dayFrequency = entity.dayFrequency
+            completionType = entity.completionType
         )
     }
 

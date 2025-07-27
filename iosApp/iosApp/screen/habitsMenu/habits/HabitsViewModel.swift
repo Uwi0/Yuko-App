@@ -60,3 +60,14 @@ final class HabitsViewModel {
 		effectCancellable?.cancel()
 	}
 }
+
+extension HabitItemModel {
+	public var targetFrequency: Int {
+		Int(self.targetFrequencyKt)
+	}
+	
+	public var completionCount: Int {
+		Int(self.completionCountKt)
+	}
+}
+

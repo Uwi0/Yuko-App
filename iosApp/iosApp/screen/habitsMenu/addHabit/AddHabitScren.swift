@@ -31,23 +31,8 @@ struct AddHabitScren: View {
 	
 	@ViewBuilder
 	private func ContentView() -> some View {
-		VStack {
-			TextField(
-				"Name",
-				text: Binding(
-					get: { state.name },
-					set: { value in onEvent(.NameChanged(name: value))}
-				)
-			)
-			.font(Typography.titleLarge)
-			TextField(
-				"Description",
-				text: Binding(
-					get: { state.description_ },
-					set: { value in onEvent(.DescriptionChanged(description: value))}
-				)
-			)
-			.font(Typography.bodyMedium)
+		VStack(spacing: 16) {
+			FieldNameAndDescriptionView(state: $state, onEvent: onEvent)
 			Toggle(
 				"Is Good Habit ?",
 				isOn: Binding(
@@ -55,12 +40,26 @@ struct AddHabitScren: View {
 					set: { _ in onEvent(.ToggleType()) }
 				)
 			)
-//			ReminderHabitView(state: $state, onEvent: onEvent)
+			TargetQuantityView()
 			Spacer()
 		}
 		.padding(.horizontal, 16)
 		.padding(.vertical, 24)
+		.frame(maxWidth: 700, alignment: .leading)
 	}
+	
+	@ViewBuilder
+	private func TargetQuantityView() -> some View {
+		HStack(alignment: .center) {
+			Text("Daily Goal")
+			Spacer()
+			ButtonQuantityView(quantity: Binding(
+				get: { state.targetFrequency },
+				set: { onEvent(.QuantityChanged(frequency: Int32($0)))}
+			))
+		}
+	}
+	
 }
 
 #Preview {

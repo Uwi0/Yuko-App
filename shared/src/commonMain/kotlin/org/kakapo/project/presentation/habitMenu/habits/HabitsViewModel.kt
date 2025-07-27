@@ -1,10 +1,11 @@
 package org.kakapo.project.presentation.habitMenu.habits
 
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kakapo.common.asResult
 import com.kakapo.common.subscribe
 import com.kakapo.common.util.currentDay
-import com.kakapo.common.util.todayAtMidnight
+import com.kakapo.data.model.habit.HabitCheckParam
 import com.kakapo.data.repository.base.habit.HabitCheckRepository
 import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.model.habit.HabitItemModel
@@ -18,14 +19,15 @@ import kotlin.native.ObjCName
 class HabitsViewModel(
     private var habitRepository: HabitRepository,
     private var habitCheckRepository: HabitCheckRepository
-): BaseViewModel<HabitsState, HabitsEffect, HabitsEvent>(HabitsState()) {
+) : BaseViewModel<HabitsState, HabitsEffect, HabitsEvent>(HabitsState()) {
 
     override fun handleEvent(event: HabitsEvent) {
-        when(event) {
-            HabitsEvent.TapToAddHabit -> emit(HabitsEffect.TapToAddHabit)
-            HabitsEvent.NavigateBack -> emit(HabitsEffect.NavigateBack)
+        when (event) {
             is HabitsEvent.TappedHabit -> onTappedHabit(event.id, event.type)
             is HabitsEvent.CheckedGoodHabit -> onCheckedGoodHabit(event.id, event.isChecked)
+            is HabitsEvent.TrackCompletion -> trackHabitFrequency(event.model)
+            HabitsEvent.TapToAddHabit -> emit(HabitsEffect.TapToAddHabit)
+            HabitsEvent.NavigateBack -> emit(HabitsEffect.NavigateBack)
         }
     }
 
@@ -36,6 +38,7 @@ class HabitsViewModel(
     private fun loadHabitsToday() = viewModelScope.launch {
         val onSuccess: (List<HabitItemModel>) -> Unit = { habits ->
             _uiState.update { it.copy(habits = habits, loading = false) }
+            Logger.d("habits: $habits")
         }
 
         habitRepository.loadHabits(currentDay).asResult().subscribe(
@@ -50,11 +53,12 @@ class HabitsViewModel(
     }
 
     private fun checkedGoodHabitBy(habitId: Long) = viewModelScope.launch {
+        val param = HabitCheckParam(habitId = habitId)
         val onSuccess: (Unit) -> Unit = {
             loadHabitsToday()
         }
 
-        habitCheckRepository.saveTodayCheckBy(habitId, currentDay)
+        habitCheckRepository.saveHabitCheck(param)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
     }
@@ -65,6 +69,17 @@ class HabitsViewModel(
         }
 
         habitCheckRepository.deleteTodayCheckBy(habitId, currentDay)
+            .onSuccess(onSuccess)
+            .onFailure(::handleError)
+    }
+
+    private fun trackHabitFrequency(model: HabitItemModel) = viewModelScope.launch {
+        val param = HabitCheckParam(habitId = model.id, isCompleted = model.isFrequencyCompleted)
+        val onSuccess: (Unit) -> Unit = {
+            Logger.d("success save progress")
+        }
+
+        habitCheckRepository.saveHabitCheck(param)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
     }

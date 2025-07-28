@@ -47,7 +47,10 @@ SELECT
     h.habitType,
     h.completionType,
     CASE
-        WHEN hc_today.id IS NOT NULL THEN 1
+        WHEN EXISTS(
+            SELECT 1 FROM HabitCheckTable hc_exists
+            WHERE hc_exists.habitId = h.id AND hc_exists.date = :today
+        ) THEN 1
         ELSE 0
     END AS isCompletedToday,
     (
@@ -55,14 +58,12 @@ SELECT
         FROM HabitCheckTable hc_all
         WHERE hc_all.habitId = h.id
     ) AS lastSlipDate,
-    (
+    COALESCE((
         SELECT SUM(hc_today.completionCount)
         FROM HabitCheckTable hc_today
         WHERE hc_today.habitId = h.id AND hc_today.date = :today
-    ) AS completionCount
-FROM HabitTable h
-LEFT JOIN HabitCheckTable hc_today
-ON h.id = hc_today.habitId AND hc_today.date = :today;
+    ), 0) AS completionCount
+FROM HabitTable h;
 
 deleteHabitById:
 DELETE FROM HabitTable

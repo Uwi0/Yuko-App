@@ -4,6 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
+import com.kakapo.GetHabitCheckByHabitId
 import com.kakapo.common.asLong
 import com.kakapo.common.util.currentTime
 import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
@@ -37,10 +38,14 @@ class HabitCheckLocalDatasourceImpl(
     }
 
     override fun getHabitCheckBy(habitId: Long): Flow<List<HabitCheckEntity>> {
+        val toHabitCheckEntity: (List<GetHabitCheckByHabitId>) -> List<HabitCheckEntity> = {
+            it.map { habitCheck -> habitCheck.toHabitCheckEntity() }
+        }
+
         return habitCheckQuery
             .getHabitCheckByHabitId(habitId)
             .asFlow()
             .mapToList(dispatcher)
-            .map { habitChecks -> habitChecks.map { it.toHabitCheckEntity() } }
+            .map(toHabitCheckEntity)
     }
 }

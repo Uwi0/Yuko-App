@@ -5,6 +5,7 @@ import com.kakapo.domain.model.GoodHabitTestData
 import com.kakapo.domain.model.GoodHabitUseCaseParam
 import com.kakapo.domain.useCase.logic.GoodHabitDetailLogic
 import com.kakapo.domain.useCase.logic.GoodHabitDetailLogic.calculateMissedCount
+import com.kakapo.model.habit.CompletionType
 import com.kakapo.model.habit.HabitCheckModel
 import com.kakapo.model.habit.HabitModel
 import io.kotest.matchers.maps.shouldContainAll
@@ -24,13 +25,13 @@ class GoodHabitDetailLogicTest {
         result.size shouldBe 7
 
         val expected = mapOf(
-            GoodHabitTestData.epochDay(1) to true,
-            GoodHabitTestData.epochDay(2) to true,
-            GoodHabitTestData.epochDay(3) to false,
-            GoodHabitTestData.epochDay(4) to true,
-            GoodHabitTestData.epochDay(5) to false,
-            GoodHabitTestData.epochDay(6) to true,
-            GoodHabitTestData.epochDay(7) to false,
+            GoodHabitTestData.epochDay(1) to 1,
+            GoodHabitTestData.epochDay(2) to 1,
+            GoodHabitTestData.epochDay(3) to 0,
+            GoodHabitTestData.epochDay(4) to 1,
+            GoodHabitTestData.epochDay(5) to 0,
+            GoodHabitTestData.epochDay(6) to 1,
+            GoodHabitTestData.epochDay(7) to 0,
         )
 
         result shouldContainAll expected
@@ -57,14 +58,17 @@ class GoodHabitDetailLogicTest {
             HabitCheckModel(
                 id = index.toLong(),
                 date = GoodHabitTestData.epochDay(day),
-                isCompleted = true
+                isCompleted = true,
+                completionCount = 1
             )
         }
 
         val bestStreak = GoodHabitDetailLogic.calculateBestStreak(
             checks,
             GoodHabitTestData.epochDay(1),
-            GoodHabitTestData.epochDay(7)
+            GoodHabitTestData.epochDay(7),
+            completionType = CompletionType.Single,
+            targetFrequency = 1
         )
 
         bestStreak shouldBe 3
@@ -75,12 +79,15 @@ class GoodHabitDetailLogicTest {
         val checks = listOf(HabitCheckModel(
             id = 1,
             date = currentDay,
-            isCompleted = true
+            isCompleted = true,
+            completionCount = 1
         ))
         val bestStreak = GoodHabitDetailLogic.calculateBestStreak(
             checks,
             currentDay,
-            currentDay
+            currentDay,
+            completionType = CompletionType.Single,
+            targetFrequency = 1
         )
 
         bestStreak shouldBe 1
@@ -90,14 +97,14 @@ class GoodHabitDetailLogicTest {
     fun `asCurrentStreak should count how many days streak up to today`() {
         val today = GoodHabitTestData.epochDay(7)
         val map = mapOf(
-            GoodHabitTestData.epochDay(7) to true,
-            GoodHabitTestData.epochDay(6) to true,
-            GoodHabitTestData.epochDay(5) to false,
-            GoodHabitTestData.epochDay(4) to true
+            GoodHabitTestData.epochDay(7) to 1,
+            GoodHabitTestData.epochDay(6) to 1,
+            GoodHabitTestData.epochDay(5) to 0,
+            GoodHabitTestData.epochDay(4) to 1
         )
 
         val currentStreak = with(GoodHabitDetailLogic) {
-            map.countStreakUp()
+            map.countStreakUp(completionType = CompletionType.Single, targetFrequency = 1)
         }
 
         currentStreak shouldBe 2
@@ -107,13 +114,15 @@ class GoodHabitDetailLogicTest {
     fun `calculateMissedCount should return correct number of missed days`() {
         val epoch: (Int) -> Long = { day -> GoodHabitTestData.epochDay(day) }
         val all = listOf(epoch(1), epoch(2), epoch(3), epoch(4), epoch(5))
-        val checked = setOf(epoch(1), epoch(3))
+        val checked = mapOf<Long, Int>(epoch(1) to 1, epoch(3) to 1)
         val startDate = epoch(1)
 
         val result = calculateMissedCount(
             all,
             checked,
-            startDate
+            startDate,
+            completionType = CompletionType.Single,
+            targetFrequency = 1
         )
 
         result shouldBe 3
@@ -125,14 +134,17 @@ class GoodHabitDetailLogicTest {
             id = 1,
             name = "Habit",
             description = "Description",
-            startDate = GoodHabitTestData.habitStartDateEpoch
+            startDate = GoodHabitTestData.habitStartDateEpoch,
+            completionType = CompletionType.Single,
+            targetFrequency = 1
         )
 
         val checks = listOf(1, 2, 4, 7).mapIndexed { index, day ->
             HabitCheckModel(
                 id = index.toLong(),
                 date = GoodHabitTestData.epochDay(day),
-                isCompleted = true
+                isCompleted = true,
+                completionCount = 1
             )
         }
 

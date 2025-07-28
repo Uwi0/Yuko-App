@@ -13,9 +13,6 @@ struct HabitListView: View {
 	}
 }
 
-extension HabitItemModel: @retroactive Identifiable {
-	public var id: Int64 { self.habitId }
-}
 
 #Preview {
 	HabitListView(habits: [], onEvent: { _ in })

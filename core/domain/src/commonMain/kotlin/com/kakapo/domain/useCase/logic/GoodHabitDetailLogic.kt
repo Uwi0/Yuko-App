@@ -1,5 +1,6 @@
 package com.kakapo.domain.useCase.logic
 
+import co.touchlab.kermit.Logger
 import com.kakapo.common.util.dayToDateWith
 import com.kakapo.domain.model.GoodHabitUseCaseParam
 import com.kakapo.model.habit.CompletionType

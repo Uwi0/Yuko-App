@@ -6,7 +6,6 @@ import app.cash.sqldelight.db.SqlDriver
 import com.kakapo.Database
 import com.kakapo.GetHabitCheckByHabitId
 import com.kakapo.common.asLong
-import com.kakapo.common.util.currentTime
 import com.kakapo.database.datasource.base.habits.HabitCheckLocalDatasource
 import com.kakapo.database.model.habit.HabitCheckEntity
 import com.kakapo.database.model.habit.toHabitCheckEntity

@@ -16,7 +16,8 @@ object GoodHabitTestData {
             HabitCheckModel(
                 id = index.toLong(),
                 date = epochDay(day),
-                isCompleted = true
+                isCompleted = true,
+                completionCount = 1
             )
         }
     }

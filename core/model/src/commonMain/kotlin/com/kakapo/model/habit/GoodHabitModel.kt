@@ -18,10 +18,29 @@ data class GoodHabitModel(
     val bestStreak: Int = 0,
     val completionThisMonth: Int = 0,
     val startDate: Long = 0,
-    val calendarMap: Map<Long, Boolean> = emptyMap(),
+    val completionType: CompletionType = CompletionType.Single,
+    val targetFrequency: Int = 0,
+    val calendarMap: Map<Long, Int> = emptyMap(),
 ) {
     val formattedStartDate: String get () {
         return startDate.dayToDateWith(format = "dd MMM yyyy")
+    }
+
+    fun isCompleteOnDate(date: Long): Boolean {
+        return when(completionType) {
+            CompletionType.Single -> calendarMap[date] == 1
+            CompletionType.Frequency -> (calendarMap[date] ?: 0) >= targetFrequency
+        }
+    }
+
+    fun getTargetData(date: Long): Float {
+        return when (completionType) {
+            CompletionType.Single -> if (calendarMap[date] == 1) 1f else 0f
+            CompletionType.Frequency -> {
+                val completed = calendarMap[date] ?: 0
+                (completed.toFloat() / targetFrequency).coerceAtMost(1f)
+            }
+        }
     }
 }
 
@@ -37,7 +56,7 @@ val dummyGoodHabit: GoodHabitModel get() {
         val day = today.minus(i, DateTimeUnit.DAY)
             .atStartOfDayIn(timeZone)
             .toEpochMilliseconds()
-        day to (Random.nextInt(100) < 80)
+        day to 1
     }
 
     return GoodHabitModel(

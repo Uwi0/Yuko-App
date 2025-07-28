@@ -56,6 +56,8 @@ fun HabitEntity.toHabitDetailModel(): HabitModel {
         id = id,
         name = name,
         description = description,
-        startDate = startDate
+        startDate = startDate,
+        completionType = completionType.toCompletionType(),
+        targetFrequency = frequency
     )
 }

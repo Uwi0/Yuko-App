@@ -29,4 +29,16 @@ DELETE FROM HabitCheckTable
 WHERE habitId = :habitId AND date = :date;
 
 getHabitCheckByHabitId:
-SELECT * FROM HabitCheckTable WHERE habitId = :habitId;
+SELECT
+    id,
+    habitId,
+    date,
+    SUM(completionCount) AS totalCompletionCount,
+    COUNT(*) AS totalEntries,
+    MIN(timeStamp) AS firstEntry,
+    MAX(timeStamp) AS lastEntry,
+    MAX(isCompleted) AS isCompleted
+FROM HabitCheckTable
+WHERE habitId = :habitId
+GROUP BY habitId, date
+ORDER BY date DESC;

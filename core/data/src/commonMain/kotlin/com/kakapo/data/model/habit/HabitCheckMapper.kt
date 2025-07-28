@@ -24,6 +24,7 @@ fun HabitCheckEntity.toHabitCheckModel(): HabitCheckModel {
     return HabitCheckModel(
         id = id,
         date = date,
-        isCompleted = isCompleted
+        isCompleted = isCompleted,
+        completionCount = completionCount
     )
 }

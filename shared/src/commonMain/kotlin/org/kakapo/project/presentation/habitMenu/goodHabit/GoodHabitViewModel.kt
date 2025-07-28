@@ -52,6 +52,7 @@ class GoodHabitViewModel(
     private fun loadGoodHabitBy(habitId: Long) = viewModelScope.launch {
         val param = goodHabitParamFactory(habitId)
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
+            Logger.d("loadGoodHabit $goodHabit")
             _uiState.update { it.copy(goodHabit = goodHabit) }
             weeksStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
             monthsStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)

@@ -53,7 +53,7 @@ class HabitsViewModel(
     }
 
     private fun checkedGoodHabitBy(habitId: Long) = viewModelScope.launch {
-        val param = HabitCheckParam(habitId = habitId)
+        val param = HabitCheckParam(habitId = habitId, isCompleted = true)
         val onSuccess: (Unit) -> Unit = {
             loadHabitsToday()
         }

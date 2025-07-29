@@ -25,6 +25,8 @@ val currentLocalDate: LocalDate
 val currentDay: Long
     get() = currentLocalDate.toEpochDays()
 
+val currentYear: Int get() = currentLocalDate.year
+
 val todayAtMidnight: Long
     get() = currentLocalDate
         .atStartOfDayIn(TimeZone.currentSystemDefault())

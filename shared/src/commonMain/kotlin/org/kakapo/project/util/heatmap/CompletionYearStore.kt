@@ -1,5 +1,6 @@
 package org.kakapo.project.util.heatmap
 
+import co.touchlab.kermit.Logger
 import com.kakapo.model.heatmap.CompletionDayModel
 import com.kakapo.model.heatmap.CompletionWeekModel
 import com.kakapo.model.heatmap.CompletionYearModel
@@ -13,12 +14,18 @@ class CompletionYearStore {
 
     fun generateCompletionYear(
         year: Int,
+        targetFrequency: Int,
         completionData: Map<LocalDate, Int>
     ): CompletionYearModel {
         val startDate = getYearStartDate(year)
         val endDate = getYearEndDate(year)
-
-        val weeks = generateWeeks(startDate, endDate, year, completionData)
+        Logger.d("generateCompletionYear $targetFrequency, $completionData")
+        val weeks = generateWeeks(
+            startDate, endDate,
+            year,
+            targetFrequency,
+            completionData
+        )
         val totalCompletions = completionData.values.sum()
 
         return CompletionYearModel(
@@ -32,12 +39,13 @@ class CompletionYearStore {
         startDate: LocalDate,
         endDate: LocalDate,
         targetYear: Int,
+        targetFrequency: Int,
         completionData: Map<LocalDate, Int>
     ): List<CompletionWeekModel> {
         return generateSequence(startDate) { currentDate ->
             currentDate.plus(7, DateTimeUnit.DAY).takeIf { it <= endDate }
         }.map { weekStart ->
-            val weekDates = generateWeekDates(weekStart, endDate, targetYear, completionData)
+            val weekDates = generateWeekDates(weekStart, endDate, targetYear, targetFrequency, completionData)
             CompletionWeekModel(days = weekDates)
         }.toList()
     }
@@ -46,6 +54,7 @@ class CompletionYearStore {
         weekStart: LocalDate,
         yearEnd: LocalDate,
         targetYear: Int,
+        targetFrequency: Int,
         completionData: Map<LocalDate, Int>
     ): List<CompletionDayModel> {
         return (0..6).map { dayOffset ->
@@ -59,7 +68,7 @@ class CompletionYearStore {
                     CompletionDayModel.Day(
                         date = currentDate,
                         count = count,
-                        level = calculateLevel(count)
+                        level = calculateLevel(count, targetFrequency)
                     )
                 }
             }
@@ -80,12 +89,16 @@ class CompletionYearStore {
         return decemberLast.plus(6 - dayOfWeek, DateTimeUnit.DAY)
     }
 
-    private fun calculateLevel(count: Int): Int {
+    private fun calculateLevel(count: Int, targetFrequency: Int): Int {
+        if (count == 0 || targetFrequency == 0) return 0
+
+        val percent = (count.toDouble() / targetFrequency).coerceIn(0.0, 1.0)
+
         return when {
-            count == 0 -> 0
-            count <= 3 -> 1
-            count <= 6 -> 2
-            count <= 9 -> 3
+            percent == 0.0 -> 0
+            percent <= 0.25 -> 1
+            percent <= 0.5 -> 2
+            percent <= 0.75 -> 3
             else -> 4
         }
     }

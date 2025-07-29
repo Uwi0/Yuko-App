@@ -87,6 +87,6 @@ struct CompletionHeatMapView: View {
 
 #Preview {
 	let dummyCompletion = CompletionYearStore()
-	let dummyData = dummyCompletion.generateCompletionYear(year: 2021, completionData: [:])
+	let dummyData = dummyCompletion.generateCompletionYear(year: 2021, targetFrequency: 1, completionData: [:])
 	CompletionHeatMapView(completionYear: dummyData)
 }

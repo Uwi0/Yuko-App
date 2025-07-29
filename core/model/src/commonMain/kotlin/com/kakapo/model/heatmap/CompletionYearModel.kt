@@ -4,8 +4,8 @@ import kotlin.native.ObjCName
 
 data class CompletionYearModel(
     @ObjCName("yearKt")
-    val year: Int,
-    val weeks: List<CompletionWeekModel>,
+    val year: Int = 0,
+    val weeks: List<CompletionWeekModel> = emptyList(),
     @ObjCName("totalCompletionsKt")
-    val totalCompletions: Int,
+    val totalCompletions: Int = 0,
 )

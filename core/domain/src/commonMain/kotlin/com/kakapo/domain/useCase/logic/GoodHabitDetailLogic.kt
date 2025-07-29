@@ -78,7 +78,9 @@ internal object GoodHabitDetailLogic {
             bestStreak = bestStreak,
             completionThisMonth = completionThisMonth,
             startDate = habitModel.startDate,
-            calendarMap = calendarMap
+            calendarMap = calendarMap,
+            targetFrequency = habitModel.targetFrequency.toInt(),
+            completionType = habitModel.completionType
         )
     }
 
@@ -102,7 +104,6 @@ internal object GoodHabitDetailLogic {
     ): Map<Long, Int> {
         if (habitChecks.isEmpty()) return emptyMap()
 
-        // Group by date and sum completion counts
         val checksByDate = habitChecks.groupBy { it.date }
             .mapValues { (_, checks) ->
                 checks.sumOf { it.completionCount }

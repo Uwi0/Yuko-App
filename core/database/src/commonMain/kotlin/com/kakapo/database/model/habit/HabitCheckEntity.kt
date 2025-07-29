@@ -1,6 +1,5 @@
 package com.kakapo.database.model.habit
 
-import co.touchlab.kermit.Logger
 import com.kakapo.GetHabitCheckByHabitId
 import com.kakapo.HabitCheckTable
 

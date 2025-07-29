@@ -9,6 +9,7 @@ import com.kakapo.model.date.HorizontalCalendarArgs
 import com.kakapo.model.date.MonthModel
 import com.kakapo.model.date.WeekModel
 import com.kakapo.model.habit.GoodHabitModel
+import com.kakapo.model.heatmap.CompletionYearModel
 import kotlinx.datetime.LocalDate
 import org.kakapo.project.presentation.habitMenu.model.CompletionViewMode
 import org.kakapo.project.presentation.habitMenu.model.nextMode
@@ -22,6 +23,7 @@ data class GoodHabitState(
     val allMonths: List<MonthModel> = emptyList(),
     val completionWeeks: List<Double> = emptyList(),
     val completionMonths: List<List<DayValue>> = emptyList(),
+    val completionYear: CompletionYearModel = CompletionYearModel(),
     val canScrolledRightHorizontalDate: Boolean = false,
     val canScrolledLeftHorizontalDate: Boolean = false,
     val canScrolledRightCalendar: Boolean = false,

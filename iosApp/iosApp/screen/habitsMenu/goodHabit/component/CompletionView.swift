@@ -91,9 +91,7 @@ struct CompletionView: View {
 	
 	@ViewBuilder
 	private func CompletionYearlyView() -> some View {
-		let completionYear = CompletionYearStore()
-		let completionValue = completionYear.generateCompletionYear(year: 2025, completionData: [:])
-		CompletionHeatMapView(completionYear: completionValue)
+		CompletionHeatMapView(completionYear: state.completionYear)
 	}
 }
 

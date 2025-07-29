@@ -2,7 +2,9 @@ package org.kakapo.project.presentation.habitMenu.goodHabit
 
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.kakapo.common.util.asLocalDate
 import com.kakapo.common.util.currentDay
+import com.kakapo.common.util.currentYear
 import com.kakapo.data.repository.base.habit.HabitRepository
 import com.kakapo.domain.model.goodHabitParamFactory
 import com.kakapo.domain.useCase.base.GoodHabitDetailUseCase
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.kakapo.project.presentation.util.BaseViewModel
 import org.kakapo.project.util.date.calendar.CalendarStore
 import org.kakapo.project.util.date.horizontalCalendar.HorizontalCalendarStore
+import org.kakapo.project.util.heatmap.CompletionYearStore
 import kotlin.native.ObjCName
 
 @ObjCName("GoodHabitViewModelKt")
@@ -23,6 +26,7 @@ class GoodHabitViewModel(
     private var habitId: Long = 0L
     private val weeksStore = HorizontalCalendarStore()
     private val monthsStore = CalendarStore()
+    private val yearStore = CompletionYearStore()
 
     override fun handleEvent(event: GoodHabitEvent) {
         when (event) {
@@ -52,10 +56,10 @@ class GoodHabitViewModel(
     private fun loadGoodHabitBy(habitId: Long) = viewModelScope.launch {
         val param = goodHabitParamFactory(habitId)
         val onSuccess: (GoodHabitModel) -> Unit = { goodHabit ->
-            Logger.d("loadGoodHabit $goodHabit")
             _uiState.update { it.copy(goodHabit = goodHabit) }
             weeksStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
             monthsStore.initData(startEpochDay = goodHabit.startDate, currentEpochDay = currentDay)
+            generateYearCompletion(goodHabit, currentYear)
         }
 
         goodHabitDetail.execute(param)
@@ -71,6 +75,16 @@ class GoodHabitViewModel(
         habitRepository.deleteHabitBy(habitId)
             .onSuccess(onSuccess)
             .onFailure(::handleError)
+    }
+
+    private fun generateYearCompletion(habit: GoodHabitModel, year: Int) {
+        Logger.d("generateYearCompletion $habit")
+        val completionYear = yearStore.generateCompletionYear(
+            year,
+            habit.targetFrequency,
+            completionData = habit.calendarMap.mapKeys { (key, _) -> key.asLocalDate() }
+        )
+        _uiState.update { it.copy(completionYear = completionYear) }
     }
 
     private fun handleError(error: Throwable) {
